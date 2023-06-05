@@ -29,7 +29,9 @@ export const Popup = () => {
     <div>
       <h1>Sustainability Calculator v2</h1>
       <button onClick={refreshAndGetSize}>Get Software Carbon Intensity</button>
-      <div>SCI: {Math.floor(transferSize * 0.81 * 212.3)} gCO2eq</div>
+      <div>
+        SCI: {Math.floor((transferSize / 1073741824) * 0.81 * 212.3)} gCO2eq
+      </div>
     </div>
   );
 };
