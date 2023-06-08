@@ -1,0 +1,7 @@
+# build
+dist
+
+#ds_store
+.DS_Store
+
+node_modules

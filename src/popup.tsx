@@ -8,6 +8,7 @@ export const Popup = () => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs.length > 0) {
         const tabId = tabs[0].id;
+        // @ts-ignore
         chrome.tabs.reload(tabId, () => {
           setTimeout(() => {
             chrome.runtime.sendMessage({ command: "getTransferSize", tabId });
@@ -37,4 +38,5 @@ export const Popup = () => {
 };
 
 const rootElement = document.getElementById("react-target");
+// @ts-ignore
 createRoot(rootElement).render(<Popup />);
