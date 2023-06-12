@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "strict": true,
+    "baseUrl": "./src/",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@src": ["./src"],
+      "*": ["./*"]
+    }
+  },
+  "include": ["./src/", "popup.tsx"],
+  "exclude": ["node_modules", "babel.config.js", "jest.config.js", "dist"]
+}
