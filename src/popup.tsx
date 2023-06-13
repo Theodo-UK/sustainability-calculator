@@ -55,8 +55,11 @@ export const Popup = () => {
           Calculate
         </button>
         <div >
-          SCI: {Math.floor((transferSize / 1073741824) * 0.81 * selectedLocation.value)} gCO2eq
+          SCI: -1 gCO2eq
         </div>
+        {/* <div >
+          SCI: {Math.floor((transferSize / 1073741824) * 0.81 * selectedLocation.value)} gCO2eq
+        </div> */}
         <LocationDropdown selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
       </div>
   );{/* </Intl> */}
