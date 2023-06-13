@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { FormattedMessage } from "react-intl";
 import { Intl } from "./providers/Intl";
+import { LocationDropdown } from './components/LocationDropdown'
 
 export const Popup = () => {
   const [transferSize, setTransferSize] = useState(0);
@@ -30,14 +31,18 @@ export const Popup = () => {
 
   return (
     <Intl defaultLocale="en">
-      <div>
+      <div className="bg-black">
         <FormattedMessage id={"homeScreen.title"} />
+        <h1 className="text-3xl font-bold underline">
+          Hello world!
+        </h1>
         <button onClick={refreshAndGetSize}>
           <FormattedMessage id={"homeScreen.calculate"} />
         </button>
-        <div>
+        <div >
           SCI: {Math.floor((transferSize / 1073741824) * 0.81 * 212.3)} gCO2eq
         </div>
+        <LocationDropdown />
       </div>
     </Intl>
   );
