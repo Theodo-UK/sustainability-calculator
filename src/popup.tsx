@@ -7,7 +7,6 @@ import { calculateCarbon } from "./helpers/calculateCarbon";
 
 export const Popup = () => {
   const [transferSize, setTransferSize] = useState(0);
-  const [isToastOpen, setIsToastOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<LocationType>(LOCATIONS[0])
 
   const refreshAndGetSize = (selectedLocation: LocationType) => {
