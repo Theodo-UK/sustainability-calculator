@@ -10,7 +10,7 @@ export type LocationType = {
 }
 
 type LocationDropdownType = {
-  selectedLocation?: LocationType;
+  selectedLocation: LocationType;
   setSelectedLocation: (location: LocationType) => void;
 }
 
