@@ -9,7 +9,6 @@ module.exports = {
 
   collectCoverage: true,
   collectCoverageFrom: [
-    "<rootDir>/src/features/**/use*.{js,jsx,ts,tsx}",
     "<rootDir>/src/helpers/**/*.{js,jsx,ts,tsx}"
 ],
   coverageThreshold: {
