@@ -4,6 +4,8 @@ import { FormattedMessage } from "react-intl";
 // import { Intl } from "./providers/Intl";
 import { LocationDropdown, LocationType } from './components/LocationDropdown'
 import { LOCATIONS } from "./constants/locations";
+import { calculateCarbon } from "./helpers/calculateCarbon";
+
 
 export const Popup = () => {
   const [transferSize, setTransferSize] = useState(0);
@@ -58,7 +60,7 @@ export const Popup = () => {
           SCI: {Math.floor((transferSize / 1073741824) * 0.81 * selectedLocation.value)} gCO2eq
         </div> */}
       <div >
-        SCI: {selectedLocation.value} gCO2eq
+        SCI: {calculateCarbon(selectedLocation)} gCO2eq
       </div>
       <LocationDropdown selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
     </div>
