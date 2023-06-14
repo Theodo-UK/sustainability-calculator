@@ -34,7 +34,7 @@ export const Popup = () => {
       console.log(`popup: ${message}`)
       console.log(message.transferSize)
       const accumalativeTransferSize = message.transferSize
-      if (accumalativeTransferSize>= 0) {
+      if (accumalativeTransferSize >= 0) {
         console.log('setting transfer size')
         setTransferSize(transferSize + accumalativeTransferSize);
         console.log(`popup: accumalativeTransferSize: ${accumalativeTransferSize}`)
@@ -45,24 +45,24 @@ export const Popup = () => {
 
   return (
     // <Intl defaultLocale="en">
-      <div className="bg-black">
-        {/* <FormattedMessage id={"homeScreen.title"} /> */}
-        <h1 className="text-3xl font-bold underline">
-          Hello world!
-        </h1>
-        <button onClick={() => refreshAndGetSize(selectedLocation)}>
-          {/* <FormattedMessage id={"homeScreen.calculate"} /> */}
-          Calculate
-        </button>
-        <div >
-          SCI: -1 gCO2eq
-        </div>
-        {/* <div >
+    <div className="bg-black">
+      {/* <FormattedMessage id={"homeScreen.title"} /> */}
+      <h1 className="text-3xl font-bold underline">
+        Hello world!
+      </h1>
+      <button onClick={() => refreshAndGetSize(selectedLocation)}>
+        {/* <FormattedMessage id={"homeScreen.calculate"} /> */}
+        Calculate
+      </button>
+      {/* <div >
           SCI: {Math.floor((transferSize / 1073741824) * 0.81 * selectedLocation.value)} gCO2eq
         </div> */}
-        <LocationDropdown selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
+      <div >
+        SCI: {selectedLocation.value} gCO2eq
       </div>
-  );{/* </Intl> */}
+      <LocationDropdown selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
+    </div>
+  ); {/* </Intl> */ }
 };
 
 const rootElement = document.getElementById("react-target");
