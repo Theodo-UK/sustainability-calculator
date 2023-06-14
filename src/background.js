@@ -1,6 +1,5 @@
-console.log("background script loaded");
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  console.log("background: message received");
+
   if (message.command === "getTransferSize") {
     const { tabId } = message;
     chrome.webRequest.onCompleted.addListener(
@@ -13,7 +12,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           );
 
           if (transferSizeHeader) {
-            console.log(`background: transferSizeHeader.value: ${transferSizeHeader.value}`)
+
             // @ts-ignore
             const transferSize = parseInt(transferSizeHeader.value, 10);
             chrome.runtime.sendMessage({ transferSize });

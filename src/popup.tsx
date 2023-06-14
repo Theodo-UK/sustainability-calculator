@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { FormattedMessage } from "react-intl";
-// import { Intl } from "./providers/Intl";
 import { LocationDropdown, LocationType } from './components/LocationDropdown'
 import { LOCATIONS } from "./constants/locations";
 import { calculateCarbon } from "./helpers/calculateCarbon";
@@ -32,39 +30,28 @@ export const Popup = () => {
 
   useEffect(() => {
     chrome.runtime.onMessage.addListener((message) => {
-      console.log('popup: message received')
-      console.log(`popup: ${message}`)
-      console.log(message.transferSize)
       const accumalativeTransferSize = message.transferSize
       if (accumalativeTransferSize >= 0) {
-        console.log('setting transfer size')
         setTransferSize(transferSize + accumalativeTransferSize);
-        console.log(`popup: accumalativeTransferSize: ${accumalativeTransferSize}`)
       }
     });
   }, []);
 
 
   return (
-    // <Intl defaultLocale="en">
     <div className="bg-black">
-      {/* <FormattedMessage id={"homeScreen.title"} /> */}
       <h1 className="text-3xl font-bold underline">
-        Hello world!
+        Sustainability Calculator
       </h1>
       <button onClick={() => refreshAndGetSize(selectedLocation)}>
-        {/* <FormattedMessage id={"homeScreen.calculate"} /> */}
-        Calculate
+        Calculate CO2 emissions
       </button>
-      {/* <div >
-          SCI: {Math.floor((transferSize / 1073741824) * 0.81 * selectedLocation.value)} gCO2eq
-        </div> */}
       <div >
         SCI: {calculateCarbon(selectedLocation)} gCO2eq
       </div>
       <LocationDropdown selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
     </div>
-  ); {/* </Intl> */ }
+  );
 };
 
 const rootElement = document.getElementById("react-target");
