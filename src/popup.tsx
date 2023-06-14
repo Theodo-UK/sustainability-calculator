@@ -1,41 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
-import { LocationDropdown, LocationType } from './components/LocationDropdown'
-import { LOCATIONS } from "./constants/locations";
+import { LocationDropdown } from './components/LocationDropdown'
 import { calculateCarbon } from "./helpers/calculateCarbon";
+import { usePopup } from "usePopup";
 
 
 export const Popup = () => {
-  const [transferSize, setTransferSize] = useState(0);
-  const [selectedLocation, setSelectedLocation] = useState<LocationType>(LOCATIONS[0])
-
-  const refreshAndGetSize = (selectedLocation: LocationType) => {
-
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-
-      if (tabs.length > 0) {
-        const tabId = tabs[0].id;
-        // @ts-ignore
-        chrome.tabs.reload(tabId, () => {
-          setTimeout(() => {
-            chrome.runtime.sendMessage({ command: "getTransferSize", tabId });
-          }, 2000);
-        });
-      }
-    });
-  };
-
-
-
-  useEffect(() => {
-    chrome.runtime.onMessage.addListener((message) => {
-      const accumalativeTransferSize = message.transferSize
-      if (accumalativeTransferSize >= 0) {
-        setTransferSize(transferSize + accumalativeTransferSize);
-      }
-    });
-  }, []);
-
+  const {
+    selectedLocation,
+    setSelectedLocation,
+    refreshAndGetSize,
+  } = usePopup();
 
   return (
     <div className="bg-black">
