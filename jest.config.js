@@ -4,10 +4,13 @@
  */
 
 module.exports = {
+  testEnvironment: 'jsdom',
   clearMocks: true,
 
   collectCoverage: true,
-  collectCoverageFrom: ["<rootDir>/src/features/**/use*.{js,jsx,ts,tsx}"],
+  collectCoverageFrom: [
+    "<rootDir>/src/helpers/**/*.{js,jsx,ts,tsx}"
+],
   coverageThreshold: {
     global: {
       statements: 100,
@@ -21,4 +24,9 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js"],
 
   coverageDirectory: "coverage",
+  preset: 'ts-jest',
+  transform: {
+    '^.+\\.(ts|tsx)?$': 'ts-jest',
+    "^.+\\.(js|jsx)$": "babel-jest",
+  }
 };
