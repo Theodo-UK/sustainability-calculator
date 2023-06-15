@@ -1,8 +1,9 @@
 import { renderHook, act } from '@testing-library/react';
-import { LocationType } from 'components/LocationDropdown';
-import { Country } from 'constants/country';
-import { LOCATIONS } from 'constants/locations';
+
+
+
 import { usePopup } from 'components/usePopup';
+import { CountryName } from '../constants/Countries';
 
 const mockChrome = {
     tabs: {
@@ -24,22 +25,22 @@ describe('usePopup', () => {
         jest.clearAllMocks();
     });
 
-    test('selectedLocation should be default i.e. first item in list', () => {
+    test('selectedCountry should be default i.e. first item in list', () => {
         const { result } = renderHook(() => usePopup());
 
-        expect(result.current.selectedLocation).toBe(LOCATIONS[0]);
+        expect(result.current.selectedCountry).toBe('United Kingdom');
     });
 
-    test('setSelectedLocation should update selectedLocation', () => {
+    test('setSelectedCountry should update selectedCountry', () => {
         const { result } = renderHook(() => usePopup());
 
-        const mockLocation: LocationType = { country: Country['United Kingdom'], value: 1 };
+        const mockCountry: CountryName = 'United Kingdom';
 
         act(() => {
-            result.current.setSelectedLocation(mockLocation);
+            result.current.setSelectedCountry(mockCountry);
         });
 
-        expect(result.current.selectedLocation).toBe(mockLocation);
+        expect(result.current.selectedCountry).toBe(mockCountry);
     });
 
 });

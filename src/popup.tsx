@@ -1,14 +1,14 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { LocationDropdown } from './components/LocationDropdown'
+import { CountryDropdown } from './components/CountryDropdown'
 import { calculateCarbon } from "./helpers/calculateCarbon";
 import { usePopup } from "./components/usePopup";
 
 
 export const Popup = () => {
   const {
-    selectedLocation,
-    setSelectedLocation,
+    selectedCountry,
+    setSelectedCountry,
     refreshAndGetSize,
   } = usePopup();
 
@@ -17,13 +17,13 @@ export const Popup = () => {
       <h1 className="text-3xl font-bold underline">
         Sustainability Calculator
       </h1>
-      <button onClick={() => refreshAndGetSize(selectedLocation)}>
+      <button onClick={() => refreshAndGetSize(selectedCountry)}>
         Calculate CO2 emissions
       </button>
       <div >
-        SCI: {calculateCarbon(selectedLocation)} gCO2eq
+        SCI: {calculateCarbon(selectedCountry)} gCO2eq
       </div>
-      <LocationDropdown selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation} />
+      <CountryDropdown selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} />
     </div>
   );
 };

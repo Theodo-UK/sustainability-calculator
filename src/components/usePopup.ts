@@ -1,17 +1,17 @@
-import { LocationType } from "components/LocationDropdown";
-
 import { useEffect, useState } from "react";
-import { LOCATIONS } from "../constants/locations";
+import { CountryName, Countries } from "../constants/Countries";
 
 export type PopupProps = {
-    selectedLocation: LocationType;
-    setSelectedLocation: (location: LocationType) => void;
-    refreshAndGetSize: (selectedLocation: LocationType) => Promise<void>;
+    selectedCountry: CountryName;
+    setSelectedCountry: (country: CountryName) => void;
+    refreshAndGetSize: (selectedCountry: CountryName) => Promise<void>;
 }
+
+
 
 export const usePopup = (): PopupProps => {
     const [transferSize, setTransferSize] = useState(0);
-    const [selectedLocation, setSelectedLocation] = useState<LocationType>(LOCATIONS[0])
+    const [selectedCountry, setSelectedCountry] = useState<CountryName>("United Kingdom")
 
     const refreshAndGetSize = async () => {
 
@@ -41,8 +41,8 @@ export const usePopup = (): PopupProps => {
 
 
     return {
-        selectedLocation,
-        setSelectedLocation,
+        selectedCountry,
+        setSelectedCountry,
         refreshAndGetSize,
     }
 
