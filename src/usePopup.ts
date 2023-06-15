@@ -5,17 +5,16 @@ import { useEffect, useState } from "react";
 export type PopupProps = {
     selectedLocation: LocationType;
     setSelectedLocation: (location: LocationType) => void;
-    refreshAndGetSize: (selectedLocation: LocationType) => void;
+    refreshAndGetSize: (selectedLocation: LocationType) => Promise<void>;
 }
 
 export const usePopup = (): PopupProps => {
     const [transferSize, setTransferSize] = useState(0);
     const [selectedLocation, setSelectedLocation] = useState<LocationType>(LOCATIONS[0])
 
-    const refreshAndGetSize = () => {
+    const refreshAndGetSize = async () => {
 
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-
             if (tabs.length > 0) {
                 const tabId = tabs[0].id;
                 // @ts-ignore
@@ -32,9 +31,9 @@ export const usePopup = (): PopupProps => {
 
     useEffect(() => {
         chrome.runtime.onMessage.addListener((message) => {
-            const accumalativeTransferSize = message.transferSize
-            if (accumalativeTransferSize >= 0) {
-                setTransferSize(transferSize + accumalativeTransferSize);
+            const accumulative = message.transferSize
+            if (accumulative >= 0) {
+                setTransferSize(transferSize + accumulative);
             }
         });
     }, []);
