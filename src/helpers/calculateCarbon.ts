@@ -1,5 +1,5 @@
 import { LocationType } from "components/LocationDropdown";
-import { LOCATIONS } from "constants/locations";
+
 
 
 

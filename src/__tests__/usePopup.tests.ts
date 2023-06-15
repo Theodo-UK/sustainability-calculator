@@ -1,7 +1,8 @@
 import { renderHook, act } from '@testing-library/react';
 import { LocationType } from 'components/LocationDropdown';
+import { Country } from 'constants/country';
 import { LOCATIONS } from 'constants/locations';
-import { usePopup } from 'usePopup';
+import { usePopup } from 'components/usePopup';
 
 const mockChrome = {
     tabs: {
@@ -32,7 +33,7 @@ describe('usePopup', () => {
     test('setSelectedLocation should update selectedLocation', () => {
         const { result } = renderHook(() => usePopup());
 
-        const mockLocation: LocationType = { country: 'random country', value: 1 };
+        const mockLocation: LocationType = { country: Country['United Kingdom'], value: 1 };
 
         act(() => {
             result.current.setSelectedLocation(mockLocation);

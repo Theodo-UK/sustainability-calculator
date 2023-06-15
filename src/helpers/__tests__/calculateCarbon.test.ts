@@ -1,7 +1,9 @@
+
+import { Country } from "../../constants/country"
 import { calculateCarbon } from "../calculateCarbon"
 
 const mockLocation = {
-    country: 'Australia',
+    country: Country['Australia'],
     value: 1.08,
 }
 

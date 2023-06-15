@@ -3,10 +3,12 @@ import { Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { LOCATIONS } from '../constants/locations';
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { Country } from 'constants/country';
+
 
 
 export type LocationType = {
-  country: string;
+  country: Country;
   value: number;
 }
 
@@ -23,7 +25,7 @@ export const LocationDropdown = ({ selectedLocation, setSelectedLocation }: Loca
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
 
-            <span className="block truncate">{selectedLocation ? selectedLocation.country : 'Select a location'}</span>
+            <span className="block truncate">{selectedLocation ? selectedLocation.country.toString() : 'Select a location'}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronUpDownIcon
                 className="h-5 w-5 text-gray-400"
@@ -40,7 +42,7 @@ export const LocationDropdown = ({ selectedLocation, setSelectedLocation }: Loca
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {LOCATIONS.map((location) => (
                 <Listbox.Option
-                  key={location.country}
+                  key={location.country.toString()}
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
                     }`

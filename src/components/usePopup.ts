@@ -1,6 +1,7 @@
 import { LocationType } from "components/LocationDropdown";
-import { LOCATIONS } from "constants/locations";
+
 import { useEffect, useState } from "react";
+import { LOCATIONS } from "../constants/locations";
 
 export type PopupProps = {
     selectedLocation: LocationType;

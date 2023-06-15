@@ -2,7 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { LocationDropdown } from './components/LocationDropdown'
 import { calculateCarbon } from "./helpers/calculateCarbon";
-import { usePopup } from "usePopup";
+import { usePopup } from "./components/usePopup";
 
 
 export const Popup = () => {
