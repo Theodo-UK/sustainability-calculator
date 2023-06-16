@@ -6,9 +6,9 @@ import '@testing-library/jest-dom';
 
 describe('CountryDropdown', () => {
     it('Dropdown button should show add a country when no countries are selected', () => {
-        const setSelectedCountry = jest.fn();
+        const setSelectedCountries = jest.fn();
         const { getByText } = render(
-            <CountryDropdown setSelectedCountry={setSelectedCountry} />
+            <CountryDropdown setSelectedCountries={setSelectedCountries} />
         );
 
         expect(getByText('Add a country')).toBeInTheDocument();

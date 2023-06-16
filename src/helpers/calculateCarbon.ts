@@ -1,5 +1,5 @@
-import { CountryName, Countries } from "../constants/Countries";
+import { CountryName } from "../constants/Countries";
 
-export const calculateCarbon = (country: CountryName): number => {
-    return Countries[country];
+export const calculateCarbon = (countries: Set<CountryName>): number => {
+    return 0;
 }

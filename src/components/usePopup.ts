@@ -2,16 +2,14 @@ import { useEffect, useState } from "react";
 import { CountryName, Countries } from "../constants/Countries";
 
 export type PopupProps = {
-    selectedCountry: CountryName;
-    setSelectedCountry: (country: CountryName) => void;
-    refreshAndGetSize: (selectedCountry: CountryName) => Promise<void>;
+    selectedCountries: Set<CountryName>;
+    setSelectedCountries: (countries: Set<CountryName>) => void;
+    refreshAndGetSize: (selectedCountry: Set<CountryName>) => Promise<void>;
 }
-
-
 
 export const usePopup = (): PopupProps => {
     const [transferSize, setTransferSize] = useState(0);
-    const [selectedCountry, setSelectedCountry] = useState<CountryName>("United Kingdom")
+    const [selectedCountries, setSelectedCountries] = useState<Set<CountryName>>(new Set())
 
     const refreshAndGetSize = async () => {
 
@@ -41,8 +39,8 @@ export const usePopup = (): PopupProps => {
 
 
     return {
-        selectedCountry,
-        setSelectedCountry,
+        selectedCountries,
+        setSelectedCountries,
         refreshAndGetSize,
     }
 

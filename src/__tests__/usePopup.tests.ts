@@ -1,7 +1,4 @@
 import { renderHook, act } from '@testing-library/react';
-
-
-
 import { usePopup } from 'components/usePopup';
 import { CountryName } from '../constants/Countries';
 
@@ -26,16 +23,18 @@ describe('usePopup', () => {
     });
 
     
-    test('setSelectedCountry should update selectedCountry', () => {
+    test('setSelectedCountries should update selectedCountry', () => {
         const { result } = renderHook(() => usePopup());
 
-        const mockCountry: CountryName = 'United Kingdom';
+        const mockCountries: Set<CountryName> = new Set();
+        mockCountries.add("Australia");
+        mockCountries.add("United Kingdom");
 
         act(() => {
-            result.current.setSelectedCountry(mockCountry);
+            result.current.setSelectedCountries(mockCountries);
         });
 
-        expect(result.current.selectedCountry).toBe(mockCountry);
+        expect(result.current.selectedCountries).toBe(mockCountries);
     });
 
 });

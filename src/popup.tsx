@@ -4,17 +4,14 @@ import { CountryDropdown } from './components/CountryDropdown'
 import { calculateCarbon } from "./helpers/calculateCarbon";
 import { usePopup } from "./components/usePopup";
 import { SelectedCountries } from "./components/selected-countries/SelectedCountries";
-import { CountryName } from "./constants/Countries";
-
 
 export const Popup = () => {
   const {
-    selectedCountry,
-    setSelectedCountry,
+    selectedCountries,
+    setSelectedCountries,
     refreshAndGetSize,
   } = usePopup();
 
-  const [selectedCountries, setSelectedCountries] = useState<Set<CountryName>>(new Set())
 
 
   return (
@@ -22,14 +19,14 @@ export const Popup = () => {
       <h1 className="text-3xl font-bold underline">
         Sustainability Calculator
       </h1>
-      <button onClick={() => refreshAndGetSize(selectedCountry)}>
+      <button onClick={() => refreshAndGetSize(selectedCountries)}>
         Calculate CO2 emissions
       </button>
       <div >
-        SCI: {calculateCarbon(selectedCountry)} gCO2eq
+        SCI: {calculateCarbon(selectedCountries)} gCO2eq
       </div>
       <SelectedCountries selectedCountries={selectedCountries}/>
-      <CountryDropdown setSelectedCountry={setSelectedCountry} />
+      <CountryDropdown setSelectedCountries={setSelectedCountries} />
     </div>
   );
 };
