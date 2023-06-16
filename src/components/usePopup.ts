@@ -31,13 +31,11 @@ export const usePopup = (): PopupProps => {
         const newSet = new Set(selectedCountries);
         newSet.add(country);
         setSelectedCountries(newSet);
-        console.log("adding country, new set: ", selectedCountries);
     }
     const removeSelectedCountry = (country: CountryName) => {
         const newSet = new Set(selectedCountries);
         newSet.delete(country);
         setSelectedCountries(newSet);
-        console.log("removing country, new set: ", selectedCountries);
     }
 
 

@@ -1,22 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { usePopup } from 'components/usePopup';
 import { CountryName } from '../constants/Countries';
-import { mock } from 'node:test';
-
-const mockChrome = {
-    tabs: {
-        query: jest.fn(),
-        reload: jest.fn(),
-    },
-    runtime: {
-        onMessage: {
-            addListener: jest.fn(),
-        },
-        sendMessage: jest.fn(),
-    },
-};
-
-(global as any).chrome = mockChrome;
 
 describe('usePopup', () => {
     beforeEach(() => {
