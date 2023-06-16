@@ -29,7 +29,7 @@ export const Popup = () => {
         SCI: {calculateCarbon(selectedCountry)} gCO2eq
       </div>
       <SelectedCountries selectedCountries={selectedCountries}/>
-      <CountryDropdown selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} />
+      <CountryDropdown setSelectedCountry={setSelectedCountry} />
     </div>
   );
 };

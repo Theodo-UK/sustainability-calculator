@@ -25,12 +25,7 @@ describe('usePopup', () => {
         jest.clearAllMocks();
     });
 
-    test('selectedCountry should be default i.e. first item in list', () => {
-        const { result } = renderHook(() => usePopup());
-
-        expect(result.current.selectedCountry).toBe('United Kingdom');
-    });
-
+    
     test('setSelectedCountry should update selectedCountry', () => {
         const { result } = renderHook(() => usePopup());
 

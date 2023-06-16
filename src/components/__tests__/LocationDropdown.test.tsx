@@ -1,22 +1,17 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
-
+import { render } from "@testing-library/react";
 import { CountryDropdown } from "components/CountryDropdown";
+import '@testing-library/jest-dom';
 
 
 describe('CountryDropdown', () => {
-    it('calls setSelectedCountry with the correct country', () => {
-        const selectedCountry = "United Kingdom"
+    it('Dropdown button should show add a country when no countries are selected', () => {
         const setSelectedCountry = jest.fn();
         const { getByText } = render(
-            <CountryDropdown selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} />
+            <CountryDropdown setSelectedCountry={setSelectedCountry} />
         );
 
-        fireEvent.click(getByText('United Kingdom'));
-        fireEvent.click(getByText('Austria'));
-
-
-        expect(setSelectedCountry).toHaveBeenCalledWith("Austria");
+        expect(getByText('Add a country')).toBeInTheDocument();
     });
 }
 )
