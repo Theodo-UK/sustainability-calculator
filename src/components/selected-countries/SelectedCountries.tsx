@@ -5,12 +5,19 @@ type SelectedCountriesType = {
     selectedCountries: Set<CountryName>;
 }
 
-export const SelectedCountries = ({selectedCountries} : SelectedCountriesType) => {
+export const SelectedCountries = ({ selectedCountries }: SelectedCountriesType) => {
 
     return (
-        <h3 >
-            Selected Countries
-        </h3>
+        <div>
+            <h3 >
+                Selected Countries
+            </h3>
+            <ul>
+                {Array.from(selectedCountries).map((country) => (
+                    <li key={country}>{country}</li>
+                ))}
+            </ul>
+        </div>
     )
 
 }

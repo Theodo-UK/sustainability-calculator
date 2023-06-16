@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CountryName, Countries } from "../constants/Countries";
+import { CountryName } from "../constants/Countries";
 
 export type PopupProps = {
     selectedCountries: Set<CountryName>;
@@ -27,7 +27,9 @@ export const usePopup = (): PopupProps => {
     };
 
     const addToSelectedCountries = (country: CountryName) => {
-        selectedCountries.add(country);
+        const newSet = new Set(selectedCountries);
+        newSet.add(country);
+        setSelectedCountries(newSet);
         console.log("adding country, new set: ", selectedCountries);
     }
 
