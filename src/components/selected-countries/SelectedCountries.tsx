@@ -3,9 +3,10 @@ import { CountryName } from '../../constants/Countries';
 
 type SelectedCountriesType = {
     selectedCountries: Set<CountryName>;
+    removeSelectedCountry: (country: CountryName) => void;
 }
 
-export const SelectedCountries = ({ selectedCountries }: SelectedCountriesType) => {
+export const SelectedCountries = ({ selectedCountries, removeSelectedCountry }: SelectedCountriesType) => {
 
     return (
         <div>
@@ -14,7 +15,12 @@ export const SelectedCountries = ({ selectedCountries }: SelectedCountriesType) 
             </h3>
             <ul>
                 {Array.from(selectedCountries).map((country) => (
-                    <li key={country}>{country}</li>
+                    <li key={country}>
+                        {country}
+                        <button onClick={() => removeSelectedCountry(country)}>
+                            -
+                        </button>
+                    </li>
                 ))}
             </ul>
         </div>

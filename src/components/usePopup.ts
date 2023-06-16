@@ -4,6 +4,7 @@ import { CountryName } from "../constants/Countries";
 export type PopupProps = {
     selectedCountries: Set<CountryName>;
     addToSelectedCountries: (country: CountryName) => void;
+    removeSelectedCountry: (country: CountryName) => void;
     refreshAndGetSize: (selectedCountry: Set<CountryName>) => Promise<void>;
 }
 
@@ -32,6 +33,12 @@ export const usePopup = (): PopupProps => {
         setSelectedCountries(newSet);
         console.log("adding country, new set: ", selectedCountries);
     }
+    const removeSelectedCountry = (country: CountryName) => {
+        const newSet = new Set(selectedCountries);
+        newSet.delete(country);
+        setSelectedCountries(newSet);
+        console.log("removing country, new set: ", selectedCountries);
+    }
 
 
 
@@ -48,6 +55,7 @@ export const usePopup = (): PopupProps => {
     return {
         selectedCountries,
         addToSelectedCountries,
+        removeSelectedCountry,
         refreshAndGetSize,
     }
 
