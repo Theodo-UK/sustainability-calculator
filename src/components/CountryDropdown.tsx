@@ -1,7 +1,7 @@
 import React from 'react';
 import { Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import { ChevronUpDownIcon } from '@heroicons/react/20/solid'
 import { Countries, CountryName } from '../constants/Countries';
 
 
@@ -41,21 +41,7 @@ export const CountryDropdown = ({ setSelectedCountry }: CountryDropdownType) => 
                   }
                   value={location}
                 >
-                  {({ selected }) => (
-                    <>
-                      <span
-                        className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                          }`}
-                      >
-                        {location}
-                      </span>
-                      {selected ? (
-                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                        </span>
-                      ) : null}
-                    </>
-                  )}
+                  {location}
                 </Listbox.Option>
               ))}
             </Listbox.Options>
