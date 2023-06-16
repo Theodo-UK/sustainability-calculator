@@ -24,7 +24,7 @@ describe('usePopup', () => {
     });
 
 
-    test('addToSelectedCountries should update selectedCountries', () => {
+    test('addSelectedCountry should update selectedCountries', () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
@@ -34,13 +34,13 @@ describe('usePopup', () => {
 
         mockCountries.add(mockCountry1);
         act(() => {
-            result.current.addToSelectedCountries(mockCountry1);
+            result.current.addSelectedCountry(mockCountry1);
         });
         expect(result.current.selectedCountries).toStrictEqual(mockCountries);
 
         mockCountries.add(mockCountry2);
         act(() => {
-            result.current.addToSelectedCountries(mockCountry2);
+            result.current.addSelectedCountry(mockCountry2);
         });
         expect(result.current.selectedCountries).toStrictEqual(mockCountries);
     });
@@ -58,11 +58,11 @@ describe('usePopup', () => {
         mockCountries.add(mockCountry2);
 
         act(() => {
-            result.current.addToSelectedCountries(mockCountry1);
+            result.current.addSelectedCountry(mockCountry1);
         });
         
         act(() => {
-            result.current.addToSelectedCountries(mockCountry2);
+            result.current.addSelectedCountry(mockCountry2);
         });
 
         expect(result.current.selectedCountries).toStrictEqual(mockCountries);
