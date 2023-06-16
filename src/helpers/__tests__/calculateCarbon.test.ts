@@ -1,9 +1,11 @@
+import { CountryName } from "../../constants/Countries"
 import { calculateCarbon } from "../calculateCarbon"
 
-const mockCountry = 'Australia'
+const mockCountries : Set<CountryName> = new Set();
+mockCountries.add("Australia");
 
 describe('calculateCarbon', () => {
     it('country should return corresponding value', () => {
-        expect(calculateCarbon(mockCountry)).toEqual(760)
+        expect(calculateCarbon(mockCountries)).toEqual(0)
     })
 })

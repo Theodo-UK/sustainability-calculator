@@ -1,46 +1,63 @@
 import { renderHook, act } from '@testing-library/react';
-
-
-
 import { usePopup } from 'components/usePopup';
 import { CountryName } from '../constants/Countries';
-
-const mockChrome = {
-    tabs: {
-        query: jest.fn(),
-        reload: jest.fn(),
-    },
-    runtime: {
-        onMessage: {
-            addListener: jest.fn(),
-        },
-        sendMessage: jest.fn(),
-    },
-};
-
-(global as any).chrome = mockChrome;
 
 describe('usePopup', () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
-    test('selectedCountry should be default i.e. first item in list', () => {
+
+    test('addSelectedCountry should update selectedCountries', () => {
         const { result } = renderHook(() => usePopup());
 
-        expect(result.current.selectedCountry).toBe('United Kingdom');
+        const mockCountry1 = "Australia";
+        const mockCountry2 = "United Kingdom";
+
+        const mockCountries: Set<CountryName> = new Set();
+
+        mockCountries.add(mockCountry1);
+        act(() => {
+            result.current.addSelectedCountry(mockCountry1);
+        });
+        expect(result.current.selectedCountries).toStrictEqual(mockCountries);
+
+        mockCountries.add(mockCountry2);
+        act(() => {
+            result.current.addSelectedCountry(mockCountry2);
+        });
+        expect(result.current.selectedCountries).toStrictEqual(mockCountries);
     });
 
-    test('setSelectedCountry should update selectedCountry', () => {
+    test('removeSelectedCountries should update selectedCountries', () => {
         const { result } = renderHook(() => usePopup());
 
-        const mockCountry: CountryName = 'United Kingdom';
+        const mockCountry1 = "Australia";
+        const mockCountry2 = "United Kingdom";
+
+        const mockCountries: Set<CountryName> = new Set();
+       
+
+        mockCountries.add(mockCountry1);
+        mockCountries.add(mockCountry2);
 
         act(() => {
-            result.current.setSelectedCountry(mockCountry);
+            result.current.addSelectedCountry(mockCountry1);
+        });
+        
+        act(() => {
+            result.current.addSelectedCountry(mockCountry2);
         });
 
-        expect(result.current.selectedCountry).toBe(mockCountry);
+        expect(result.current.selectedCountries).toStrictEqual(mockCountries);
+        
+        mockCountries.delete(mockCountry2);
+
+        act(() => {
+            result.current.removeSelectedCountry(mockCountry2);
+        });
+        
+        expect(result.current.selectedCountries).toStrictEqual(mockCountries);
     });
 
 });

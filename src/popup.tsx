@@ -1,29 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { CountryDropdown } from './components/CountryDropdown'
 import { calculateCarbon } from "./helpers/calculateCarbon";
 import { usePopup } from "./components/usePopup";
-
+import { SelectedCountries } from "./components/selected-countries/SelectedCountries";
 
 export const Popup = () => {
   const {
-    selectedCountry,
-    setSelectedCountry,
+    selectedCountries,
+    addSelectedCountry,
+    removeSelectedCountry,
     refreshAndGetSize,
   } = usePopup();
+
+
 
   return (
     <div className="bg-black">
       <h1 className="text-3xl font-bold underline">
         Sustainability Calculator
       </h1>
-      <button onClick={() => refreshAndGetSize(selectedCountry)}>
+      <button onClick={() => refreshAndGetSize(selectedCountries)}>
         Calculate CO2 emissions
       </button>
       <div >
-        SCI: {calculateCarbon(selectedCountry)} gCO2eq
+        SCI: {calculateCarbon(selectedCountries)} gCO2eq
       </div>
-      <CountryDropdown selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} />
+      <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry}/>
+      <CountryDropdown addSelectedCountry={addSelectedCountry} />
     </div>
   );
 };

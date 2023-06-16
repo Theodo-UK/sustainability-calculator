@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import { CountryName, Countries } from "../constants/Countries";
+import { CountryName } from "../constants/Countries";
 
 export type PopupProps = {
-    selectedCountry: CountryName;
-    setSelectedCountry: (country: CountryName) => void;
-    refreshAndGetSize: (selectedCountry: CountryName) => Promise<void>;
+    selectedCountries: Set<CountryName>;
+    addSelectedCountry: (country: CountryName) => void;
+    removeSelectedCountry: (country: CountryName) => void;
+    refreshAndGetSize: (selectedCountry: Set<CountryName>) => Promise<void>;
 }
-
-
 
 export const usePopup = (): PopupProps => {
     const [transferSize, setTransferSize] = useState(0);
-    const [selectedCountry, setSelectedCountry] = useState<CountryName>("United Kingdom")
+    const [selectedCountries, setSelectedCountries] = useState<Set<CountryName>>(new Set())
 
     const refreshAndGetSize = async () => {
 
@@ -28,6 +27,17 @@ export const usePopup = (): PopupProps => {
         });
     };
 
+    const addSelectedCountry = (country: CountryName) => {
+        const newSet = new Set(selectedCountries);
+        newSet.add(country);
+        setSelectedCountries(newSet);
+    }
+    const removeSelectedCountry = (country: CountryName) => {
+        const newSet = new Set(selectedCountries);
+        newSet.delete(country);
+        setSelectedCountries(newSet);
+    }
+
 
 
     useEffect(() => {
@@ -41,8 +51,9 @@ export const usePopup = (): PopupProps => {
 
 
     return {
-        selectedCountry,
-        setSelectedCountry,
+        selectedCountries,
+        addSelectedCountry,
+        removeSelectedCountry,
         refreshAndGetSize,
     }
 
