@@ -8,7 +8,7 @@ import { SelectedCountries } from "./components/selected-countries/SelectedCount
 export const Popup = () => {
   const {
     selectedCountries,
-    setSelectedCountries,
+    addToSelectedCountries,
     refreshAndGetSize,
   } = usePopup();
 
@@ -26,7 +26,7 @@ export const Popup = () => {
         SCI: {calculateCarbon(selectedCountries)} gCO2eq
       </div>
       <SelectedCountries selectedCountries={selectedCountries}/>
-      <CountryDropdown setSelectedCountries={setSelectedCountries} />
+      <CountryDropdown addToSelectedCountries={addToSelectedCountries} />
     </div>
   );
 };

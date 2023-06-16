@@ -3,7 +3,7 @@ import { CountryName, Countries } from "../constants/Countries";
 
 export type PopupProps = {
     selectedCountries: Set<CountryName>;
-    setSelectedCountries: (countries: Set<CountryName>) => void;
+    addToSelectedCountries: (country: CountryName) => void;
     refreshAndGetSize: (selectedCountry: Set<CountryName>) => Promise<void>;
 }
 
@@ -26,6 +26,11 @@ export const usePopup = (): PopupProps => {
         });
     };
 
+    const addToSelectedCountries = (country: CountryName) => {
+        selectedCountries.add(country);
+        console.log("adding country, new set: ", selectedCountries);
+    }
+
 
 
     useEffect(() => {
@@ -40,7 +45,7 @@ export const usePopup = (): PopupProps => {
 
     return {
         selectedCountries,
-        setSelectedCountries,
+        addToSelectedCountries,
         refreshAndGetSize,
     }
 

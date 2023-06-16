@@ -1,6 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import { usePopup } from 'components/usePopup';
 import { CountryName } from '../constants/Countries';
+import { mock } from 'node:test';
 
 const mockChrome = {
     tabs: {
@@ -23,18 +24,25 @@ describe('usePopup', () => {
     });
 
     
-    test('setSelectedCountries should update selectedCountry', () => {
+    test('addToSelectedCountries should update selectedCountries', () => {
         const { result } = renderHook(() => usePopup());
-
+        
+        const mockCountry1 = "Australia";
+        const mockCountry2 = "United Kingdom";
+        
         const mockCountries: Set<CountryName> = new Set();
-        mockCountries.add("Australia");
-        mockCountries.add("United Kingdom");
 
+        mockCountries.add(mockCountry1);
         act(() => {
-            result.current.setSelectedCountries(mockCountries);
+            result.current.addToSelectedCountries(mockCountry1);
         });
-
-        expect(result.current.selectedCountries).toBe(mockCountries);
+        expect(result.current.selectedCountries).toStrictEqual(mockCountries);
+        
+        mockCountries.add(mockCountry2);
+        act(() => {
+            result.current.addToSelectedCountries(mockCountry2);
+        });
+        expect(result.current.selectedCountries).toStrictEqual(mockCountries);
     });
 
 });
