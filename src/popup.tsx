@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { CountryDropdown } from './components/CountryDropdown'
 import { calculateCarbon } from "./helpers/calculateCarbon";
 import { usePopup } from "./components/usePopup";
+import { SelectedCountries } from "./components/selected-countries/SelectedCountries";
+import { CountryName } from "./constants/Countries";
 
 
 export const Popup = () => {
@@ -11,6 +13,9 @@ export const Popup = () => {
     setSelectedCountry,
     refreshAndGetSize,
   } = usePopup();
+
+  const [selectedCountries, setSelectedCountries] = useState<Set<CountryName>>(new Set())
+
 
   return (
     <div className="bg-black">
@@ -23,6 +28,7 @@ export const Popup = () => {
       <div >
         SCI: {calculateCarbon(selectedCountry)} gCO2eq
       </div>
+      <SelectedCountries selectedCountries={selectedCountries}/>
       <CountryDropdown selectedCountry={selectedCountry} setSelectedCountry={setSelectedCountry} />
     </div>
   );
