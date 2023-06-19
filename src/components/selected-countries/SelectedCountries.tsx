@@ -20,7 +20,7 @@ export const SelectedCountries = ({ selectedCountries, removeSelectedCountry, se
                         <button onClick={() => removeSelectedCountry(country as CountryName)}>
                             -
                         </button>
-                        {country}
+                        {country} (% users): 
                         <input type="number" onChange={(e) => setCountryPercentage(country, Number(e.target.value) / 100)} />
                     </li>
                 ))}
