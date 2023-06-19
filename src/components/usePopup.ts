@@ -63,8 +63,8 @@ export const usePopup = (): PopupProps => {
         selectedCountries.forEach((country, value) => {
             sum = sum + country;
         });
-        if (sum > 100) {
-            throw new Error(`Error: The sum of the percentages is greater than 100%. Current sum: ${sum}%`);
+        if (sum > 1) {
+            throw new Error(`Error: The sum of the percentages is greater than 100%. Current sum: ${sum*100}%`);
         }
         return sum;
     }

@@ -187,5 +187,26 @@ describe('usePopup', () => {
         expect(result.current.averageSpecificEmissions).toEqual(mockAverageSpecificEmissions);
 
     });
+
+    test('If the sum of percentages > 100, then an error should be shown', () => {
+        const { result } = renderHook(() => usePopup());
+
+        const mockCountry1 = "Australia";
+        const mockCountry1Percentage = 101;
+
+        act(() => {
+            result.current.addSelectedCountry(mockCountry1);
+        });
+
+        act(() => {
+            result.current.setCountryPercentage(mockCountry1, mockCountry1Percentage);
+        });
+      
+        act(() => {
+            result.current.refreshAndGetSize()
+        });
+
+        expect(result.current.error).toBeDefined();
+    });
 });
 
