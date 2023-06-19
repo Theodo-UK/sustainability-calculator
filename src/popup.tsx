@@ -20,7 +20,7 @@ export const Popup = () => {
       <h1 className="text-3xl font-bold underline">
         Sustainability Calculator
       </h1>
-      <button onClick={() => refreshAndGetSize(selectedCountries)}>
+      <button onClick={() => refreshAndGetSize()}>
         Calculate CO2 emissions
       </button>
       <div >

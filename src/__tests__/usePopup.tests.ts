@@ -1,6 +1,10 @@
 import { renderHook, act } from '@testing-library/react';
 import { usePopup } from 'components/usePopup';
 import { CountryName } from '../constants/Countries';
+import { compareMaps } from '../helpers/compareMaps';
+import { mock } from 'node:test';
+
+
 
 const mockChrome = {
     tabs: {
@@ -22,22 +26,21 @@ describe('usePopup', () => {
         jest.clearAllMocks();
     });
 
-
     test('addSelectedCountry should update selectedCountries', () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
 
-        const mockCountries: Set<CountryName> = new Set();
+        const mockCountries: Map<CountryName, number> = new Map();
 
-        mockCountries.add(mockCountry1);
+        mockCountries.set(mockCountry1, 0);
         act(() => {
             result.current.addSelectedCountry(mockCountry1);
         });
         expect(result.current.selectedCountries).toStrictEqual(mockCountries);
 
-        mockCountries.add(mockCountry2);
+        mockCountries.set(mockCountry2, 0);
         act(() => {
             result.current.addSelectedCountry(mockCountry2);
         });
@@ -50,29 +53,32 @@ describe('usePopup', () => {
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
 
-        const mockCountries: Set<CountryName> = new Set();
-       
 
-        mockCountries.add(mockCountry1);
-        mockCountries.add(mockCountry2);
+        const mockCountries: Map<CountryName, number> = new Map();
+
+
+        mockCountries.set(mockCountry1, 0);
+        mockCountries.set(mockCountry2, 0);
 
         act(() => {
             result.current.addSelectedCountry(mockCountry1);
         });
-        
+
         act(() => {
             result.current.addSelectedCountry(mockCountry2);
         });
 
-        expect(result.current.selectedCountries).toStrictEqual(mockCountries);
-        
+        expect(compareMaps(result.current.selectedCountries, mockCountries)).toBe(true)
+
         mockCountries.delete(mockCountry2);
 
         act(() => {
             result.current.removeSelectedCountry(mockCountry2);
         });
-        
-        expect(result.current.selectedCountries).toStrictEqual(mockCountries);
+
+        expect(compareMaps(result.current.selectedCountries, mockCountries)).toBe(true)
+
     });
 
 });
+

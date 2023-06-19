@@ -2,15 +2,15 @@ import { useEffect, useState } from "react";
 import { CountryName } from "../constants/Countries";
 
 export type PopupProps = {
-    selectedCountries: Set<CountryName>;
+    selectedCountries: Map<CountryName, number>;
     addSelectedCountry: (country: CountryName) => void;
     removeSelectedCountry: (country: CountryName) => void;
-    refreshAndGetSize: (selectedCountry: Set<CountryName>) => Promise<void>;
+    refreshAndGetSize: () => Promise<void>;
 }
 
 export const usePopup = (): PopupProps => {
     const [transferSize, setTransferSize] = useState(0);
-    const [selectedCountries, setSelectedCountries] = useState<Set<CountryName>>(new Set())
+    const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>())
 
     const refreshAndGetSize = async () => {
 
@@ -28,14 +28,20 @@ export const usePopup = (): PopupProps => {
     };
 
     const addSelectedCountry = (country: CountryName) => {
-        const newSet = new Set(selectedCountries);
-        newSet.add(country);
-        setSelectedCountries(newSet);
+        const newMap = new Map(selectedCountries);
+        if (newMap.has(country)) {
+            return
+        }
+        newMap.set(country, 0);
+        setSelectedCountries(newMap);
     }
     const removeSelectedCountry = (country: CountryName) => {
-        const newSet = new Set(selectedCountries);
-        newSet.delete(country);
-        setSelectedCountries(newSet);
+        const newMap = new Map(selectedCountries);
+        if (!newMap.has(country)) {
+            return
+        }
+        newMap.delete(country);
+        setSelectedCountries(newMap);
     }
 
 
