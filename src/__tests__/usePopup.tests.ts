@@ -121,5 +121,37 @@ describe('usePopup', () => {
 
         expect(result.current.averageSpecificEmissions).toEqual(mockAverageSpecificEmissions);
     });
+
+    test('If there are locations, and the sum of percentages < 100, use remaining percentage on world average specific emissions', () => {
+        const { result } = renderHook(() => usePopup());
+
+        const mockCountry1 = "Australia";
+        const mockCountry2 = "United Kingdom";
+        const mockCountry1Percentage = 0.4;
+        const mockCountry2Percentage = 0.4;
+        const mockAverageSpecificEmissions = mockCountry1Percentage * Countries[mockCountry1] + mockCountry2Percentage * Countries[mockCountry2] + (1 - mockCountry1Percentage - mockCountry2Percentage) * WorldAverage;
+
+        act(() => {
+            result.current.addSelectedCountry(mockCountry1);
+        });
+
+        act(() => {
+            result.current.addSelectedCountry(mockCountry2);
+        });
+
+        act(() => {
+            result.current.setCountryPercentage(mockCountry1, mockCountry1Percentage);
+        });
+
+        act(() => {
+            result.current.setCountryPercentage(mockCountry2, mockCountry2Percentage);
+        });
+
+        act(() => {
+            result.current.refreshAndGetSize()
+        });
+
+        expect(result.current.averageSpecificEmissions).toEqual(mockAverageSpecificEmissions);
+    });
 });
 

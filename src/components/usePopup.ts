@@ -28,11 +28,17 @@ export const usePopup = (): PopupProps => {
             setAverageSpecificEmissions(WorldAverage)
             return;
         }
-
+        let totalPercentage = 0;
         let average = 0;
         selectedCountries.forEach((value, key) => {
-            average = average + value * Countries[key];
+            totalPercentage += value;
+            average += value * Countries[key];
         });
+
+        if (totalPercentage < 1) {
+            average += (1 - totalPercentage) * WorldAverage;
+        }
+
         setAverageSpecificEmissions(average)
 
     }
