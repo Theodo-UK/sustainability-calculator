@@ -16,10 +16,11 @@ export const SelectedCountries = ({ selectedCountries, removeSelectedCountry }: 
             <ul>
                 {Array.from(selectedCountries).map((country) => (
                     <li key={country}>
-                        {country}
                         <button onClick={() => removeSelectedCountry(country)}>
                             -
                         </button>
+                        {country}
+                        <input type="number" />
                     </li>
                 ))}
             </ul>
