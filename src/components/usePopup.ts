@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Countries, CountryName, WorldAverage } from "../constants/Countries";
-import { skip } from "node:test";
 
 export type PopupProps = {
     selectedCountries: Map<CountryName, number>;

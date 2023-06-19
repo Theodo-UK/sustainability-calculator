@@ -1,5 +1,4 @@
 import { CountryName } from "../../constants/Countries"
-import { calculateCarbon } from "../calculateCarbon"
 import { compareMaps } from "../compareMaps";
 
 const mockMap1: Map<CountryName, number> = new Map([
