@@ -5,14 +5,42 @@ export type PopupProps = {
     selectedCountries: Map<CountryName, number>;
     addSelectedCountry: (country: CountryName) => void;
     removeSelectedCountry: (country: CountryName) => void;
+    setCountryPercentage: (country: CountryName, percentage: number) => void;
     refreshAndGetSize: () => Promise<void>;
+    error: string | null;
 }
 
 export const usePopup = (): PopupProps => {
     const [transferSize, setTransferSize] = useState(0);
     const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>())
+    const [error, setError] = useState<string | null>(null);
+
+    const setCountryPercentage = (country: CountryName, percentage: number) => {
+        const newMap = new Map(selectedCountries);
+        newMap.set(country, percentage);
+        setSelectedCountries(newMap);
+    }
+
+    const sumPercentages = () => {
+        let sum = 0;
+        selectedCountries.forEach((country, value) => {
+            sum = sum + country;
+        });
+        if (sum > 100) {
+            throw new Error(`Error: The sum of the percentages is greater than 100%. Current sum: ${sum}%`);
+        }
+        return sum;
+    }
+
 
     const refreshAndGetSize = async () => {
+        try {
+
+            sumPercentages();
+        } catch (e : any) {
+            setError(e.message);
+            return;
+        }
 
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs.length > 0) {
@@ -60,7 +88,9 @@ export const usePopup = (): PopupProps => {
         selectedCountries,
         addSelectedCountry,
         removeSelectedCountry,
+        setCountryPercentage,
         refreshAndGetSize,
+        error,
     }
 
 }

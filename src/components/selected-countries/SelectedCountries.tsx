@@ -4,9 +4,10 @@ import { CountryName } from '../../constants/Countries';
 type SelectedCountriesType = {
     selectedCountries: Map<CountryName,number>;
     removeSelectedCountry: (country: CountryName) => void;
+    setCountryPercentage: (country: CountryName, percentage: number) => void;
 }
 
-export const SelectedCountries = ({ selectedCountries, removeSelectedCountry }: SelectedCountriesType) => {
+export const SelectedCountries = ({ selectedCountries, removeSelectedCountry, setCountryPercentage }: SelectedCountriesType) => {
 
     return (
         <div>
@@ -20,7 +21,7 @@ export const SelectedCountries = ({ selectedCountries, removeSelectedCountry }: 
                             -
                         </button>
                         {country}
-                        <input type="number" />
+                        <input type="number" onChange={(e) => setCountryPercentage(country, Number(e.target.value))}/>
                     </li>
                 ))}
             </ul>

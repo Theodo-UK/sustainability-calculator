@@ -10,7 +10,9 @@ export const Popup = () => {
     selectedCountries,
     addSelectedCountry,
     removeSelectedCountry,
+    setCountryPercentage,
     refreshAndGetSize,
+    error,
   } = usePopup();
 
 
@@ -26,8 +28,9 @@ export const Popup = () => {
       <div >
         SCI: {calculateCarbon(selectedCountries)} gCO2eq
       </div>
-      <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry}/>
+      <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry} setCountryPercentage={setCountryPercentage}/>
       <CountryDropdown addSelectedCountry={addSelectedCountry} />
+      {error && <div>{error}</div>}
     </div>
   );
 };
