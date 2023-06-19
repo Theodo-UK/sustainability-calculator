@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { CountryName } from "../constants/Countries";
+import { Countries, CountryName, WorldAverage } from "../constants/Countries";
 
 export type PopupProps = {
     selectedCountries: Map<CountryName, number>;
     addSelectedCountry: (country: CountryName) => void;
     removeSelectedCountry: (country: CountryName) => void;
     setCountryPercentage: (country: CountryName, percentage: number) => void;
+    averageSpecificEmissions: number;
     refreshAndGetSize: () => Promise<void>;
     error: string | null;
 }
@@ -13,12 +14,20 @@ export type PopupProps = {
 export const usePopup = (): PopupProps => {
     const [transferSize, setTransferSize] = useState(0);
     const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>())
+    const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [error, setError] = useState<string | null>(null);
 
     const setCountryPercentage = (country: CountryName, percentage: number) => {
         const newMap = new Map(selectedCountries);
         newMap.set(country, percentage);
         setSelectedCountries(newMap);
+    }
+
+    const calculateAverageSpecificEmissions = () => {
+        if (selectedCountries.size === 0) {
+            setAverageSpecificEmissions(WorldAverage)
+            return;
+        }
     }
 
     const sumPercentages = () => {
@@ -35,8 +44,8 @@ export const usePopup = (): PopupProps => {
 
     const refreshAndGetSize = async () => {
         try {
-
             sumPercentages();
+            calculateAverageSpecificEmissions();
         } catch (e : any) {
             setError(e.message);
             return;
@@ -89,6 +98,7 @@ export const usePopup = (): PopupProps => {
         addSelectedCountry,
         removeSelectedCountry,
         setCountryPercentage,
+        averageSpecificEmissions,
         refreshAndGetSize,
         error,
     }

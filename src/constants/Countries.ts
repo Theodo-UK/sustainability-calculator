@@ -1,3 +1,5 @@
+export const WorldAverage = 421
+
 export const Countries = {
     "United Kingdom" : 212.3,
     "Austria" : 111.2,

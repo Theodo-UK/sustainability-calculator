@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { usePopup } from 'components/usePopup';
-import { CountryName } from '../constants/Countries';
+import { CountryName, WorldAverage } from '../constants/Countries';
 import { compareMaps } from '../helpers/compareMaps';
 import { mock } from 'node:test';
 
@@ -79,6 +79,17 @@ describe('usePopup', () => {
         expect(compareMaps(result.current.selectedCountries, mockCountries)).toBe(true)
 
     });
+
+    test('averageSpecificEmissions should return the world average if there are no selected countries', () => {
+        const { result } = renderHook(() => usePopup());
+
+        act(() => {
+            result.current.refreshAndGetSize()
+        });
+
+        expect(result.current.averageSpecificEmissions).toBe(WorldAverage);
+    });
+
 
 });
 
