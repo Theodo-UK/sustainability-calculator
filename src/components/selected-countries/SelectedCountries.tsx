@@ -2,7 +2,7 @@ import React from 'react';
 import { CountryName } from '../../constants/Countries';
 
 type SelectedCountriesType = {
-    selectedCountries: Map<CountryName,number>;
+    selectedCountries: Map<CountryName, number>;
     removeSelectedCountry: (country: CountryName) => void;
     setCountryPercentage: (country: CountryName, percentage: number) => void;
 }
@@ -21,7 +21,7 @@ export const SelectedCountries = ({ selectedCountries, removeSelectedCountry, se
                             -
                         </button>
                         {country}
-                        <input type="number" onChange={(e) => setCountryPercentage(country, Number(e.target.value))}/>
+                        <input type="number" onChange={(e) => setCountryPercentage(country, Number(e.target.value) / 100)} />
                     </li>
                 ))}
             </ul>
