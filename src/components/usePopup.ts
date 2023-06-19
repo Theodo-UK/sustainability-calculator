@@ -28,6 +28,13 @@ export const usePopup = (): PopupProps => {
             setAverageSpecificEmissions(WorldAverage)
             return;
         }
+
+        let average = 0;
+        selectedCountries.forEach((value, key) => {
+            average = average + value * Countries[key];
+        });
+        setAverageSpecificEmissions(average)
+
     }
 
     const sumPercentages = () => {
@@ -46,7 +53,7 @@ export const usePopup = (): PopupProps => {
         try {
             sumPercentages();
             calculateAverageSpecificEmissions();
-        } catch (e : any) {
+        } catch (e: any) {
             setError(e.message);
             return;
         }

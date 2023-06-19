@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { usePopup } from 'components/usePopup';
-import { CountryName, WorldAverage } from '../constants/Countries';
+import { Countries, CountryName, WorldAverage } from '../constants/Countries';
 import { compareMaps } from '../helpers/compareMaps';
 import { mock } from 'node:test';
 
@@ -90,6 +90,36 @@ describe('usePopup', () => {
         expect(result.current.averageSpecificEmissions).toBe(WorldAverage);
     });
 
+    test('averageSpecificEmissions should return the weighted average of the selected countries', () => {
+        const { result } = renderHook(() => usePopup());
 
+        const mockCountry1 = "Australia";
+        const mockCountry2 = "United Kingdom";
+        const mockCountry1Percentage = 0.5;
+        const mockCountry2Percentage = 0.5;
+        const mockAverageSpecificEmissions = mockCountry1Percentage * Countries[mockCountry1] + mockCountry2Percentage * Countries[mockCountry2];
+
+        act(() => {
+            result.current.addSelectedCountry(mockCountry1);
+        });
+
+        act(() => {
+            result.current.addSelectedCountry(mockCountry2);
+        });
+
+        act(() => {
+            result.current.setCountryPercentage(mockCountry1, mockCountry1Percentage);
+        });
+
+        act(() => {
+            result.current.setCountryPercentage(mockCountry2, mockCountry2Percentage);
+        });
+
+        act(() => {
+            result.current.refreshAndGetSize()
+        });
+
+        expect(result.current.averageSpecificEmissions).toEqual(mockAverageSpecificEmissions);
+    });
 });
 
