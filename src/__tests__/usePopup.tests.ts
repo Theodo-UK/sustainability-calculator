@@ -1,8 +1,9 @@
 import { renderHook, act } from '@testing-library/react';
-import { usePopup } from 'components/usePopup';
-import { Countries, CountryName, WorldAverage } from '../constants/Countries';
+
+import { COUNTRIES, CountryName, WORLDAVERAGE } from '../constants/Countries';
 import { compareMaps } from '../helpers/compareMaps';
 import { mock } from 'node:test';
+import { usePopup } from '../components/usePopup';
 
 
 
@@ -87,7 +88,7 @@ describe('usePopup', () => {
             result.current.refreshAndGetSize()
         });
 
-        expect(result.current.averageSpecificEmissions).toBe(WorldAverage);
+        expect(result.current.averageSpecificEmissions).toBe(WORLDAVERAGE);
     });
 
     test('averageSpecificEmissions should return the weighted average of the selected countries', () => {
@@ -97,7 +98,7 @@ describe('usePopup', () => {
         const mockCountry2 = "United Kingdom";
         const mockCountry1Percentage = 0.5;
         const mockCountry2Percentage = 0.5;
-        const mockAverageSpecificEmissions = mockCountry1Percentage * Countries[mockCountry1] + mockCountry2Percentage * Countries[mockCountry2];
+        const mockAverageSpecificEmissions = mockCountry1Percentage * COUNTRIES[mockCountry1] + mockCountry2Percentage * COUNTRIES[mockCountry2];
 
         act(() => {
             result.current.addSelectedCountry(mockCountry1);
@@ -129,7 +130,7 @@ describe('usePopup', () => {
         const mockCountry2 = "United Kingdom";
         const mockCountry1Percentage = 0.4;
         const mockCountry2Percentage = 0.4;
-        const mockAverageSpecificEmissions = mockCountry1Percentage * Countries[mockCountry1] + mockCountry2Percentage * Countries[mockCountry2] + (1 - mockCountry1Percentage - mockCountry2Percentage) * WorldAverage;
+        const mockAverageSpecificEmissions = mockCountry1Percentage * COUNTRIES[mockCountry1] + mockCountry2Percentage * COUNTRIES[mockCountry2] + (1 - mockCountry1Percentage - mockCountry2Percentage) * WORLDAVERAGE;
 
         act(() => {
             result.current.addSelectedCountry(mockCountry1);
@@ -162,7 +163,7 @@ describe('usePopup', () => {
         const mockCountry3 = "Finland";
         const mockCountry1Percentage = 0.4;
         const dividedRemainingPercentage = (1 - mockCountry1Percentage) / 2;
-        const mockAverageSpecificEmissions = mockCountry1Percentage * Countries[mockCountry1] + dividedRemainingPercentage * Countries[mockCountry2] + dividedRemainingPercentage * Countries[mockCountry3];
+        const mockAverageSpecificEmissions = mockCountry1Percentage * COUNTRIES[mockCountry1] + dividedRemainingPercentage * COUNTRIES[mockCountry2] + dividedRemainingPercentage * COUNTRIES[mockCountry3];
 
         act(() => {
             result.current.addSelectedCountry(mockCountry1);

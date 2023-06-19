@@ -1,6 +1,6 @@
-export const WorldAverage = 421;
+export const WORLDAVERAGE = 421;
 
-export const Countries = {
+export const COUNTRIES = {
     "United Kingdom" : 212.3,
     "Austria" : 111.2,
     "Belgium" : 161.9,
@@ -53,4 +53,4 @@ export const Countries = {
     "Brazil" : 61.7,
 }
 
-export type CountryName = keyof typeof Countries;
+export type CountryName = keyof typeof COUNTRIES;

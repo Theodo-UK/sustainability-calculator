@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Countries, CountryName, WorldAverage } from "../constants/Countries";
+import { COUNTRIES, CountryName, WORLDAVERAGE } from "../constants/Countries";
 
 export type PopupProps = {
     selectedCountries: Map<CountryName, number>;
@@ -25,7 +25,7 @@ export const usePopup = (): PopupProps => {
 
     const calculateAverageSpecificEmissions = () => {
         if (selectedCountries.size === 0) {
-            setAverageSpecificEmissions(WorldAverage)
+            setAverageSpecificEmissions(WORLDAVERAGE)
             return;
         }
         let totalPercentage = 0;
@@ -38,7 +38,7 @@ export const usePopup = (): PopupProps => {
                 noOfMissingPercentages += 1;
                 return;
             }
-            average += value * Countries[key];
+            average += value * COUNTRIES[key];
         });
 
         const remainingPercentage = 1 - totalPercentage;
@@ -48,10 +48,10 @@ export const usePopup = (): PopupProps => {
                 if (value !== 0) {
                     return;
                 }
-                average += remainingPercentage / noOfMissingPercentages * Countries[key];
+                average += remainingPercentage / noOfMissingPercentages * COUNTRIES[key];
             });
         } else if (totalPercentage < 1) {
-            average += remainingPercentage * WorldAverage;
+            average += remainingPercentage * WORLDAVERAGE;
         }
 
         setAverageSpecificEmissions(average)

@@ -2,7 +2,7 @@ import React from 'react';
 import { Fragment } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { PlusIcon } from '@heroicons/react/20/solid'
-import { Countries, CountryName } from '../constants/Countries';
+import { COUNTRIES, CountryName } from '../constants/Countries';
 
 
 
@@ -32,7 +32,7 @@ export const CountryDropdown = ({ addSelectedCountry }: CountryDropdownType) => 
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {Object.entries(Countries).map(([country, value]) => (
+              {Object.entries(COUNTRIES).map(([country, value]) => (
                 <Listbox.Option
                   key={country}
                   className={({ active }) =>
