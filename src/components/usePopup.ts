@@ -30,21 +30,22 @@ export const usePopup = (): PopupProps => {
             setAverageSpecificEmissions(WORLDAVERAGE)
             return;
         }
-        
+
         const newAverageSpecificEmissions = calculateAverageSpecificEmissionsHelper(selectedCountries);
         setAverageSpecificEmissions(newAverageSpecificEmissions)
 
     }
 
     const sumPercentages = () => {
-        let sum = 0;
-        selectedCountries.forEach((country, value) => {
-            sum = sum + country;
-        });
-        if (sum > 1) {
-            throw new Error(`Error: The sum of the percentages is greater than 100%. Current sum: ${sum*100}%`);
+        const percentage = Array.from(selectedCountries.values()).reduce((accumulator, country) => {
+            return accumulator + country;
+        }, 0);
+
+        if (percentage > 1) {
+            throw new Error(`Error: The sum of the percentages is greater than 100%. Current sum: ${percentage * 100}%`);
         }
-        return sum;
+
+        return percentage;
     }
 
 
