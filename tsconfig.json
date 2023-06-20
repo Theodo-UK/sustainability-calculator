@@ -6,7 +6,6 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "downlevelIteration": true,
     "paths": {
       "@src": ["./src"],
       "*": ["./*"]

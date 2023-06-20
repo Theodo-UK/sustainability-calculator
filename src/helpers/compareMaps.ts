@@ -1,15 +1,18 @@
-export function compareMaps(map1 : Map<any,any>, map2 : Map<any,any>) {
-    let testVal;
+export function compareMaps(map1: Map<any, any>, map2: Map<any, any>) {
+    let result = true;
     if (map1.size !== map2.size) {
         return false;
     }
-    for (let [key, val] of map1) {
-        testVal = map2.get(key);
+    map1.forEach((val, key) => {
+        console.log(key, val)
+        let testVal = map2.get(key);
+        console.log(key, testVal)
         // in cases of an undefined value, make sure the key
         // actually exists on the object so there are no false positives
         if (testVal !== val || (testVal === undefined && !map2.has(key))) {
-            return false;
+            result = false;
+            return 
         }
-    }
-    return true;
+    });
+    return result;
 }
