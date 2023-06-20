@@ -27,7 +27,7 @@ describe('usePopup', () => {
         jest.clearAllMocks();
     });
 
-    test('addSelectedCountry should update selectedCountries', () => {
+    it('addSelectedCountry should update selectedCountries', () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
@@ -48,7 +48,7 @@ describe('usePopup', () => {
         expect(result.current.selectedCountries).toStrictEqual(mockCountries);
     });
 
-    test('removeSelectedCountries should update selectedCountries', () => {
+    it('removeSelectedCountries should update selectedCountries', () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
@@ -81,7 +81,7 @@ describe('usePopup', () => {
 
     });
 
-    test('averageSpecificEmissions should return the world average if there are no selected countries', () => {
+    it('averageSpecificEmissions should return the world average if there are no selected countries', () => {
         const { result } = renderHook(() => usePopup());
 
         act(() => {
@@ -91,7 +91,7 @@ describe('usePopup', () => {
         expect(result.current.averageSpecificEmissions).toBe(WORLDAVERAGE);
     });
 
-    test('averageSpecificEmissions should return the weighted average of the selected countries', () => {
+    it('averageSpecificEmissions should return the weighted average of the selected countries', () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
@@ -123,7 +123,7 @@ describe('usePopup', () => {
         expect(result.current.averageSpecificEmissions).toEqual(mockAverageSpecificEmissions);
     });
 
-    test('If there are locations, and the sum of percentages < 100, use remaining percentage on world average specific emissions', () => {
+    it('If there are locations, and the sum of percentages < 100, use remaining percentage on world average specific emissions', () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
@@ -155,7 +155,7 @@ describe('usePopup', () => {
         expect(result.current.averageSpecificEmissions).toEqual(mockAverageSpecificEmissions);
     });
 
-    test('If there are locations with missing percentages, divide remaining percentage equally between them and calculate the correct average specific emissions', () => {
+    it('If there are locations with missing percentages, divide remaining percentage equally between them and calculate the correct average specific emissions', () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
@@ -189,7 +189,7 @@ describe('usePopup', () => {
 
     });
 
-    test('If the sum of percentages > 100, then an error should be shown', () => {
+    it('If the sum of percentages > 100, then an error should be shown', () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
