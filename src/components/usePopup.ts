@@ -25,7 +25,6 @@ export const usePopup = (): PopupProps => {
     }
 
     const calculateAverageSpecificEmissions = () => {
-        // No countries selected, return world average specific emissions
         if (selectedCountries.size === 0) {
             setAverageSpecificEmissions(WORLDAVERAGE)
             return;
