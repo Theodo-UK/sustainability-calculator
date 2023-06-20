@@ -9,14 +9,14 @@ export type PopupProps = {
     setCountryPercentage: (country: CountryName, percentage: number) => void;
     averageSpecificEmissions: number;
     refreshAndGetSize: () => Promise<void>;
-    error: string | null;
+    error?: string;
 }
 
 export const usePopup = (): PopupProps => {
     const [transferSize, setTransferSize] = useState(0);
     const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>())
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError] = useState<string>();
 
     const setCountryPercentage = (country: CountryName, percentage: number) => {
         const newMap = new Map(selectedCountries);
