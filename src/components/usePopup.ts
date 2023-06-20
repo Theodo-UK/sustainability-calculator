@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { COUNTRIES, CountryName, WORLDAVERAGE } from "../constants/Countries";
+import { CountryName, WORLDAVERAGE } from "../constants/Countries";
 import { calculateAverageSpecificEmissionsHelper } from "../helpers/calculateAverageSpecificEmissions";
 
 export type PopupProps = {
