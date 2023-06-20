@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 
-import { COUNTRIES, CountryName, WORLDAVERAGE } from '../constants/Countries';
+import { COUNTRIES, CountryName } from '../constants/Countries';
 import { areMapsDeepEqual } from '../helpers/areMapsDeepEqual';
 import { mock } from 'node:test';
 import { usePopup } from '../components/usePopup';
@@ -88,7 +88,7 @@ describe('usePopup', () => {
             result.current.refreshAndGetSize()
         });
 
-        expect(result.current.averageSpecificEmissions).toBe(WORLDAVERAGE);
+        expect(result.current.averageSpecificEmissions).toBe(COUNTRIES["World Average"]);
     });
 
     it('averageSpecificEmissions should return the weighted average of the selected countries', () => {
@@ -130,7 +130,7 @@ describe('usePopup', () => {
         const mockCountry2 = "United Kingdom";
         const mockCountry1Percentage = 0.4;
         const mockCountry2Percentage = 0.4;
-        const mockAverageSpecificEmissions = mockCountry1Percentage * COUNTRIES[mockCountry1] + mockCountry2Percentage * COUNTRIES[mockCountry2] + (1 - mockCountry1Percentage - mockCountry2Percentage) * WORLDAVERAGE;
+        const mockAverageSpecificEmissions = mockCountry1Percentage * COUNTRIES[mockCountry1] + mockCountry2Percentage * COUNTRIES[mockCountry2] + (1 - mockCountry1Percentage - mockCountry2Percentage) * COUNTRIES["World Average"];
 
         act(() => {
             result.current.addSelectedCountry(mockCountry1);

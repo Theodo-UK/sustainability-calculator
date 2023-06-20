@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CountryName, WORLDAVERAGE } from "../constants/Countries";
+import { COUNTRIES, CountryName } from "../constants/Countries";
 import { calculateAverageSpecificEmissionsHelper } from "../helpers/calculateAverageSpecificEmissions";
 
 export type PopupProps = {
@@ -26,7 +26,7 @@ export const usePopup = (): PopupProps => {
 
     const calculateAverageSpecificEmissions = () => {
         if (selectedCountries.size === 0) {
-            setAverageSpecificEmissions(WORLDAVERAGE)
+            setAverageSpecificEmissions(COUNTRIES["World Average"])
             return;
         }
 

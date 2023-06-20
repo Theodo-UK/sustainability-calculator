@@ -1,4 +1,4 @@
-import { WORLDAVERAGE, COUNTRIES, CountryName } from "../constants/Countries";
+import { COUNTRIES, CountryName } from "../constants/Countries";
 
 export const calculateAverageSpecificEmissionsHelper = (selectedCountries: Map<CountryName, number>): number => {
     let totalPercentage = 0;
@@ -24,7 +24,7 @@ export const calculateAverageSpecificEmissionsHelper = (selectedCountries: Map<C
             averageSpecificEmissions += remainingPercentage / noOfCountriesMissingPercentages * COUNTRIES[key];
         });
     } else if (totalPercentage < 1) {
-        averageSpecificEmissions += remainingPercentage * WORLDAVERAGE;
+        averageSpecificEmissions += remainingPercentage * COUNTRIES["World Average"];
     }
 
     return averageSpecificEmissions;
