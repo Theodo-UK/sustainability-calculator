@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 
 import { COUNTRIES, CountryName, WORLDAVERAGE } from '../constants/Countries';
-import { compareMaps } from '../helpers/compareMaps';
+import { areMapsDeepEqual } from '../helpers/areMapsDeepEqual';
 import { mock } from 'node:test';
 import { usePopup } from '../components/usePopup';
 
@@ -69,7 +69,7 @@ describe('usePopup', () => {
             result.current.addSelectedCountry(mockCountry2);
         });
 
-        expect(compareMaps(result.current.selectedCountries, mockCountries)).toBe(true)
+        expect(areMapsDeepEqual(result.current.selectedCountries, mockCountries)).toBe(true)
 
         mockCountries.delete(mockCountry2);
 
@@ -77,7 +77,7 @@ describe('usePopup', () => {
             result.current.removeSelectedCountry(mockCountry2);
         });
 
-        expect(compareMaps(result.current.selectedCountries, mockCountries)).toBe(true)
+        expect(areMapsDeepEqual(result.current.selectedCountries, mockCountries)).toBe(true)
 
     });
 
