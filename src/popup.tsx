@@ -10,7 +10,10 @@ export const Popup = () => {
     selectedCountries,
     addSelectedCountry,
     removeSelectedCountry,
+    setCountryPercentage,
+    averageSpecificEmissions,
     refreshAndGetSize,
+    error,
   } = usePopup();
 
 
@@ -20,14 +23,18 @@ export const Popup = () => {
       <h1 className="text-3xl font-bold underline">
         Sustainability Calculator
       </h1>
-      <button onClick={() => refreshAndGetSize(selectedCountries)}>
+      <button onClick={() => refreshAndGetSize()}>
         Calculate CO2 emissions
       </button>
       <div >
         SCI: {calculateCarbon(selectedCountries)} gCO2eq
       </div>
-      <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry}/>
+      <div >
+        Specific Carbon Emissions (gC02 per byte): {averageSpecificEmissions}
+      </div>
+      <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry} setCountryPercentage={setCountryPercentage}/>
       <CountryDropdown addSelectedCountry={addSelectedCountry} />
+      {error && <div>{error}</div>}
     </div>
   );
 };

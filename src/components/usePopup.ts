@@ -1,18 +1,61 @@
 import { useEffect, useState } from "react";
-import { CountryName } from "../constants/Countries";
+import { CountryName, WORLDAVERAGE } from "../constants/Countries";
+import { calculateAverageSpecificEmissionsHelper } from "../helpers/calculateAverageSpecificEmissions";
 
 export type PopupProps = {
-    selectedCountries: Set<CountryName>;
+    selectedCountries: Map<CountryName, number>;
     addSelectedCountry: (country: CountryName) => void;
     removeSelectedCountry: (country: CountryName) => void;
-    refreshAndGetSize: (selectedCountry: Set<CountryName>) => Promise<void>;
+    setCountryPercentage: (country: CountryName, percentage: number) => void;
+    averageSpecificEmissions: number;
+    refreshAndGetSize: () => Promise<void>;
+    error?: string;
 }
 
 export const usePopup = (): PopupProps => {
     const [transferSize, setTransferSize] = useState(0);
-    const [selectedCountries, setSelectedCountries] = useState<Set<CountryName>>(new Set())
+    const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>())
+    const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
+    const [error, setError] = useState<string>();
+
+    const setCountryPercentage = (country: CountryName, percentage: number) => {
+        const newMap = new Map(selectedCountries);
+        newMap.set(country, percentage);
+        setSelectedCountries(newMap);
+    }
+
+    const calculateAverageSpecificEmissions = () => {
+        if (selectedCountries.size === 0) {
+            setAverageSpecificEmissions(WORLDAVERAGE)
+            return;
+        }
+
+        const newAverageSpecificEmissions = calculateAverageSpecificEmissionsHelper(selectedCountries);
+        setAverageSpecificEmissions(newAverageSpecificEmissions)
+
+    }
+
+    const sumPercentages = () => {
+        const percentage = Array.from(selectedCountries.values()).reduce((accumulator, country) => {
+            return accumulator + country;
+        }, 0);
+
+        if (percentage > 1) {
+            throw new Error(`Error: The sum of the percentages is greater than 100%. Current sum: ${percentage * 100}%`);
+        }
+
+        return percentage;
+    }
+
 
     const refreshAndGetSize = async () => {
+        try {
+            sumPercentages();
+            calculateAverageSpecificEmissions();
+        } catch (e: any) {
+            setError(e.message);
+            return;
+        }
 
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs.length > 0) {
@@ -28,14 +71,20 @@ export const usePopup = (): PopupProps => {
     };
 
     const addSelectedCountry = (country: CountryName) => {
-        const newSet = new Set(selectedCountries);
-        newSet.add(country);
-        setSelectedCountries(newSet);
+        const newMap = new Map(selectedCountries);
+        if (newMap.has(country)) {
+            return
+        }
+        newMap.set(country, 0);
+        setSelectedCountries(newMap);
     }
     const removeSelectedCountry = (country: CountryName) => {
-        const newSet = new Set(selectedCountries);
-        newSet.delete(country);
-        setSelectedCountries(newSet);
+        const newMap = new Map(selectedCountries);
+        if (!newMap.has(country)) {
+            return
+        }
+        newMap.delete(country);
+        setSelectedCountries(newMap);
     }
 
 
@@ -54,7 +103,10 @@ export const usePopup = (): PopupProps => {
         selectedCountries,
         addSelectedCountry,
         removeSelectedCountry,
+        setCountryPercentage,
+        averageSpecificEmissions,
         refreshAndGetSize,
+        error,
     }
 
 }

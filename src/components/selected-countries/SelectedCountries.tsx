@@ -2,11 +2,12 @@ import React from 'react';
 import { CountryName } from '../../constants/Countries';
 
 type SelectedCountriesType = {
-    selectedCountries: Set<CountryName>;
+    selectedCountries: Map<CountryName, number>;
     removeSelectedCountry: (country: CountryName) => void;
+    setCountryPercentage: (country: CountryName, percentage: number) => void;
 }
 
-export const SelectedCountries = ({ selectedCountries, removeSelectedCountry }: SelectedCountriesType) => {
+export const SelectedCountries = ({ selectedCountries, removeSelectedCountry, setCountryPercentage }: SelectedCountriesType) => {
 
     return (
         <div>
@@ -14,12 +15,13 @@ export const SelectedCountries = ({ selectedCountries, removeSelectedCountry }: 
                 Selected Countries
             </h3>
             <ul>
-                {Array.from(selectedCountries).map((country) => (
+                {Array.from(selectedCountries).map(([country, percentage]) => (
                     <li key={country}>
-                        {country}
-                        <button onClick={() => removeSelectedCountry(country)}>
+                        <button onClick={() => removeSelectedCountry(country as CountryName)}>
                             -
                         </button>
+                        {country} (% users): 
+                        <input type="number" onChange={(e) => setCountryPercentage(country, Number(e.target.value) / 100)} />
                     </li>
                 ))}
             </ul>
