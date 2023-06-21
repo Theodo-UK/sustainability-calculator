@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { COUNTRIES, CountryName } from "../constants/Countries";
 import { calculateAverageSpecificEmissionsHelper } from "../helpers/calculateAverageSpecificEmissions";
+import { calculateCarbon } from "../helpers/calculateCarbon";
 
 export type PopupProps = {
     transferSize: number;
+    emissions: number;
     selectedCountries: Map<CountryName, number>;
     addSelectedCountry: (country: CountryName) => void;
     removeSelectedCountry: (country: CountryName) => void;
@@ -15,6 +17,7 @@ export type PopupProps = {
 
 export const usePopup = (): PopupProps => {
     const [transferSize, setTransferSize] = useState(0);
+    const [emissions, setEmissions] = useState(0);
     const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>([["World Average", 0]]))
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [error, setError] = useState<string>();
@@ -26,11 +29,6 @@ export const usePopup = (): PopupProps => {
     }
 
     const calculateAverageSpecificEmissions = () => {
-        if (selectedCountries.size === 0) {
-            setAverageSpecificEmissions(COUNTRIES["World Average"])
-            return;
-        }
-
         const newAverageSpecificEmissions = calculateAverageSpecificEmissionsHelper(selectedCountries);
         setAverageSpecificEmissions(newAverageSpecificEmissions)
 
@@ -98,6 +96,7 @@ export const usePopup = (): PopupProps => {
     }) => {
         if (changes.totalTransferSize) {
             setTransferSize(changes.totalTransferSize.newValue);
+            setEmissions(calculateCarbon(changes.totalTransferSize.newValue, selectedCountries));
         }
 
     }
@@ -113,6 +112,7 @@ export const usePopup = (): PopupProps => {
 
 
     return {
+        emissions,
         transferSize,
         selectedCountries,
         addSelectedCountry,

@@ -8,6 +8,7 @@ import { SelectedCountries } from "./components/selected-countries/SelectedCount
 export const Popup = () => {
   const {
     transferSize,
+    emissions,
     selectedCountries,
     addSelectedCountry,
     removeSelectedCountry,
@@ -28,10 +29,13 @@ export const Popup = () => {
         Calculate CO2 emissions
       </button>
       <div >
-        SCI: {transferSize} gCO2eq
+        Total Data Received: {transferSize} bytes
       </div>
       <div >
-        Specific Carbon Emissions (gC02 per byte): {Math.round(averageSpecificEmissions * 100) / 100}
+        Specific Carbon Emissions (grams of C02 per byte): {Math.round(averageSpecificEmissions * 100) / 100}
+      </div>
+      <div >
+        Software Carbon Intensity: {Math.round(emissions * 100) / 100} grams of CO2
       </div>
       <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry} setCountryPercentage={setCountryPercentage} />
       <CountryDropdown addSelectedCountry={addSelectedCountry} />
