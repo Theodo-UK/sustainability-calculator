@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
-import { CountryName, WORLDAVERAGE } from "../constants/Countries";
+import { CountryName } from "../constants/Countries";
 import { calculateAverageSpecificEmissionsHelper } from "../helpers/calculateAverageSpecificEmissions";
+import { calculateCarbon } from "../helpers/calculateCarbon";
 
 export type PopupProps = {
+    totalBytesReceived: number;
+    emissions: number;
     selectedCountries: Map<CountryName, number>;
     addSelectedCountry: (country: CountryName) => void;
     removeSelectedCountry: (country: CountryName) => void;
@@ -13,8 +16,9 @@ export type PopupProps = {
 }
 
 export const usePopup = (): PopupProps => {
-    const [transferSize, setTransferSize] = useState(0);
-    const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>())
+    const [totalBytesReceived, setTotalBytesReceived] = useState(0);
+    const [emissions, setEmissions] = useState(0);
+    const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>([["World Average", 0]]))
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [error, setError] = useState<string>();
 
@@ -25,11 +29,6 @@ export const usePopup = (): PopupProps => {
     }
 
     const calculateAverageSpecificEmissions = () => {
-        if (selectedCountries.size === 0) {
-            setAverageSpecificEmissions(WORLDAVERAGE)
-            return;
-        }
-
         const newAverageSpecificEmissions = calculateAverageSpecificEmissionsHelper(selectedCountries);
         setAverageSpecificEmissions(newAverageSpecificEmissions)
 
@@ -56,15 +55,20 @@ export const usePopup = (): PopupProps => {
             setError(e.message);
             return;
         }
+        try {
+            await chrome.storage.local.set({ ["totalBytesReceived"]: 0 });
+        } catch (e: any) {
+            setError(e.message);
+            return;
+        }
+
 
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs.length > 0) {
                 const tabId = tabs[0].id;
                 // @ts-ignore
                 chrome.tabs.reload(tabId, () => {
-                    setTimeout(() => {
-                        chrome.runtime.sendMessage({ command: "getTransferSize", tabId });
-                    }, 2000);
+                    chrome.runtime.sendMessage({ command: "startStoringWebRequestPayloadSize", tabId });
                 });
             }
         });
@@ -87,19 +91,29 @@ export const usePopup = (): PopupProps => {
         setSelectedCountries(newMap);
     }
 
+    const totalBytesReceivedListener = (changes: {
+        [key: string]: chrome.storage.StorageChange;
+    }) => {
+        if (changes.totalBytesReceived) {
+            setTotalBytesReceived(changes.totalBytesReceived.newValue);
+            setEmissions(calculateCarbon(changes.totalBytesReceived.newValue, selectedCountries));
+        }
 
+    }
 
     useEffect(() => {
-        chrome.runtime.onMessage.addListener((message) => {
-            const accumulative = message.transferSize
-            if (accumulative >= 0) {
-                setTransferSize(transferSize + accumulative);
-            }
-        });
+
+        chrome.storage.local.onChanged.addListener(totalBytesReceivedListener);
+
+        return () => {
+            chrome.storage.local.onChanged.removeListener(totalBytesReceivedListener);
+        }
     }, []);
 
 
     return {
+        emissions,
+        totalBytesReceived,
         selectedCountries,
         addSelectedCountry,
         removeSelectedCountry,

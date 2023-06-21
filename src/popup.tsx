@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
 import { CountryDropdown } from './components/CountryDropdown'
-import { calculateCarbon } from "./helpers/calculateCarbon";
 import { usePopup } from "./components/usePopup";
 import { SelectedCountries } from "./components/selected-countries/SelectedCountries";
 
 export const Popup = () => {
   const {
+    totalBytesReceived,
+    emissions,
     selectedCountries,
     addSelectedCountry,
     removeSelectedCountry,
@@ -26,15 +27,12 @@ export const Popup = () => {
       <button onClick={() => refreshAndGetSize()}>
         Calculate CO2 emissions
       </button>
-      <div >
-        SCI: {calculateCarbon(selectedCountries)} gCO2eq
-      </div>
-      <div >
-        Specific Carbon Emissions (gC02 per byte): {averageSpecificEmissions}
-      </div>
-      <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry} setCountryPercentage={setCountryPercentage}/>
+      <p >Total Data Received: {totalBytesReceived} bytes</p>
+      <p >Specific Carbon Emissions (grams of C02 per byte): {Math.round(averageSpecificEmissions * 100) / 100}</p>
+      <p >Software Carbon Intensity: {Math.round(emissions * 100) / 100} grams of CO2</p>
+      <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry} setCountryPercentage={setCountryPercentage} />
       <CountryDropdown addSelectedCountry={addSelectedCountry} />
-      {error && <div>{error}</div>}
+      {error && <p>{error}</p>}
     </div>
   );
 };
