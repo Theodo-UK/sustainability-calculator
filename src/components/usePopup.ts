@@ -72,10 +72,10 @@ export const usePopup = (): PopupProps => {
                 // @ts-ignore
                 chrome.tabs.reload(tabId, () => {
                     console.log("reloading tab")
-                    chrome.runtime.sendMessage({ command: "getTransferSize", tabId });
+                    chrome.runtime.sendMessage({ command: "startStoringWebRequestPayloadSize", tabId });
                     // setTimeout(() => {
-                    //     console.log("sending getTransferSize message from usePopup")
-                    //     chrome.runtime.sendMessage({ command: "getTransferSize", tabId });
+                    //     console.log("sending startStoringWebRequestPayloadSize message from usePopup")
+                    //     chrome.runtime.sendMessage({ command: "startStoringWebRequestPayloadSize", tabId });
                     // }, 2000);
                 });
             }

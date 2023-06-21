@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
-  if (message.command === "getTransferSize") {
-    console.log("received getTransferSize message in background.js")
+  if (message.command === "startStoringWebRequestPayloadSize") {
+    console.log("received startStoringWebRequestPayloadSize message in background.js")
     const { tabId } = message;
     chrome.webRequest.onCompleted.addListener(
       (details) => {
