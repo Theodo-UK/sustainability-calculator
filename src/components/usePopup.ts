@@ -3,6 +3,7 @@ import { COUNTRIES, CountryName } from "../constants/Countries";
 import { calculateAverageSpecificEmissionsHelper } from "../helpers/calculateAverageSpecificEmissions";
 
 export type PopupProps = {
+    transferSize: number;
     selectedCountries: Map<CountryName, number>;
     addSelectedCountry: (country: CountryName) => void;
     removeSelectedCountry: (country: CountryName) => void;
@@ -57,11 +58,11 @@ export const usePopup = (): PopupProps => {
             return;
         }
         try {
-            chrome.storage.local.set({["totalTransferSize"]: 0});
+            chrome.storage.local.set({ ["totalTransferSize"]: 0 });
         } catch (e: any) {
             setError(e.message);
             return;
-        } 
+        }
         console.log("cleared totalTransferSize")
 
 
@@ -98,14 +99,27 @@ export const usePopup = (): PopupProps => {
         setSelectedCountries(newMap);
     }
 
+    const updateTransferSizeViewOnChange = (changes: {
+        [key: string]: chrome.storage.StorageChange;
+    }) => {
+        if (changes.totalTransferSize) {
+            setTransferSize(changes.totalTransferSize.newValue);
+        }
 
+    }
 
     useEffect(() => {
-        
+
+        chrome.storage.local.onChanged.addListener(updateTransferSizeViewOnChange);
+
+        return () => {
+            chrome.storage.local.onChanged.removeListener(updateTransferSizeViewOnChange);
+        }
     }, []);
 
 
     return {
+        transferSize,
         selectedCountries,
         addSelectedCountry,
         removeSelectedCountry,
