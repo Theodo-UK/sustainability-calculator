@@ -63,7 +63,6 @@ export const usePopup = (): PopupProps => {
             setError(e.message);
             return;
         }
-        console.log("cleared totalTransferSize")
 
 
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -71,12 +70,7 @@ export const usePopup = (): PopupProps => {
                 const tabId = tabs[0].id;
                 // @ts-ignore
                 chrome.tabs.reload(tabId, () => {
-                    console.log("reloading tab")
                     chrome.runtime.sendMessage({ command: "startStoringWebRequestPayloadSize", tabId });
-                    // setTimeout(() => {
-                    //     console.log("sending startStoringWebRequestPayloadSize message from usePopup")
-                    //     chrome.runtime.sendMessage({ command: "startStoringWebRequestPayloadSize", tabId });
-                    // }, 2000);
                 });
             }
         });

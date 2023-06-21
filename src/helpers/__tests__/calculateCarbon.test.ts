@@ -12,12 +12,6 @@ const mockCountries: Map<CountryName, number> = new Map([
     ["Bulgaria", 0.2],
     ["Croatia", 0.1],
 ]);
-// "United Kingdom" : 212.3,
-//     "Austria" : 111.2,
-//     "Belgium" : 161.9,
-//     "Bulgaria" : 372.1,
-//     "Croatia" : 227,
-
 
 const mockSmallTransferSize = 50 
 const mockLargeTransferSize = 500000 
