@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CO2_EMISSIONS_GRAMS_PER_GB, CountryName } from "../constants/Countries";
+import { CountryName } from "../constants/Countries";
 import { calculateAverageSpecificEmissionsHelper } from "../helpers/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "../helpers/calculateCarbon";
 

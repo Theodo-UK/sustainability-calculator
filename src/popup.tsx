@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { createRoot } from "react-dom/client";
 import { CountryDropdown } from './components/CountryDropdown'
-import { calculateCarbon } from "./helpers/calculateCarbon";
 import { usePopup } from "./components/usePopup";
 import { SelectedCountries } from "./components/selected-countries/SelectedCountries";
 

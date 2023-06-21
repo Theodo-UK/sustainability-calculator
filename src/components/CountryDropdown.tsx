@@ -1,5 +1,4 @@
-import React from 'react';
-import { Fragment } from 'react'
+import React, { Fragment } from 'react';
 import { Listbox, Transition } from '@headlessui/react'
 import { PlusIcon } from '@heroicons/react/20/solid'
 import { CO2_EMISSIONS_GRAMS_PER_GB, CountryName } from '../constants/Countries';

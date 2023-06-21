@@ -2,7 +2,6 @@ import { renderHook, act } from '@testing-library/react';
 
 import { CO2_EMISSIONS_GRAMS_PER_GB, CountryName } from '../constants/Countries';
 import { areMapsDeepEqual } from '../helpers/areMapsDeepEqual';
-import { mock } from 'node:test';
 import { usePopup } from '../components/usePopup';
 
 
