@@ -56,17 +56,26 @@ export const usePopup = (): PopupProps => {
             setError(e.message);
             return;
         }
+        try {
+            chrome.storage.local.set({["totalTransferSize"]: 0});
+        } catch (e: any) {
+            setError(e.message);
+            return;
+        } 
+        console.log("cleared totalTransferSize")
 
-        chrome.storage.local.remove("totalTransferSize");
 
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs.length > 0) {
                 const tabId = tabs[0].id;
                 // @ts-ignore
                 chrome.tabs.reload(tabId, () => {
-                    setTimeout(() => {
-                        chrome.runtime.sendMessage({ command: "getTransferSize", tabId });
-                    }, 2000);
+                    console.log("reloading tab")
+                    chrome.runtime.sendMessage({ command: "getTransferSize", tabId });
+                    // setTimeout(() => {
+                    //     console.log("sending getTransferSize message from usePopup")
+                    //     chrome.runtime.sendMessage({ command: "getTransferSize", tabId });
+                    // }, 2000);
                 });
             }
         });
@@ -92,12 +101,7 @@ export const usePopup = (): PopupProps => {
 
 
     useEffect(() => {
-        chrome.runtime.onMessage.addListener((message) => {
-            const accumulative = message.transferSize
-            if (accumulative >= 0) {
-                setTransferSize(transferSize + accumulative);
-            }
-        });
+        
     }, []);
 
 
