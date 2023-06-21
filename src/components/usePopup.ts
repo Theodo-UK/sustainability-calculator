@@ -58,7 +58,7 @@ export const usePopup = (): PopupProps => {
             return;
         }
         try {
-            chrome.storage.local.set({ ["totalTransferSize"]: 0 });
+            await chrome.storage.local.set({ ["totalTransferSize"]: 0 });
         } catch (e: any) {
             setError(e.message);
             return;
