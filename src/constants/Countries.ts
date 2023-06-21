@@ -1,4 +1,4 @@
-export const COUNTRIES = {
+export const CO2_EMISSIONS_GRAMS_PER_GB = {
     "World Average" : 421,
     "United Kingdom" : 212.3,
     "Austria" : 111.2,
@@ -52,4 +52,4 @@ export const COUNTRIES = {
     "Brazil" : 61.7,
 }
 
-export type CountryName = keyof typeof COUNTRIES;
+export type CountryName = keyof typeof CO2_EMISSIONS_GRAMS_PER_GB;

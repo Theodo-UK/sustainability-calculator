@@ -13,15 +13,15 @@ const mockCountries: Map<CountryName, number> = new Map([
     ["Croatia", 0.1],
 ]);
 
-const mockSmallTransferSize = 50 
-const mockLargeTransferSize = 500000 
+const mockSmallBytes = 50 
+const mockLargeBytes = 500000 
 
 describe('calculateCarbon', () => {
     it('country should return corresponding value', () => {
-        expect(calculateCarbon(mockSmallTransferSize, mockCountry)).toBeCloseTo(0.000017695)
+        expect(calculateCarbon(mockSmallBytes, mockCountry)).toBeCloseTo(0.000017695)
     })
 
     it('multiple countries should return corresponding carbon consumption for a given transfer size', () => {
-        expect(calculateCarbon(mockLargeTransferSize, mockCountries)).toBeCloseTo(0.16074)
+        expect(calculateCarbon(mockLargeBytes, mockCountries)).toBeCloseTo(0.16074)
     })
 })

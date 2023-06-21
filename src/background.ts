@@ -6,13 +6,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       (details) => {
         if (details.tabId === tabId) {
           const headers = details.responseHeaders;
-          const transferSizeHeader = headers?.find(
+          const contentLength = headers?.find(
             (header) => header.name.toLowerCase() === "content-length"
           );
 
-          if (transferSizeHeader?.value) {
-            const transferSize = parseInt(transferSizeHeader.value, 10);
-            updateTotalTransferSize(transferSize)
+          if (contentLength?.value) {
+            updateTotalBytesReceived(parseInt(contentLength.value, 10))
           }
         }
       },
@@ -24,9 +23,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true;
 });
 
-const updateTotalTransferSize = async (transferSize: number) => {
-  const previousTransferSize = (await chrome.storage.local.get("totalTransferSize"))["totalTransferSize"]
-  const totalTransferSize = previousTransferSize + transferSize
-  chrome.storage.local.set({ totalTransferSize });
+const updateTotalBytesReceived = async (bytesReceived: number) => {
+  const previousTotalBytesReceived = (await chrome.storage.local.get("totalBytesReceived"))["totalBytesReceived"]
+  const totalBytesReceived = previousTotalBytesReceived + bytesReceived
+  chrome.storage.local.set({ totalBytesReceived });
 }
 

@@ -1,6 +1,6 @@
-import { COUNTRIES, CountryName } from "../constants/Countries";
+import { CO2_EMISSIONS_GRAMS_PER_GB, CountryName } from "../constants/Countries";
 
-export const calculateCarbon = (transferSize: number, selectedCountries: Map<CountryName, number>): number => {
+export const calculateCarbon = (bytes: number, selectedCountries: Map<CountryName, number>): number => {
     const _selectedCountries = new Map(selectedCountries);
     let totalPercentage = 0;
 
@@ -25,7 +25,7 @@ export const calculateCarbon = (transferSize: number, selectedCountries: Map<Cou
     }
     let carbon = 0;
     _selectedCountries.forEach((percentage, country) => {
-        carbon += (transferSize / 1073741824) * COUNTRIES[country] * percentage;
+        carbon += (bytes / 1073741824) * CO2_EMISSIONS_GRAMS_PER_GB[country] * percentage;
     });
     return carbon;
 

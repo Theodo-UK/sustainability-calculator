@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { COUNTRIES, CountryName } from "../constants/Countries";
+import { CO2_EMISSIONS_GRAMS_PER_GB, CountryName } from "../constants/Countries";
 import { calculateAverageSpecificEmissionsHelper } from "../helpers/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "../helpers/calculateCarbon";
 
 export type PopupProps = {
-    transferSize: number;
+    totalBytesReceived: number;
     emissions: number;
     selectedCountries: Map<CountryName, number>;
     addSelectedCountry: (country: CountryName) => void;
@@ -16,7 +16,7 @@ export type PopupProps = {
 }
 
 export const usePopup = (): PopupProps => {
-    const [transferSize, setTransferSize] = useState(0);
+    const [totalBytesReceived, setTotalBytesReceived] = useState(0);
     const [emissions, setEmissions] = useState(0);
     const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>([["World Average", 0]]))
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
@@ -56,7 +56,7 @@ export const usePopup = (): PopupProps => {
             return;
         }
         try {
-            await chrome.storage.local.set({ ["totalTransferSize"]: 0 });
+            await chrome.storage.local.set({ ["totalBytesReceived"]: 0 });
         } catch (e: any) {
             setError(e.message);
             return;
@@ -91,29 +91,29 @@ export const usePopup = (): PopupProps => {
         setSelectedCountries(newMap);
     }
 
-    const updateTransferSizeViewOnChange = (changes: {
+    const totalBytesReceivedListener = (changes: {
         [key: string]: chrome.storage.StorageChange;
     }) => {
-        if (changes.totalTransferSize) {
-            setTransferSize(changes.totalTransferSize.newValue);
-            setEmissions(calculateCarbon(changes.totalTransferSize.newValue, selectedCountries));
+        if (changes.totalBytesReceived) {
+            setTotalBytesReceived(changes.totalBytesReceived.newValue);
+            setEmissions(calculateCarbon(changes.totalBytesReceived.newValue, selectedCountries));
         }
 
     }
 
     useEffect(() => {
 
-        chrome.storage.local.onChanged.addListener(updateTransferSizeViewOnChange);
+        chrome.storage.local.onChanged.addListener(totalBytesReceivedListener);
 
         return () => {
-            chrome.storage.local.onChanged.removeListener(updateTransferSizeViewOnChange);
+            chrome.storage.local.onChanged.removeListener(totalBytesReceivedListener);
         }
     }, []);
 
 
     return {
         emissions,
-        transferSize,
+        totalBytesReceived,
         selectedCountries,
         addSelectedCountry,
         removeSelectedCountry,
