@@ -8,15 +8,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         console.log("webRequest.onCompleted called in background.js")
         if (details.tabId === tabId) {
           const headers = details.responseHeaders;
-          const transferSizeHeader = headers.find(
+          const transferSizeHeader = headers?.find(
             (header) => header.name.toLowerCase() === "content-length"
           );
 
-          if (transferSizeHeader) {
-
+          if (transferSizeHeader?.value) {
             const transferSize = parseInt(transferSizeHeader.value, 10);
             updateTotalTransferSize(transferSize)
-
           }
         }
       },
@@ -28,7 +26,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   return true;
 });
 
-const updateTotalTransferSize = async (transferSize) => {
+const updateTotalTransferSize = async (transferSize: number) => {
   const previousTransferSize = (await chrome.storage.local.get("totalTransferSize"))["totalTransferSize"]
   const totalTransferSize = previousTransferSize + transferSize
   // console.log("previousTransferSize in storage: ", previousTransferSize)
