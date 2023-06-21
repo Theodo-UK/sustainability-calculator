@@ -27,12 +27,12 @@ export const Popup = () => {
         Calculate CO2 emissions
       </button>
       <div >
-        SCI: {} gCO2eq
+        SCI: { } gCO2eq
       </div>
       <div >
-        Specific Carbon Emissions (gC02 per byte): {averageSpecificEmissions}
+        Specific Carbon Emissions (gC02 per byte): {Math.round(averageSpecificEmissions * 100) / 100}
       </div>
-      <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry} setCountryPercentage={setCountryPercentage}/>
+      <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry} setCountryPercentage={setCountryPercentage} />
       <CountryDropdown addSelectedCountry={addSelectedCountry} />
       {error && <div>{error}</div>}
     </div>
