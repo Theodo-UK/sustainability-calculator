@@ -23,8 +23,13 @@ const mockChrome = {
 (global as any).chrome = mockChrome;
 
 describe('usePopup', () => {
+    const mockCountries: Map<CountryName, number> = new Map([
+        ["World Average", 0],
+    ]);
+
     beforeEach(() => {
         jest.clearAllMocks();
+
     });
 
     it('addSelectedCountry should update selectedCountries', () => {
@@ -33,7 +38,6 @@ describe('usePopup', () => {
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
 
-        const mockCountries: Map<CountryName, number> = new Map();
 
         mockCountries.set(mockCountry1, 0);
         act(() => {
@@ -53,9 +57,6 @@ describe('usePopup', () => {
 
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
-
-
-        const mockCountries: Map<CountryName, number> = new Map();
 
 
         mockCountries.set(mockCountry1, 0);
@@ -162,8 +163,8 @@ describe('usePopup', () => {
         const mockCountry2 = "United Kingdom";
         const mockCountry3 = "Finland";
         const mockCountry1Percentage = 0.4;
-        const dividedRemainingPercentage = (1 - mockCountry1Percentage) / 2;
-        const mockAverageSpecificEmissions = mockCountry1Percentage * COUNTRIES[mockCountry1] + dividedRemainingPercentage * COUNTRIES[mockCountry2] + dividedRemainingPercentage * COUNTRIES[mockCountry3];
+        const dividedRemainingPercentage = (1 - mockCountry1Percentage) / 3;
+        const mockAverageSpecificEmissions = mockCountry1Percentage * COUNTRIES[mockCountry1] + dividedRemainingPercentage * COUNTRIES[mockCountry2] + dividedRemainingPercentage * COUNTRIES[mockCountry3] + dividedRemainingPercentage * COUNTRIES["World Average"];
 
         act(() => {
             result.current.addSelectedCountry(mockCountry1);
@@ -172,7 +173,7 @@ describe('usePopup', () => {
         act(() => {
             result.current.addSelectedCountry(mockCountry2);
         });
-        
+
         act(() => {
             result.current.addSelectedCountry(mockCountry3);
         });
@@ -202,7 +203,7 @@ describe('usePopup', () => {
         act(() => {
             result.current.setCountryPercentage(mockCountry1, mockCountry1Percentage);
         });
-      
+
         act(() => {
             result.current.refreshAndGetSize()
         });

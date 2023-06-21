@@ -27,7 +27,7 @@ export const Popup = () => {
         Calculate CO2 emissions
       </button>
       <div >
-        SCI: {calculateCarbon(selectedCountries)} gCO2eq
+        SCI: {} gCO2eq
       </div>
       <div >
         Specific Carbon Emissions (gC02 per byte): {averageSpecificEmissions}
