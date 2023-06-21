@@ -28,18 +28,12 @@ export const Popup = () => {
       <button onClick={() => refreshAndGetSize()}>
         Calculate CO2 emissions
       </button>
-      <div >
-        Total Data Received: {totalBytesReceived} bytes
-      </div>
-      <div >
-        Specific Carbon Emissions (grams of C02 per byte): {Math.round(averageSpecificEmissions * 100) / 100}
-      </div>
-      <div >
-        Software Carbon Intensity: {Math.round(emissions * 100) / 100} grams of CO2
-      </div>
+      <p >Total Data Received: {totalBytesReceived} bytes</p>
+      <p >Specific Carbon Emissions (grams of C02 per byte): {Math.round(averageSpecificEmissions * 100) / 100}</p>
+      <p >Software Carbon Intensity: {Math.round(emissions * 100) / 100} grams of CO2</p>
       <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry} setCountryPercentage={setCountryPercentage} />
       <CountryDropdown addSelectedCountry={addSelectedCountry} />
-      {error && <div>{error}</div>}
+      {error && <p>{error}</p>}
     </div>
   );
 };
