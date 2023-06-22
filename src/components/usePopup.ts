@@ -75,18 +75,11 @@ export const usePopup = (): PopupProps => {
     };
 
     const addSelectedCountry = (country: CountryName) => {
-        const newMap = new Map(selectedCountries);
-        if (newMap.has(country)) {
-            return
-        }
-        newMap.set(country, 0);
+        const newMap = new Map(selectedCountries).set(country, 0);
         setSelectedCountries(newMap);
     }
     const removeSelectedCountry = (country: CountryName) => {
         const newMap = new Map(selectedCountries);
-        if (!newMap.has(country)) {
-            return
-        }
         newMap.delete(country);
         setSelectedCountries(newMap);
     }
@@ -108,7 +101,7 @@ export const usePopup = (): PopupProps => {
         return () => {
             chrome.storage.local.onChanged.removeListener(totalBytesReceivedListener);
         }
-    }, []);
+    }, [selectedCountries]);
 
 
     return {
