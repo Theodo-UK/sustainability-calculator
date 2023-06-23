@@ -9,6 +9,9 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
   ],
+  plugins: [
+    "prettier",
+  ],
   overrides: [
     {
       files: ["*.ts", "*.tsx", "*.d.ts"],
@@ -20,5 +23,8 @@ module.exports = {
   rules: {
     "import/order": "off",
     "react-hooks/exhaustive-deps": "warn",
+    "prettier/prettier": ["warn", {
+      "tabWidth": 4,
+    }],
   },
 };
