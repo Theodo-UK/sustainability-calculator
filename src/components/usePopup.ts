@@ -89,17 +89,18 @@ export const usePopup = (): PopupProps => {
         setSelectedCountries(newMap);
     }
 
-    const totalBytesReceivedListener = (changes: {
-        [key: string]: chrome.storage.StorageChange;
-    }) => {
-        if (changes.totalBytesReceived) {
-            setTotalBytesReceived(changes.totalBytesReceived.newValue);
-            setEmissions(calculateCarbon(changes.totalBytesReceived.newValue, selectedCountries));
-        }
-
-    }
+    
 
     useEffect(() => {
+        const totalBytesReceivedListener = (changes: {
+            [key: string]: chrome.storage.StorageChange;
+        }) => {
+            if (changes.totalBytesReceived) {
+                setTotalBytesReceived(changes.totalBytesReceived.newValue);
+                setEmissions(calculateCarbon(changes.totalBytesReceived.newValue, selectedCountries));
+            }
+    
+        }
 
         chrome.storage.local.onChanged.addListener(totalBytesReceivedListener);
 
