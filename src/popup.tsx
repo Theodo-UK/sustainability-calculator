@@ -38,5 +38,9 @@ export const Popup = () => {
 };
 
 const rootElement = document.getElementById("react-target");
-// @ts-ignore
+
+if (!rootElement) {
+  throw new Error("Couldn't find react target");
+}
+
 createRoot(rootElement).render(<Popup />);
