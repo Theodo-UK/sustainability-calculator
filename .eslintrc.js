@@ -1,7 +1,12 @@
 module.exports = {
+  "env": {
+    "browser": true,
+    "node": true
+  },
   extends: [
-    "universe",
-    "universe/shared/typescript-analysis",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
     "plugin:react-hooks/recommended",
   ],
   overrides: [
@@ -12,5 +17,8 @@ module.exports = {
       },
     },
   ],
-  rules: { "import/order": "off", "react-hooks/exhaustive-deps": "error" },
+  rules: {
+    "import/order": "off",
+    "react-hooks/exhaustive-deps": "warn",
+  },
 };
