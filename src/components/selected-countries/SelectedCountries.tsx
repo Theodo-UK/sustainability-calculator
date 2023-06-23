@@ -15,9 +15,9 @@ export const SelectedCountries = ({ selectedCountries, removeSelectedCountry, se
                 Selected Countries
             </h3>
             <ul>
-                {Array.from(selectedCountries).map(([country, percentage]) => (
+                {Array.from(selectedCountries).map(([country]) => (
                     <li key={country}>
-                        <button onClick={() => removeSelectedCountry(country as CountryName)}>
+                        <button onClick={() => removeSelectedCountry(country)}>
                             -
                         </button>
                         {country} (% users): 

@@ -6,7 +6,7 @@ export const calculateCarbon = (bytes: number, selectedCountries: Map<CountryNam
 
     let noOfCountriesMissingPercentages = 0;
 
-    _selectedCountries.forEach((value, key) => {
+    _selectedCountries.forEach((value) => {
         totalPercentage += value;
         if (value === 0) {
             noOfCountriesMissingPercentages += 1;
