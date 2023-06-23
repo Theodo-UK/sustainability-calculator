@@ -65,6 +65,7 @@ export const usePopup = (): PopupProps => {
             }
             return;
         }
+        setError(undefined);
 
 
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
