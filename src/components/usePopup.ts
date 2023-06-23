@@ -51,14 +51,18 @@ export const usePopup = (): PopupProps => {
         try {
             sumPercentages();
             calculateAverageSpecificEmissions();
-        } catch (e: any) {
-            setError(e.message);
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setError(e.message);
+            }
             return;
         }
         try {
             await chrome.storage.local.set({ ["totalBytesReceived"]: 0 });
-        } catch (e: any) {
-            setError(e.message);
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setError(e.message);
+            }
             return;
         }
 
@@ -66,10 +70,11 @@ export const usePopup = (): PopupProps => {
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs.length > 0) {
                 const tabId = tabs[0].id;
-                // @ts-ignore
-                chrome.tabs.reload(tabId, () => {
-                    chrome.runtime.sendMessage({ command: "startStoringWebRequestPayloadSize", tabId });
-                });
+                if (tabId) {
+                    chrome.tabs.reload(tabId, {}, () => {
+                        chrome.runtime.sendMessage({ command: "startStoringWebRequestPayloadSize", tabId });
+                    });
+                }
             }
         });
     };
@@ -84,17 +89,18 @@ export const usePopup = (): PopupProps => {
         setSelectedCountries(newMap);
     }
 
-    const totalBytesReceivedListener = (changes: {
-        [key: string]: chrome.storage.StorageChange;
-    }) => {
-        if (changes.totalBytesReceived) {
-            setTotalBytesReceived(changes.totalBytesReceived.newValue);
-            setEmissions(calculateCarbon(changes.totalBytesReceived.newValue, selectedCountries));
-        }
-
-    }
+    
 
     useEffect(() => {
+        const totalBytesReceivedListener = (changes: {
+            [key: string]: chrome.storage.StorageChange;
+        }) => {
+            if (changes.totalBytesReceived) {
+                setTotalBytesReceived(changes.totalBytesReceived.newValue);
+                setEmissions(calculateCarbon(changes.totalBytesReceived.newValue, selectedCountries));
+            }
+    
+        }
 
         chrome.storage.local.onChanged.addListener(totalBytesReceivedListener);
 

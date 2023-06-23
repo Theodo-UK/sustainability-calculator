@@ -28,7 +28,7 @@ export const Popup = () => {
         Calculate CO2 emissions
       </button>
       <p >Total Data Received: {totalBytesReceived} bytes</p>
-      <p >Specific Carbon Emissions (grams of C02 per byte): {Math.round(averageSpecificEmissions * 100) / 100}</p>
+      <p >Specific Carbon Emissions (grams of C02 per gigabyte): {Math.round(averageSpecificEmissions * 100) / 100}</p>
       <p >Software Carbon Intensity: {Math.round(emissions * 100) / 100} grams of CO2</p>
       <SelectedCountries selectedCountries={selectedCountries} removeSelectedCountry={removeSelectedCountry} setCountryPercentage={setCountryPercentage} />
       <CountryDropdown addSelectedCountry={addSelectedCountry} />
@@ -38,5 +38,9 @@ export const Popup = () => {
 };
 
 const rootElement = document.getElementById("react-target");
-// @ts-ignore
+
+if (!rootElement) {
+  throw new Error("Couldn't find react target");
+}
+
 createRoot(rootElement).render(<Popup />);

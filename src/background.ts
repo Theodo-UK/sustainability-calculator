@@ -1,4 +1,4 @@
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message) => {
 
   if (message.command === "startStoringWebRequestPayloadSize") {
     const { tabId } = message;
