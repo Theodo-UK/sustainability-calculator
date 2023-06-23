@@ -22,7 +22,7 @@ module.exports = {
   ],
   rules: {
     "import/order": "off",
-    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/exhaustive-deps": "error",
     "prettier/prettier": ["warn", {
       "tabWidth": 4,
     }],
