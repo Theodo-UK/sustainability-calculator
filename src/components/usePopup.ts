@@ -51,14 +51,18 @@ export const usePopup = (): PopupProps => {
         try {
             sumPercentages();
             calculateAverageSpecificEmissions();
-        } catch (e: any) {
-            setError(e.message);
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setError(e.message);
+            }
             return;
         }
         try {
             await chrome.storage.local.set({ ["totalBytesReceived"]: 0 });
-        } catch (e: any) {
-            setError(e.message);
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setError(e.message);
+            }
             return;
         }
 
