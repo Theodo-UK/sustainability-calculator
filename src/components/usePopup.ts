@@ -3,6 +3,7 @@ import { CountryName } from "../constants/Countries";
 import { calculateAverageSpecificEmissionsHelper } from "../helpers/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "../helpers/calculateCarbon";
 import { ISelectedCountriesRepository } from "../data/selected_countries/ISelectedCountriesRepository";
+import { useMountEffect } from "../helpers/useOnceAfterFirstMount";
 
 export type PopupProps = {
     totalBytesReceived: number;
@@ -114,11 +115,12 @@ export const usePopup = (): PopupProps => {
         }
     }, [selectedCountries]);
 
-    useEffect(() => {
+    useMountEffect(() => {
         selectedCountriesRepository.getSelectedCountriesAndPercentages().then((newMap) => {
+            console.log(`useEffect selectedCountries: ${newMap}`)
             setSelectedCountries(newMap);
         });
-    },[selectedCountriesRepository]
+    }
     );
 
 
@@ -135,3 +137,5 @@ export const usePopup = (): PopupProps => {
     }
 
 }
+
+
