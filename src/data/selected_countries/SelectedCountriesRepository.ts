@@ -1,13 +1,10 @@
 import { CountryName } from "../../constants/Countries";
 import { ISelectedCountriesRepository } from "./ISelectedCountriesRepository";
-import { SelectedCountriesLocalDataSource } from "./SelectedCountriesLocalDataSource";
 import { SelectedCountriesRemoteDataSource } from "./SelectedCountriesRemoteDataSource";
 
 export class SelectedCountriesRepository
     implements ISelectedCountriesRepository
 {
-    localDataSource: SelectedCountriesLocalDataSource =
-        new SelectedCountriesLocalDataSource();
     remoteDataSource: SelectedCountriesRemoteDataSource =
         new SelectedCountriesRemoteDataSource();
 
@@ -20,12 +17,9 @@ export class SelectedCountriesRepository
         try {
             selectedCountriesAndPercentages =
                 await this.remoteDataSource.getSelectedCountriesAndPercentages();
-            this.localDataSource.setSelectedCountriesAndPercentages(
-                selectedCountriesAndPercentages
-            );
+            
         } catch (e: unknown) {
-            selectedCountriesAndPercentages =
-                this.localDataSource.getSelectedCountriesAndPercentages();
+            throw Error(e as string);
         }
 
         if (selectedCountriesAndPercentages === null) {
@@ -38,7 +32,6 @@ export class SelectedCountriesRepository
     async addSelectedCountry(countryName: CountryName): Promise<void> {
         try {
             await this.remoteDataSource.addSelectedCountry(countryName);
-            this.localDataSource.addSelectedCountry(countryName);
         } catch (e: unknown) {
             throw Error(e as string);
         }
@@ -47,7 +40,6 @@ export class SelectedCountriesRepository
     async removeSelectedCountry(countryName: CountryName): Promise<void> {
         try {
             await this.remoteDataSource.removeSelectedCountry(countryName);
-            this.localDataSource.removeSelectedCountry(countryName);
         } catch (e: unknown) {
             throw Error(e as string);
         }
@@ -59,10 +51,6 @@ export class SelectedCountriesRepository
     ): Promise<void> {
         try {
             await this.remoteDataSource.setSelectedCountryPercentage(
-                countryName,
-                percentage
-            );
-            this.localDataSource.setSelectedCountryPercentage(
                 countryName,
                 percentage
             );
