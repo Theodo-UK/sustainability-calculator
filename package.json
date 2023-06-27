@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --watch --config webpack.dev.js",
+    "dev": "webpack --env development --watch --config webpack.dev.js",
     "start": "webpack-dev-server",
     "build": "webpack --config webpack.prod.js",
     "test": "jest"
