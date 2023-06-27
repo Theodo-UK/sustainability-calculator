@@ -22,7 +22,7 @@ export const usePopup = (): PopupProps => {
 
     const [totalBytesReceived, setTotalBytesReceived] = useState(0);
     const [emissions, setEmissions] = useState(0);
-    const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>([["World Average", 0]]))
+    const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>())
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [error, setError] = useState<string>();
 
