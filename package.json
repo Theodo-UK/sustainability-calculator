@@ -7,7 +7,7 @@
     "dev": "webpack --env development --watch --config webpack.dev.js",
     "start": "webpack-dev-server",
     "build": "webpack --config webpack.prod.js",
-    "test": "jest"
+    "test": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config --verbose --watch"
   },
   "keywords": [],
   "author": "",
