@@ -15,7 +15,7 @@ export type PopupProps = {
     averageSpecificEmissions: number;
     refreshAndGetSize: () => Promise<void>;
     error?: string;
-}
+};
 
 export const usePopup = (): PopupProps => {
     const selectedCountriesRepository : ISelectedCountriesRepository =  ISelectedCountriesRepository.instance;
@@ -30,26 +30,32 @@ export const usePopup = (): PopupProps => {
         await selectedCountriesRepository.setSelectedCountryPercentage(country, percentage);
         const newMap = await selectedCountriesRepository.getSelectedCountriesAndPercentages();
         setSelectedCountries(newMap);
-    }
+    };
 
     const calculateAverageSpecificEmissions = () => {
-        const newAverageSpecificEmissions = calculateAverageSpecificEmissionsHelper(selectedCountries);
-        setAverageSpecificEmissions(newAverageSpecificEmissions)
-
-    }
+        const newAverageSpecificEmissions =
+            calculateAverageSpecificEmissionsHelper(selectedCountries);
+        setAverageSpecificEmissions(newAverageSpecificEmissions);
+    };
 
     const sumPercentages = () => {
-        const percentage = Array.from(selectedCountries.values()).reduce((accumulator, country) => {
-            return accumulator + country;
-        }, 0);
+        const percentage = Array.from(selectedCountries.values()).reduce(
+            (accumulator, country) => {
+                return accumulator + country;
+            },
+            0
+        );
 
         if (percentage > 1) {
-            throw new Error(`Error: The sum of the percentages is greater than 100%. Current sum: ${percentage * 100}%`);
+            throw new Error(
+                `Error: The sum of the percentages is greater than 100%. Current sum: ${
+                    percentage * 100
+                }%`
+            );
         }
 
         return percentage;
-    }
-
+    };
 
     const refreshAndGetSize = async () => {
         try {
@@ -69,14 +75,17 @@ export const usePopup = (): PopupProps => {
             }
             return;
         }
-
+        setError(undefined);
 
         chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             if (tabs.length > 0) {
                 const tabId = tabs[0].id;
                 if (tabId) {
                     chrome.tabs.reload(tabId, {}, () => {
-                        chrome.runtime.sendMessage({ command: "startStoringWebRequestPayloadSize", tabId });
+                        chrome.runtime.sendMessage({
+                            command: "startStoringWebRequestPayloadSize",
+                            tabId,
+                        });
                     });
                 }
             }
@@ -93,9 +102,7 @@ export const usePopup = (): PopupProps => {
         await selectedCountriesRepository.removeSelectedCountry(country);
         const newMap = await selectedCountriesRepository.getSelectedCountriesAndPercentages();
         setSelectedCountries(newMap);
-    }
-
-    
+    };
 
     useEffect(() => {
         const totalBytesReceivedListener = (changes: {
@@ -103,16 +110,22 @@ export const usePopup = (): PopupProps => {
         }) => {
             if (changes.totalBytesReceived) {
                 setTotalBytesReceived(changes.totalBytesReceived.newValue);
-                setEmissions(calculateCarbon(changes.totalBytesReceived.newValue, selectedCountries));
+                setEmissions(
+                    calculateCarbon(
+                        changes.totalBytesReceived.newValue,
+                        selectedCountries
+                    )
+                );
             }
-    
-        }
+        };
 
         chrome.storage.local.onChanged.addListener(totalBytesReceivedListener);
 
         return () => {
-            chrome.storage.local.onChanged.removeListener(totalBytesReceivedListener);
-        }
+            chrome.storage.local.onChanged.removeListener(
+                totalBytesReceivedListener
+            );
+        };
     }, [selectedCountries]);
 
     useMountEffect(() => {
@@ -121,7 +134,6 @@ export const usePopup = (): PopupProps => {
         });
     }
     );
-
 
     return {
         emissions,
@@ -136,5 +148,3 @@ export const usePopup = (): PopupProps => {
     }
 
 }
-
-
