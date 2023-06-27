@@ -117,7 +117,6 @@ export const usePopup = (): PopupProps => {
 
     useMountEffect(() => {
         selectedCountriesRepository.getSelectedCountriesAndPercentages().then((newMap) => {
-            console.log(`useEffect selectedCountries: ${newMap}`)
             setSelectedCountries(newMap);
         });
     }

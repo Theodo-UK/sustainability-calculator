@@ -8,7 +8,6 @@ export class SelectedCountriesRemoteDataSource {
     > {
         try {
             const data = await chrome.storage.local.get("selectedCountriesAndPercentages");
-            console.log(data)
 
             if (data["selectedCountriesAndPercentages"] === undefined) {
                 const defaultMap = new Map<CountryName, number>([["World Average", 0]]);
@@ -72,8 +71,6 @@ export class SelectedCountriesRemoteDataSource {
                     `SelectedCountriesRemoteDataSource.setSelectedCountryPercentage: countryName ${countryName} not found`
                 );
             }
-
-            console.log('setting: ', percentage)
 
             await chrome.storage.local.set({
                 selectedCountriesAndPercentages: maptoJSON(newMap),
