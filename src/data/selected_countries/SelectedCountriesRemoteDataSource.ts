@@ -8,6 +8,7 @@ export class SelectedCountriesRemoteDataSource {
     > {
         try {
             const data = await chrome.storage.local.get("selectedCountriesAndPercentages");
+            console.log(data)
 
             if (data["selectedCountriesAndPercentages"] === undefined) {
                 const defaultMap = new Map<CountryName, number>([["World Average", 0]]);
@@ -27,43 +28,30 @@ export class SelectedCountriesRemoteDataSource {
 
     async addSelectedCountry(countryName: CountryName): Promise<void> {
         try {
-            const data = (
-                await chrome.storage.local.get(
-                    "selectedCountriesAndPercentages"
-                )
-            )["selectedCountriesAndPercentages"];
-
-            console.log(`addSelectedCountry: ${data}`);
-            const newMap = new Map<CountryName, number>();
+            const newMap = await this.getSelectedCountriesAndPercentages();
 
             if (!newMap.has(countryName)) {
                 newMap.set(countryName, 0);
             }
 
             await chrome.storage.local.set({
-                selectedCountriesAndPercentages: newMap,
+                selectedCountriesAndPercentages: maptoJSON(newMap),
             });
+
         } catch (e: unknown) {
             throw Error(e as string);
         }
     }
     async removeSelectedCountry(countryName: CountryName): Promise<void> {
         try {
-            const data = (
-                await chrome.storage.local.get(
-                    "selectedCountriesAndPercentages"
-                )
-            )["selectedCountriesAndPercentages"];
-
-            console.log(`removeSelectedCountry: ${data}`);
-            const newMap = new Map<CountryName, number>();
+            const newMap = await this.getSelectedCountriesAndPercentages();
 
             if (newMap.has(countryName)) {
                 newMap.delete(countryName);
             }
 
             await chrome.storage.local.set({
-                selectedCountriesAndPercentages: newMap,
+                selectedCountriesAndPercentages: maptoJSON(newMap),
             });
         } catch (e: unknown) {
             throw Error(e as string);
@@ -75,14 +63,7 @@ export class SelectedCountriesRemoteDataSource {
         percentage: number
     ): Promise<void> {
         try {
-            const data = (
-                await chrome.storage.local.get(
-                    "selectedCountriesAndPercentages"
-                )
-            )["selectedCountriesAndPercentages"];
-
-            console.log(`setSelectedCountryPercentage: ${data}`);
-            const newMap = new Map<CountryName, number>();
+            const newMap = await this.getSelectedCountriesAndPercentages();
 
             if (newMap.has(countryName)) {
                 newMap.set(countryName, percentage);
@@ -92,8 +73,10 @@ export class SelectedCountriesRemoteDataSource {
                 );
             }
 
+            console.log('setting: ', percentage)
+
             await chrome.storage.local.set({
-                selectedCountriesAndPercentages: newMap,
+                selectedCountriesAndPercentages: maptoJSON(newMap),
             });
         } catch (e: unknown) {
             throw Error(e as string);

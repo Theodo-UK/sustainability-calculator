@@ -26,9 +26,9 @@ export const usePopup = (): PopupProps => {
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [error, setError] = useState<string>();
 
-    const setCountryPercentage = (country: CountryName, percentage: number) => {
-        const newMap = new Map(selectedCountries);
-        newMap.set(country, percentage);
+    const setCountryPercentage = async (country: CountryName, percentage: number) => {
+        await selectedCountriesRepository.setSelectedCountryPercentage(country, percentage);
+        const newMap = await selectedCountriesRepository.getSelectedCountriesAndPercentages();
         setSelectedCountries(newMap);
     }
 
