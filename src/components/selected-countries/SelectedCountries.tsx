@@ -15,13 +15,13 @@ export const SelectedCountries = ({ selectedCountries, removeSelectedCountry, se
                 Selected Countries
             </h3>
             <ul>
-                {Array.from(selectedCountries).map(([country]) => (
+                {Array.from(selectedCountries).map(([country, percentage]) => (
                     <li key={country}>
                         <button onClick={() => removeSelectedCountry(country)}>
                             -
                         </button>
                         {country} (% users): 
-                        <input type="number" onChange={(e) => setCountryPercentage(country, Number(e.target.value) / 100)} />
+                        <input type="number" defaultValue={percentage * 100} onChange={(e) => setCountryPercentage(country, Number(e.target.value) / 100)} />
                     </li>
                 ))}
             </ul>
