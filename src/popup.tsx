@@ -22,8 +22,11 @@ export const Popup = () => {
             <h1 className="text-3xl font-bold underline">
                 Sustainability Calculator
             </h1>
-            <button onClick={() => refreshAndGetSize()}>
-                Calculate CO2 emissions
+            <button onClick={() => refreshAndGetSize(false)}>
+                Calculate CO2 emissions with soft refresh
+            </button>
+            <button onClick={() => refreshAndGetSize(true)}>
+                Calculate CO2 emissions with hard refresh
             </button>
             <p>Total Data Received: {totalBytesReceived} bytes</p>
             <p>
