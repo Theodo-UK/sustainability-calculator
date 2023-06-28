@@ -18,17 +18,27 @@ export type PopupProps = {
 };
 
 export const usePopup = (): PopupProps => {
-    const selectedCountriesRepository : ISelectedCountriesRepository =  ISelectedCountriesRepository.instance;
+    const selectedCountriesRepository: ISelectedCountriesRepository =
+        ISelectedCountriesRepository.instance;
 
     const [totalBytesReceived, setTotalBytesReceived] = useState(0);
     const [emissions, setEmissions] = useState(0);
-    const [selectedCountries, setSelectedCountries] = useState<Map<CountryName, number>>(new Map<CountryName, number>())
+    const [selectedCountries, setSelectedCountries] = useState<
+        Map<CountryName, number>
+    >(new Map<CountryName, number>());
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [error, setError] = useState<string>();
 
-    const setCountryPercentage = async (country: CountryName, percentage: number) => {
-        await selectedCountriesRepository.setSelectedCountryPercentage(country, percentage);
-        const newMap = await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+    const setCountryPercentage = async (
+        country: CountryName,
+        percentage: number
+    ) => {
+        await selectedCountriesRepository.setSelectedCountryPercentage(
+            country,
+            percentage
+        );
+        const newMap =
+            await selectedCountriesRepository.getSelectedCountriesAndPercentages();
         setSelectedCountries(newMap);
     };
 
@@ -94,13 +104,15 @@ export const usePopup = (): PopupProps => {
 
     const addSelectedCountry = async (country: CountryName) => {
         await selectedCountriesRepository.addSelectedCountry(country);
-        const newMap = await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+        const newMap =
+            await selectedCountriesRepository.getSelectedCountriesAndPercentages();
         setSelectedCountries(newMap);
-    }
-    
+    };
+
     const removeSelectedCountry = async (country: CountryName) => {
         await selectedCountriesRepository.removeSelectedCountry(country);
-        const newMap = await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+        const newMap =
+            await selectedCountriesRepository.getSelectedCountriesAndPercentages();
         setSelectedCountries(newMap);
     };
 
@@ -129,11 +141,12 @@ export const usePopup = (): PopupProps => {
     }, [selectedCountries]);
 
     useMountEffect(() => {
-        selectedCountriesRepository.getSelectedCountriesAndPercentages().then((newMap) => {
-            setSelectedCountries(newMap);
-        });
-    }
-    );
+        selectedCountriesRepository
+            .getSelectedCountriesAndPercentages()
+            .then((newMap) => {
+                setSelectedCountries(newMap);
+            });
+    });
 
     return {
         emissions,
@@ -145,6 +158,5 @@ export const usePopup = (): PopupProps => {
         averageSpecificEmissions,
         refreshAndGetSize,
         error,
-    }
-
-}
+    };
+};

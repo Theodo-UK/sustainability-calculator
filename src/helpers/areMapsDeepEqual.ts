@@ -1,4 +1,4 @@
-export function areMapsDeepEqual(map1: Map<any, any>, map2: Map<any, any>) {
+export function areMapsDeepEqual<K, V>(map1: Map<K, V>, map2: Map<K, V>) {
     let result = true;
     if (map1.size !== map2.size) {
         return false;
@@ -7,7 +7,7 @@ export function areMapsDeepEqual(map1: Map<any, any>, map2: Map<any, any>) {
         const testVal = map2.get(key);
         if (testVal !== val || (testVal === undefined && !map2.has(key))) {
             result = false;
-            return 
+            return;
         }
     });
     return result;
