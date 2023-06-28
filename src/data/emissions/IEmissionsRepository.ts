@@ -15,4 +15,5 @@ export abstract class IEmissionsRepository {
 export type EmissionsData = {
     bytes: number;
     emissions: number;
+    specificEmissions: number;
 };

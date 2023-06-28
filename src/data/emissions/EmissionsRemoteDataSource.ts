@@ -9,6 +9,7 @@ export class EmissionsRemoteDataSource {
                 const defaultCalculation: EmissionsData = {
                     bytes: 0,
                     emissions: 0,
+                    specificEmissions: 0,
                 };
 
                 await chrome.storage.local.set({
