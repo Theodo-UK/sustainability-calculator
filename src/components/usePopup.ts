@@ -4,6 +4,7 @@ import { calculateAverageSpecificEmissionsHelper } from "../helpers/calculateAve
 import { calculateCarbon } from "../helpers/calculateCarbon";
 import { ISelectedCountriesRepository } from "../data/selected_countries/ISelectedCountriesRepository";
 import { useMountEffect } from "../helpers/useOnceAfterFirstMount";
+import { IEmissionsRepository } from "../data/emissions/IEmissionsRepository";
 
 export type PopupProps = {
     totalBytesReceived: number;
@@ -20,6 +21,8 @@ export type PopupProps = {
 export const usePopup = (): PopupProps => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
         ISelectedCountriesRepository.instance;
+    const emissionsRepository: IEmissionsRepository =
+        IEmissionsRepository.instance;
 
     const [totalBytesReceived, setTotalBytesReceived] = useState(0);
     const [emissions, setEmissions] = useState(0);
@@ -122,12 +125,16 @@ export const usePopup = (): PopupProps => {
         }) => {
             if (changes.totalBytesReceived) {
                 setTotalBytesReceived(changes.totalBytesReceived.newValue);
-                setEmissions(
-                    calculateCarbon(
-                        changes.totalBytesReceived.newValue,
-                        selectedCountries
-                    )
+                const _emissions = calculateCarbon(
+                    changes.totalBytesReceived.newValue,
+                    selectedCountries
                 );
+                setEmissions(_emissions);
+                emissionsRepository.storeLastCalculation({
+                    bytes: changes.totalBytesReceived.newValue,
+                    emissions: _emissions,
+                    specificEmissions: averageSpecificEmissions,
+                });
             }
         };
 
@@ -138,7 +145,7 @@ export const usePopup = (): PopupProps => {
                 totalBytesReceivedListener
             );
         };
-    }, [selectedCountries]);
+    }, [selectedCountries, averageSpecificEmissions, emissionsRepository]);
 
     useMountEffect(() => {
         selectedCountriesRepository
@@ -146,6 +153,13 @@ export const usePopup = (): PopupProps => {
             .then((newMap) => {
                 setSelectedCountries(newMap);
             });
+    });
+    useMountEffect(() => {
+        emissionsRepository.getLastCalculation().then((emissionsData) => {
+            setTotalBytesReceived(emissionsData.bytes);
+            setEmissions(emissionsData.emissions);
+            setAverageSpecificEmissions(emissionsData.specificEmissions);
+        });
     });
 
     return {
