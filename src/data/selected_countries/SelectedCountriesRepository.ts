@@ -17,7 +17,6 @@ export class SelectedCountriesRepository
         try {
             selectedCountriesAndPercentages =
                 await this.remoteDataSource.getSelectedCountriesAndPercentages();
-            
         } catch (e: unknown) {
             throw Error(e as string);
         }
