@@ -13,7 +13,7 @@ export type PopupProps = {
     removeSelectedCountry: (country: CountryName) => void;
     setCountryPercentage: (country: CountryName, percentage: number) => void;
     averageSpecificEmissions: number;
-    refreshAndGetSize: () => Promise<void>;
+    refreshAndGetSize: (bypassCache: boolean) => Promise<void>;
     error?: string;
 };
 
@@ -67,7 +67,7 @@ export const usePopup = (): PopupProps => {
         return percentage;
     };
 
-    const refreshAndGetSize = async () => {
+    const refreshAndGetSize = async (bypassCache: boolean) => {
         try {
             sumPercentages();
             calculateAverageSpecificEmissions();
@@ -91,12 +91,18 @@ export const usePopup = (): PopupProps => {
             if (tabs.length > 0) {
                 const tabId = tabs[0].id;
                 if (tabId) {
-                    chrome.tabs.reload(tabId, {}, () => {
-                        chrome.runtime.sendMessage({
-                            command: "startStoringWebRequestPayloadSize",
-                            tabId,
-                        });
-                    });
+                    chrome.tabs.reload(
+                        tabId,
+                        {
+                            bypassCache: bypassCache,
+                        },
+                        () => {
+                            chrome.runtime.sendMessage({
+                                command: "startStoringWebRequestPayloadSize",
+                                tabId,
+                            });
+                        }
+                    );
                 }
             }
         });
