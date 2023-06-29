@@ -6,20 +6,7 @@ import { ISelectedCountriesRepository } from "../data/selected_countries/ISelect
 import { useMountEffect } from "../helpers/useOnceAfterFirstMount";
 import { IEmissionsRepository } from "../data/emissions/IEmissionsRepository";
 
-export type PopupProps = {
-    totalBytesReceived: number;
-    emissions: number;
-    selectedCountries: Map<CountryName, number>;
-    addSelectedCountry: (country: CountryName) => void;
-    removeSelectedCountry: (country: CountryName) => void;
-    setCountryPercentage: (country: CountryName, percentage: number) => void;
-    averageSpecificEmissions: number;
-    refreshAndGetSize: (bypassCache: boolean) => Promise<void>;
-    stopRecording: () => void;
-    error?: string;
-};
-
-export const usePopup = (): PopupProps => {
+export const usePopup = () => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
         ISelectedCountriesRepository.instance;
     const emissionsRepository: IEmissionsRepository =
