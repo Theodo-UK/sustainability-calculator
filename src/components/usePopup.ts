@@ -6,19 +6,7 @@ import { ISelectedCountriesRepository } from "../data/selected_countries/ISelect
 import { useMountEffect } from "../helpers/useOnceAfterFirstMount";
 import { IEmissionsRepository } from "../data/emissions/IEmissionsRepository";
 
-export type PopupProps = {
-    totalBytesReceived: number;
-    emissions: number;
-    selectedCountries: Map<CountryName, number>;
-    addSelectedCountry: (country: CountryName) => void;
-    removeSelectedCountry: (country: CountryName) => void;
-    setCountryPercentage: (country: CountryName, percentage: number) => void;
-    averageSpecificEmissions: number;
-    refreshAndGetSize: (bypassCache: boolean) => Promise<void>;
-    error?: string;
-};
-
-export const usePopup = (): PopupProps => {
+export const usePopup = () => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
         ISelectedCountriesRepository.instance;
     const emissionsRepository: IEmissionsRepository =
@@ -111,6 +99,20 @@ export const usePopup = (): PopupProps => {
         });
     };
 
+    const stopRecording = () => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0) {
+                const tabId = tabs[0].id;
+                if (tabId) {
+                    chrome.runtime.sendMessage({
+                        command: "stopStoringWebRequestPayloadSize",
+                        tabId,
+                    });
+                }
+            }
+        });
+    };
+
     const addSelectedCountry = async (country: CountryName) => {
         await selectedCountriesRepository.addSelectedCountry(country);
         const newMap =
@@ -177,6 +179,7 @@ export const usePopup = (): PopupProps => {
         setCountryPercentage,
         averageSpecificEmissions,
         refreshAndGetSize,
+        stopRecording,
         error,
     };
 };
