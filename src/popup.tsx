@@ -14,6 +14,7 @@ export const Popup = () => {
         setCountryPercentage,
         averageSpecificEmissions,
         refreshAndGetSize,
+        stopRecording,
         error,
     } = usePopup();
 
@@ -23,11 +24,12 @@ export const Popup = () => {
                 Sustainability Calculator
             </h1>
             <button onClick={() => refreshAndGetSize(false)}>
-                Calculate CO2 emissions with soft refresh
+                Calculate CO2 emissions as returning user
             </button>
             <button onClick={() => refreshAndGetSize(true)}>
-                Calculate CO2 emissions with hard refresh
+                Calculate CO2 emissions as new user
             </button>
+            <button onClick={() => stopRecording()}>Stop calculation</button>
             <p>Total Data Received: {totalBytesReceived} bytes</p>
             <p>
                 Specific Carbon Emissions (grams of C02 per gigabyte):{" "}

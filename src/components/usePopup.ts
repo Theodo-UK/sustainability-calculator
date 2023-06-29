@@ -15,6 +15,7 @@ export type PopupProps = {
     setCountryPercentage: (country: CountryName, percentage: number) => void;
     averageSpecificEmissions: number;
     refreshAndGetSize: (bypassCache: boolean) => Promise<void>;
+    stopRecording: () => void;
     error?: string;
 };
 
@@ -111,6 +112,22 @@ export const usePopup = (): PopupProps => {
         });
     };
 
+    const stopRecording = () => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs.length > 0) {
+                const tabId = tabs[0].id;
+                if (tabId) {
+                    () => {
+                        chrome.runtime.sendMessage({
+                            command: "stopStoringWebRequestPayloadSize",
+                            tabId,
+                        });
+                    };
+                }
+            }
+        });
+    };
+
     const addSelectedCountry = async (country: CountryName) => {
         await selectedCountriesRepository.addSelectedCountry(country);
         const newMap =
@@ -177,6 +194,7 @@ export const usePopup = (): PopupProps => {
         setCountryPercentage,
         averageSpecificEmissions,
         refreshAndGetSize,
+        stopRecording,
         error,
     };
 };
