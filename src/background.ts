@@ -1,24 +1,30 @@
-chrome.runtime.onMessage.addListener((message) => {
-    if (message.command === "startStoringWebRequestPayloadSize") {
-        const { tabId } = message;
-        chrome.webRequest.onCompleted.addListener(
-            (details) => {
-                if (details.tabId === tabId) {
-                    const headers = details.responseHeaders;
-                    const contentLength = headers?.find(
-                        (header) =>
-                            header.name.toLowerCase() === "content-length"
-                    );
+const webRequestContentLengthListener = (
+    details: chrome.webRequest.WebResponseCacheDetails
+) => {
+    const headers = details.responseHeaders;
+    const contentLength = headers?.find(
+        (header) => header.name.toLowerCase() === "content-length"
+    );
 
-                    if (contentLength?.value) {
-                        updateTotalBytesReceived(
-                            parseInt(contentLength.value, 10)
-                        );
-                    }
-                }
-            },
+    if (contentLength?.value) {
+        updateTotalBytesReceived(parseInt(contentLength.value, 10));
+    }
+};
+
+chrome.runtime.onMessage.addListener((message) => {
+    const { tabId } = message;
+
+    if (message.command === "startStoringWebRequestPayloadSize") {
+        chrome.webRequest.onCompleted.addListener(
+            webRequestContentLengthListener,
             { urls: ["<all_urls>"], tabId },
             ["responseHeaders"]
+        );
+    }
+
+    if (message.command === "stopStoringWebRequestPayloadSize") {
+        chrome.webRequest.onCompleted.removeListener(
+            webRequestContentLengthListener
         );
     }
 

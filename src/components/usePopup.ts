@@ -117,12 +117,10 @@ export const usePopup = (): PopupProps => {
             if (tabs.length > 0) {
                 const tabId = tabs[0].id;
                 if (tabId) {
-                    () => {
-                        chrome.runtime.sendMessage({
-                            command: "stopStoringWebRequestPayloadSize",
-                            tabId,
-                        });
-                    };
+                    chrome.runtime.sendMessage({
+                        command: "stopStoringWebRequestPayloadSize",
+                        tabId,
+                    });
                 }
             }
         });
