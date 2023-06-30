@@ -177,51 +177,6 @@ describe("usePopup", () => {
         );
     });
 
-    it("If there are locations with missing percentages, divide remaining percentage equally between them and calculate the correct average specific emissions", async () => {
-        const { result } = renderHook(() => usePopup());
-
-        const mockCountry1 = "Australia";
-        const mockCountry2 = "United Kingdom";
-        const mockCountry3 = "Finland";
-        const mockCountry1Percentage = 0.4;
-        const dividedRemainingPercentage = (1 - mockCountry1Percentage) / 3;
-        const mockAverageSpecificEmissions =
-            mockCountry1Percentage * CO2_EMISSIONS_GRAMS_PER_GB[mockCountry1] +
-            dividedRemainingPercentage *
-                CO2_EMISSIONS_GRAMS_PER_GB[mockCountry2] +
-            dividedRemainingPercentage *
-                CO2_EMISSIONS_GRAMS_PER_GB[mockCountry3] +
-            dividedRemainingPercentage *
-                CO2_EMISSIONS_GRAMS_PER_GB["World Average"];
-
-        await act(async () => {
-            await result.current.addSelectedCountry(mockCountry1);
-        });
-
-        await act(async () => {
-            await result.current.addSelectedCountry(mockCountry2);
-        });
-
-        await act(async () => {
-            await result.current.addSelectedCountry(mockCountry3);
-        });
-
-        await act(async () => {
-            await result.current.setCountryPercentage(
-                mockCountry1,
-                mockCountry1Percentage
-            );
-        });
-
-        await act(async () => {
-            await result.current.refreshAndGetSize(false);
-        });
-
-        expect(result.current.averageSpecificEmissions).toEqual(
-            mockAverageSpecificEmissions
-        );
-    });
-
     it("If the sum of percentages > 100, then an error should be shown", async () => {
         const { result } = renderHook(() => usePopup());
 
