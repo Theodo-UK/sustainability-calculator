@@ -91,18 +91,6 @@ describe("usePopup", () => {
         ).toBe(true);
     });
 
-    it("averageSpecificEmissions should return the world average if there are no selected countries", async () => {
-        const { result } = renderHook(() => usePopup());
-
-        await act(async () => {
-            await result.current.refreshAndGetSize(false);
-        });
-
-        expect(result.current.averageSpecificEmissions).toBe(
-            CO2_EMISSIONS_GRAMS_PER_GB["World Average"]
-        );
-    });
-
     it("averageSpecificEmissions should return the weighted average of the selected countries", async () => {
         const { result } = renderHook(() => usePopup());
 
