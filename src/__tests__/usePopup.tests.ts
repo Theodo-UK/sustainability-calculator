@@ -41,26 +41,25 @@ describe("usePopup", () => {
         jest.clearAllMocks();
     });
 
-    it("addSelectedCountry should update selectedCountries", () => {
+    it("addSelectedCountry should update selectedCountries", async () => {
         const { result } = renderHook(() => usePopup());
-
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
 
         mockCountries.set(mockCountry1, 0);
-        act(() => {
-            result.current.addSelectedCountry(mockCountry1);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry1);
         });
         expect(result.current.selectedCountries).toStrictEqual(mockCountries);
 
         mockCountries.set(mockCountry2, 0);
-        act(() => {
-            result.current.addSelectedCountry(mockCountry2);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry2);
         });
         expect(result.current.selectedCountries).toStrictEqual(mockCountries);
     });
 
-    it("removeSelectedCountries should update selectedCountries", () => {
+    it("removeSelectedCountries should update selectedCountries", async () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
@@ -69,12 +68,12 @@ describe("usePopup", () => {
         mockCountries.set(mockCountry1, 0);
         mockCountries.set(mockCountry2, 0);
 
-        act(() => {
-            result.current.addSelectedCountry(mockCountry1);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry1);
         });
 
-        act(() => {
-            result.current.addSelectedCountry(mockCountry2);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry2);
         });
 
         expect(
@@ -83,8 +82,8 @@ describe("usePopup", () => {
 
         mockCountries.delete(mockCountry2);
 
-        act(() => {
-            result.current.removeSelectedCountry(mockCountry2);
+        await act(async () => {
+            await result.current.removeSelectedCountry(mockCountry2);
         });
 
         expect(
@@ -92,11 +91,11 @@ describe("usePopup", () => {
         ).toBe(true);
     });
 
-    it("averageSpecificEmissions should return the world average if there are no selected countries", () => {
+    it("averageSpecificEmissions should return the world average if there are no selected countries", async () => {
         const { result } = renderHook(() => usePopup());
 
-        act(() => {
-            result.current.refreshAndGetSize(false);
+        await act(async () => {
+            await result.current.refreshAndGetSize(false);
         });
 
         expect(result.current.averageSpecificEmissions).toBe(
@@ -104,7 +103,7 @@ describe("usePopup", () => {
         );
     });
 
-    it("averageSpecificEmissions should return the weighted average of the selected countries", () => {
+    it("averageSpecificEmissions should return the weighted average of the selected countries", async () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
@@ -115,30 +114,30 @@ describe("usePopup", () => {
             mockCountry1Percentage * CO2_EMISSIONS_GRAMS_PER_GB[mockCountry1] +
             mockCountry2Percentage * CO2_EMISSIONS_GRAMS_PER_GB[mockCountry2];
 
-        act(() => {
-            result.current.addSelectedCountry(mockCountry1);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry1);
         });
 
-        act(() => {
-            result.current.addSelectedCountry(mockCountry2);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry2);
         });
 
-        act(() => {
-            result.current.setCountryPercentage(
+        await act(async () => {
+            await result.current.setCountryPercentage(
                 mockCountry1,
                 mockCountry1Percentage
             );
         });
 
-        act(() => {
-            result.current.setCountryPercentage(
+        await act(async () => {
+            await result.current.setCountryPercentage(
                 mockCountry2,
                 mockCountry2Percentage
             );
         });
 
-        act(() => {
-            result.current.refreshAndGetSize(false);
+        await act(async () => {
+            await result.current.refreshAndGetSize(false);
         });
 
         expect(result.current.averageSpecificEmissions).toEqual(
@@ -146,7 +145,7 @@ describe("usePopup", () => {
         );
     });
 
-    it("If there are locations, and the sum of percentages < 100, use remaining percentage on world average specific emissions", () => {
+    it("If there are locations, and the sum of percentages < 100, use remaining percentage on world average specific emissions", async () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
@@ -159,30 +158,30 @@ describe("usePopup", () => {
             (1 - mockCountry1Percentage - mockCountry2Percentage) *
                 CO2_EMISSIONS_GRAMS_PER_GB["World Average"];
 
-        act(() => {
-            result.current.addSelectedCountry(mockCountry1);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry1);
         });
 
-        act(() => {
-            result.current.addSelectedCountry(mockCountry2);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry2);
         });
 
-        act(() => {
-            result.current.setCountryPercentage(
+        await act(async () => {
+            await result.current.setCountryPercentage(
                 mockCountry1,
                 mockCountry1Percentage
             );
         });
 
-        act(() => {
-            result.current.setCountryPercentage(
+        await act(async () => {
+            await result.current.setCountryPercentage(
                 mockCountry2,
                 mockCountry2Percentage
             );
         });
 
-        act(() => {
-            result.current.refreshAndGetSize(false);
+        await act(async () => {
+            await result.current.refreshAndGetSize(false);
         });
 
         expect(result.current.averageSpecificEmissions).toEqual(
@@ -190,7 +189,7 @@ describe("usePopup", () => {
         );
     });
 
-    it("If there are locations with missing percentages, divide remaining percentage equally between them and calculate the correct average specific emissions", () => {
+    it("If there are locations with missing percentages, divide remaining percentage equally between them and calculate the correct average specific emissions", async () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
@@ -207,27 +206,27 @@ describe("usePopup", () => {
             dividedRemainingPercentage *
                 CO2_EMISSIONS_GRAMS_PER_GB["World Average"];
 
-        act(() => {
-            result.current.addSelectedCountry(mockCountry1);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry1);
         });
 
-        act(() => {
-            result.current.addSelectedCountry(mockCountry2);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry2);
         });
 
-        act(() => {
-            result.current.addSelectedCountry(mockCountry3);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry3);
         });
 
-        act(() => {
-            result.current.setCountryPercentage(
+        await act(async () => {
+            await result.current.setCountryPercentage(
                 mockCountry1,
                 mockCountry1Percentage
             );
         });
 
-        act(() => {
-            result.current.refreshAndGetSize(false);
+        await act(async () => {
+            await result.current.refreshAndGetSize(false);
         });
 
         expect(result.current.averageSpecificEmissions).toEqual(
@@ -235,25 +234,25 @@ describe("usePopup", () => {
         );
     });
 
-    it("If the sum of percentages > 100, then an error should be shown", () => {
+    it("If the sum of percentages > 100, then an error should be shown", async () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCountry1 = "Australia";
         const mockCountry1Percentage = 101;
 
-        act(() => {
-            result.current.addSelectedCountry(mockCountry1);
+        await act(async () => {
+            await result.current.addSelectedCountry(mockCountry1);
         });
 
-        act(() => {
-            result.current.setCountryPercentage(
+        await act(async () => {
+            await result.current.setCountryPercentage(
                 mockCountry1,
                 mockCountry1Percentage
             );
         });
 
-        act(() => {
-            result.current.refreshAndGetSize(false);
+        await act(async () => {
+            await result.current.refreshAndGetSize(false);
         });
 
         expect(result.current.error).toBeDefined();
