@@ -1,4 +1,5 @@
 import { BytesRepository } from "./BytesRepository";
+import { TestBytesRepository } from "./TestBytesRepository";
 
 export abstract class IBytesRepository {
     private static _instance: IBytesRepository;
@@ -7,6 +8,9 @@ export abstract class IBytesRepository {
             switch (process.env.ENV) {
                 case "development":
                     this._instance = new BytesRepository();
+                    break;
+                case "test":
+                    this._instance = new TestBytesRepository();
                     break;
                 default:
                     throw new Error(`Unknown environment: ${process.env.ENV}`);
