@@ -1,3 +1,5 @@
+import { IBytesRepository } from "./data/bytes/IBytesRepository";
+
 const webRequestContentLengthListener = (
     details: chrome.webRequest.WebResponseCacheDetails
 ) => {
@@ -7,7 +9,7 @@ const webRequestContentLengthListener = (
     );
 
     if (contentLength?.value) {
-        updateTotalBytesReceived(parseInt(contentLength.value, 10));
+        updateTotalBytesTransferred(parseInt(contentLength.value, 10));
     }
 };
 
@@ -31,10 +33,6 @@ chrome.runtime.onMessage.addListener((message) => {
     return true;
 });
 
-const updateTotalBytesReceived = async (bytesReceived: number) => {
-    const previousTotalBytesReceived = (
-        await chrome.storage.local.get("totalBytesReceived")
-    )["totalBytesReceived"];
-    const totalBytesReceived = previousTotalBytesReceived + bytesReceived;
-    chrome.storage.local.set({ totalBytesReceived });
+const updateTotalBytesTransferred = async (bytesReceived: number) => {
+    await IBytesRepository.instance.addBytesTransferred(bytesReceived);
 };

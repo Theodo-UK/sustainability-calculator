@@ -5,14 +5,16 @@ import { calculateCarbon } from "./helpers/calculateCarbon";
 import { ISelectedCountriesRepository } from "./data/selected_countries/ISelectedCountriesRepository";
 import { useMountEffect } from "./helpers/useOnceAfterFirstMount";
 import { IEmissionsRepository } from "./data/emissions/IEmissionsRepository";
+import { IBytesRepository } from "./data/bytes/IBytesRepository";
 
 export const usePopup = () => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
         ISelectedCountriesRepository.instance;
     const emissionsRepository: IEmissionsRepository =
         IEmissionsRepository.instance;
+    const bytesRepository: IBytesRepository = IBytesRepository.instance;
 
-    const [totalBytesReceived, setTotalBytesReceived] = useState(0);
+    const [totalBytesTransferred, settotalBytesTransferred] = useState(0);
     const [emissions, setEmissions] = useState(0);
     const [selectedCountries, setSelectedCountries] = useState<
         Map<CountryName, number>
@@ -69,7 +71,7 @@ export const usePopup = () => {
             return;
         }
         try {
-            await chrome.storage.local.set({ ["totalBytesReceived"]: 0 });
+            await bytesRepository.clearTotalBytesTransferred();
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
@@ -128,29 +130,33 @@ export const usePopup = () => {
     };
 
     useEffect(() => {
-        const totalBytesReceivedListener = (changes: {
+        const totalBytesTransferredListener = (changes: {
             [key: string]: chrome.storage.StorageChange;
         }) => {
-            if (changes.totalBytesReceived) {
-                setTotalBytesReceived(changes.totalBytesReceived.newValue);
+            if (changes.totalBytesTransferred) {
+                settotalBytesTransferred(
+                    changes.totalBytesTransferred.newValue
+                );
                 const _emissions = calculateCarbon(
-                    changes.totalBytesReceived.newValue,
+                    changes.totalBytesTransferred.newValue,
                     selectedCountries
                 );
                 setEmissions(_emissions);
                 emissionsRepository.storeLastCalculation({
-                    bytes: changes.totalBytesReceived.newValue,
+                    bytes: changes.totalBytesTransferred.newValue,
                     emissions: _emissions,
                     specificEmissions: averageSpecificEmissions,
                 });
             }
         };
 
-        chrome.storage.local.onChanged.addListener(totalBytesReceivedListener);
+        chrome.storage.local.onChanged.addListener(
+            totalBytesTransferredListener
+        );
 
         return () => {
             chrome.storage.local.onChanged.removeListener(
-                totalBytesReceivedListener
+                totalBytesTransferredListener
             );
         };
     }, [selectedCountries, averageSpecificEmissions, emissionsRepository]);
@@ -164,7 +170,7 @@ export const usePopup = () => {
     });
     useMountEffect(() => {
         emissionsRepository.getLastCalculation().then((emissionsData) => {
-            setTotalBytesReceived(emissionsData.bytes);
+            settotalBytesTransferred(emissionsData.bytes);
             setEmissions(emissionsData.emissions);
             setAverageSpecificEmissions(emissionsData.specificEmissions);
         });
@@ -172,7 +178,7 @@ export const usePopup = () => {
 
     return {
         emissions,
-        totalBytesReceived,
+        totalBytesTransferred,
         selectedCountries,
         addSelectedCountry,
         removeSelectedCountry,
