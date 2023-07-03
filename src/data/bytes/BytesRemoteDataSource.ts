@@ -33,13 +33,14 @@ export class BytesRemoteDataSource {
 
     async getTotalBytesTransferred(): Promise<number> {
         try {
-            const data = await this.storage.read(null);
-            const totalBytesTransferred = data.totalBytesTransferred;
-            if (totalBytesTransferred === undefined) {
-                await this.storage.write({ totalBytesTransferred: 0 });
-                return 0;
-            }
-            return totalBytesTransferred;
+            return await this.storage.read(null).then(async (data: any) => {
+                const totalBytesTransferred = data.totalBytesTransferred;
+                if (totalBytesTransferred === undefined) {
+                    await this.storage.write({ totalBytesTransferred: 0 });
+                    return 0;
+                }
+                return totalBytesTransferred;
+            });
         } catch (e) {
             throw new Error("getTotalBytesTransferred failed: " + e);
         }
@@ -47,14 +48,13 @@ export class BytesRemoteDataSource {
 
     async addBytesTransferred(bytes: number): Promise<void> {
         try {
-            const data = await this.storage.read(null);
-            const totalBytesTransferred = data.totalBytesTransferred;
-            if (totalBytesTransferred === undefined) {
-                throw new Error("totalBytesTransferred is undefined");
-            }
-            await this.storage.write({
-                totalBytesTransferred: totalBytesTransferred + bytes,
-            });
+            await this.getTotalBytesTransferred().then(
+                async (totalBytesTransferred) => {
+                    await this.storage.write({
+                        totalBytesTransferred: totalBytesTransferred + bytes,
+                    });
+                }
+            );
         } catch (e) {
             throw new Error("addBytesTransferred failed: " + e);
         }
