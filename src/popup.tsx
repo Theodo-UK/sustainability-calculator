@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { CountryDropdown } from "./components/CountryDropdown";
-import { usePopup } from "./components/usePopup";
+import { usePopup } from "./usePopup";
 import { SelectedCountries } from "./components/selected-countries/SelectedCountries";
 
 export const Popup = () => {
