@@ -1,6 +1,7 @@
 import { StorageRepository } from "./StorageRepository";
 import { TestStorageRepository } from "./TestStorageRepository";
 
+export type StorageDataType = string | number;
 export abstract class IStorageRepository {
     private static _instance: IStorageRepository;
     static get instance(): IStorageRepository {
@@ -25,10 +26,10 @@ export abstract class IStorageRepository {
      * An empty list or object will return an empty result object. Pass in null to get the entire contents of storage.
      */
     abstract get(
-        keys: string | string[] | { [key: string]: any } | null
-    ): Promise<{ [key: string]: any }>;
+        keys: string | string[] | { [key: string]: StorageDataType } | null
+    ): Promise<{ [key: string]: StorageDataType }>;
 
-    abstract set(data: { [key: string]: any }): Promise<void>;
+    abstract set(data: { [key: string]: StorageDataType }): Promise<void>;
 
     abstract clear(): Promise<void>;
 }

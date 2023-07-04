@@ -18,10 +18,9 @@ export class SelectedCountriesRepository
                 ),
             });
 
-            return JSONtoMap(data["selectedCountriesAndPercentages"]) as Map<
-                CountryName,
-                number
-            >;
+            return JSONtoMap(
+                data["selectedCountriesAndPercentages"] as string
+            ) as Map<CountryName, number>;
         } catch (e: unknown) {
             throw Error(e as string);
         }

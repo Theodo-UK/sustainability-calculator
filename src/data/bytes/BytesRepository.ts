@@ -8,7 +8,7 @@ export class BytesRepository implements IBytesRepository {
         const object = await this.remoteDataSource.get({
             totalBytesTransferred: 0,
         });
-        return object.totalBytesTransferred;
+        return object.totalBytesTransferred as number;
     }
 
     async addBytesTransferred(bytes: number): Promise<void> {

@@ -24,7 +24,9 @@ export class EmissionsRepository implements IEmissionsRepository {
                 }),
             });
 
-            return JSON.parse(data["lastCalculation"]) as EmissionsData;
+            return JSON.parse(
+                data["lastCalculation"] as string
+            ) as EmissionsData;
         } catch (e: unknown) {
             throw Error(e as string);
         }
