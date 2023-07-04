@@ -1,5 +1,9 @@
 import { IBytesRepository } from "./data/bytes/IBytesRepository";
 
+const updateTotalBytesTransferred = async (bytesReceived: number) => {
+    await IBytesRepository.instance.addBytesTransferred(bytesReceived);
+};
+
 const webRequestContentLengthListener = (
     details: chrome.webRequest.WebResponseCacheDetails
 ) => {
@@ -32,7 +36,3 @@ chrome.runtime.onMessage.addListener((message) => {
 
     return true;
 });
-
-const updateTotalBytesTransferred = async (bytesReceived: number) => {
-    await IBytesRepository.instance.addBytesTransferred(bytesReceived);
-};

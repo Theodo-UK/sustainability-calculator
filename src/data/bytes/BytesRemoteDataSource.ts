@@ -1,5 +1,4 @@
 export class BytesRemoteDataSource {
-    // https://stackoverflow.com/questions/62522824/how-to-add-records-to-chrome-storage-local-without-overriding-other-write-operat
     private storage = (() => {
         let mutex: Promise<void> | null = Promise.resolve();
         const API = chrome.storage.local;
