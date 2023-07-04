@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 export class StorageRemoteDataSource {
     private storage = (() => {
         let mutex: Promise<void> | null = Promise.resolve();
