@@ -1,18 +1,26 @@
-import { BytesRemoteDataSource } from "./BytesRemoteDataSource";
+import { IStorageRepository } from "../storage/IStorageRepository";
 import { IBytesRepository } from "./IBytesRepository";
 
 export class BytesRepository implements IBytesRepository {
-    remoteDataSource: BytesRemoteDataSource = new BytesRemoteDataSource();
+    private remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
     async getTotalBytesTransferred(): Promise<number> {
-        return this.remoteDataSource.getTotalBytesTransferred();
+        const object = await this.remoteDataSource.get({
+            totalBytesTransferred: 0,
+        });
+        return object.totalBytesTransferred;
     }
 
     async addBytesTransferred(bytes: number): Promise<void> {
-        return this.remoteDataSource.addBytesTransferred(bytes);
+        const currentBytes = await this.getTotalBytesTransferred();
+        await this.remoteDataSource.set({
+            totalBytesTransferred: currentBytes + bytes,
+        });
     }
 
     async clearTotalBytesTransferred(): Promise<void> {
-        return this.remoteDataSource.clearTotalBytesTransferred();
+        await this.remoteDataSource.set({
+            totalBytesTransferred: 0,
+        });
     }
 }
