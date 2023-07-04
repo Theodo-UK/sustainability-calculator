@@ -1,36 +1,43 @@
 import { CountryName } from "../../constants/Countries";
+import { JSONtoMap, maptoJSON } from "../../helpers/jsonHelpers";
+import { IStorageRepository } from "../storage/IStorageRepository";
 import { ISelectedCountriesRepository } from "./ISelectedCountriesRepository";
-import { SelectedCountriesRemoteDataSource } from "./SelectedCountriesRemoteDataSource";
 
 export class SelectedCountriesRepository
     implements ISelectedCountriesRepository
 {
-    remoteDataSource: SelectedCountriesRemoteDataSource =
-        new SelectedCountriesRemoteDataSource();
+    remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
     async getSelectedCountriesAndPercentages(): Promise<
         Map<CountryName, number>
     > {
-        let selectedCountriesAndPercentages: Map<CountryName, number> | null =
-            null;
-
         try {
-            selectedCountriesAndPercentages =
-                await this.remoteDataSource.getSelectedCountriesAndPercentages();
+            const data = await this.remoteDataSource.get({
+                selectedCountriesAndPercentages: maptoJSON(
+                    new Map<CountryName, number>([["World Average", 0]])
+                ),
+            });
+
+            return JSONtoMap(data["selectedCountriesAndPercentages"]) as Map<
+                CountryName,
+                number
+            >;
         } catch (e: unknown) {
             throw Error(e as string);
         }
-
-        if (selectedCountriesAndPercentages === null) {
-            throw Error("selectedCountriesAndPercentages is undefined");
-        }
-
-        return selectedCountriesAndPercentages;
     }
 
     async addSelectedCountry(countryName: CountryName): Promise<void> {
         try {
-            await this.remoteDataSource.addSelectedCountry(countryName);
+            const newMap = await this.getSelectedCountriesAndPercentages();
+
+            if (!newMap.has(countryName)) {
+                newMap.set(countryName, 0);
+            }
+
+            await this.remoteDataSource.set({
+                selectedCountriesAndPercentages: maptoJSON(newMap),
+            });
         } catch (e: unknown) {
             throw Error(e as string);
         }
@@ -38,7 +45,15 @@ export class SelectedCountriesRepository
 
     async removeSelectedCountry(countryName: CountryName): Promise<void> {
         try {
-            await this.remoteDataSource.removeSelectedCountry(countryName);
+            const newMap = await this.getSelectedCountriesAndPercentages();
+
+            if (newMap.has(countryName)) {
+                newMap.delete(countryName);
+            }
+
+            await this.remoteDataSource.set({
+                selectedCountriesAndPercentages: maptoJSON(newMap),
+            });
         } catch (e: unknown) {
             throw Error(e as string);
         }
@@ -49,10 +64,19 @@ export class SelectedCountriesRepository
         percentage: number
     ): Promise<void> {
         try {
-            await this.remoteDataSource.setSelectedCountryPercentage(
-                countryName,
-                percentage
-            );
+            const newMap = await this.getSelectedCountriesAndPercentages();
+
+            if (newMap.has(countryName)) {
+                newMap.set(countryName, percentage);
+            } else {
+                throw Error(
+                    `SelectedCountriesRemoteDataSource.setSelectedCountryPercentage: countryName ${countryName} not found`
+                );
+            }
+
+            await this.remoteDataSource.set({
+                selectedCountriesAndPercentages: maptoJSON(newMap),
+            });
         } catch (e: unknown) {
             throw Error(e as string);
         }
