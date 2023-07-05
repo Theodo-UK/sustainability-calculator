@@ -1,47 +1,50 @@
 import { IBytesRepository } from "./data/bytes/IBytesRepository";
 
-const webRequestContentLengthListener = (
+const webRequestOnCompleteListener = (
     details: chrome.webRequest.WebResponseCacheDetails
 ) => {
-    const headers = details.responseHeaders;
-    const contentLength = headers?.find(
+    const headerSize =
+        details.responseHeaders?.reduce((acc, header) => {
+            const encoder = new TextEncoder();
+            const headerLength = encoder.encode(
+                header.name + ": " + (header.value ?? "")
+            ).length;
+            return acc + headerLength;
+        }, 0) ?? 0;
+
+    const contentLengthHeader = details.responseHeaders?.find(
         (header) => header.name.toLowerCase() === "content-length"
     );
 
-    if (contentLength?.value) {
-        IBytesRepository.instance.addBytesTransferred(
-            parseInt(contentLength.value, 10)
-        );
-    }
+    const bodySize =
+        contentLengthHeader?.value !== undefined
+            ? parseInt(contentLengthHeader.value, 10)
+            : 0;
+
+    IBytesRepository.instance.addBytesTransferred(headerSize + bodySize);
 };
 
 const webRequestOnBeforeRequestListener = (
     details: chrome.webRequest.WebRequestBodyDetails
 ) => {
-    if (details.method === "POST") {
-        const bodySize = details.requestBody?.raw?.[0].bytes?.byteLength;
-        if (bodySize) {
-            IBytesRepository.instance.addBytesTransferred(bodySize);
-        }
+    const bodySize = details.requestBody?.raw?.[0].bytes?.byteLength;
+    if (bodySize) {
+        IBytesRepository.instance.addBytesTransferred(bodySize);
     }
 };
 
 const webRequestOnBeforeSendHeaders = (
     details: chrome.webRequest.WebRequestHeadersDetails
 ) => {
-    if (details.method === "POST" || details.method === "GET") {
-        const headerSize = details.requestHeaders?.reduce((acc, header) => {
-            const encoder = new TextEncoder();
-            const headerLength = encoder.encode(
-                header.name + ": " + (header.value ?? "")
-            ).length;
-            return acc + headerLength;
-        }, 0);
-        if (headerSize !== undefined && headerSize > 0) {
-            IBytesRepository.instance.addBytesTransferred(headerSize);
-        }
-    } else {
-        throw new Error("onBeforeSendHeadersListener: Not implemented");
+    const headerSize = details.requestHeaders?.reduce((acc, header) => {
+        const encoder = new TextEncoder();
+        const headerLength = encoder.encode(
+            header.name + ": " + (header.value ?? "")
+        ).length;
+        return acc + headerLength;
+    }, 0);
+    if (headerSize !== undefined && headerSize > 0) {
+        IBytesRepository.instance.addBytesTransferred(headerSize);
     }
 };
 
@@ -60,7 +63,7 @@ chrome.runtime.onMessage.addListener((message) => {
             ["requestHeaders"]
         );
         chrome.webRequest.onCompleted.addListener(
-            webRequestContentLengthListener,
+            webRequestOnCompleteListener,
             { urls: ["<all_urls>"], tabId },
             ["responseHeaders"]
         );
@@ -68,7 +71,7 @@ chrome.runtime.onMessage.addListener((message) => {
 
     if (message.command === "stopStoringWebRequestPayloadSize") {
         chrome.webRequest.onCompleted.removeListener(
-            webRequestContentLengthListener
+            webRequestOnCompleteListener
         );
     }
 
