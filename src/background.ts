@@ -17,10 +17,26 @@ const webRequestContentLengthListener = (
     }
 };
 
+const webRequestOnBeforeRequestListener = (
+    details: chrome.webRequest.WebRequestBodyDetails
+) => {
+    if (details.method === "POST") {
+        const bodySize = details.requestBody?.raw?.[0].bytes?.byteLength;
+        if (bodySize) {
+            updateTotalBytesTransferred(bodySize);
+        }
+    }
+};
+
 chrome.runtime.onMessage.addListener((message) => {
     const { tabId } = message;
 
     if (message.command === "startStoringWebRequestPayloadSize") {
+        chrome.webRequest.onBeforeRequest.addListener(
+            webRequestOnBeforeRequestListener,
+            { urls: ["<all_urls>"], tabId },
+            ["requestBody"]
+        );
         chrome.webRequest.onCompleted.addListener(
             webRequestContentLengthListener,
             { urls: ["<all_urls>"], tabId },
