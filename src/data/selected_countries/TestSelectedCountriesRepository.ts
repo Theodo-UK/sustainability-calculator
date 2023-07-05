@@ -1,6 +1,5 @@
 import { CountryName } from "../../constants/Countries";
 import { ISelectedCountriesRepository } from "./ISelectedCountriesRepository";
-import { SelectedCountriesRemoteDataSource } from "./SelectedCountriesRemoteDataSource";
 
 export class TestSelectedCountriesRepository
     implements ISelectedCountriesRepository

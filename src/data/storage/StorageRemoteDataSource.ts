@@ -1,4 +1,6 @@
-export class BytesRemoteDataSource {
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+export class StorageRemoteDataSource {
     private storage = (() => {
         let mutex: Promise<void> | null = Promise.resolve();
         const API = chrome.storage.local;
@@ -30,38 +32,40 @@ export class BytesRemoteDataSource {
         };
     })();
 
-    async getTotalBytesTransferred(): Promise<number> {
+    async get(
+        data: string | string[] | { [key: string]: any } | null
+    ): Promise<{ [key: string]: any }> {
         try {
-            return await this.storage.read(null).then(async (data: any) => {
-                const totalBytesTransferred = data.totalBytesTransferred;
-                if (totalBytesTransferred === undefined) {
-                    await this.storage.write({ totalBytesTransferred: 0 });
-                    return 0;
+            return await this.storage.read(data).then(async (result: any) => {
+                if (typeof data === "object" && data !== null) {
+                    const resultWithDefault = result as { [key: string]: any };
+
+                    for (const key in data) {
+                        if (!(key in result)) {
+                            resultWithDefault[key] = result[key];
+                        }
+                    }
+                    await this.storage.write(resultWithDefault);
+                    return resultWithDefault;
                 }
-                return totalBytesTransferred;
+                return result;
             });
         } catch (e) {
             throw new Error("getTotalBytesTransferred failed: " + e);
         }
     }
 
-    async addBytesTransferred(bytes: number): Promise<void> {
+    async set(data: { [key: string]: any }): Promise<void> {
         try {
-            await this.getTotalBytesTransferred().then(
-                async (totalBytesTransferred) => {
-                    await this.storage.write({
-                        totalBytesTransferred: totalBytesTransferred + bytes,
-                    });
-                }
-            );
+            await this.storage.write(data);
         } catch (e) {
             throw new Error("addBytesTransferred failed: " + e);
         }
     }
 
-    async clearTotalBytesTransferred(): Promise<void> {
+    async clear(): Promise<void> {
         try {
-            await this.storage.write({ totalBytesTransferred: 0 });
+            await this.storage.clear();
         } catch (e) {
             throw new Error("clearTotalBytesTransferred failed: " + e);
         }
