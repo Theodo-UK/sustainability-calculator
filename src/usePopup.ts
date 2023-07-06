@@ -142,7 +142,7 @@ export const usePopup = () => {
                     selectedCountries
                 );
                 setEmissions(_emissions);
-                emissionsRepository.storeLastCalculation({
+                emissionsRepository.storeCalculation({
                     bytes: changes.totalBytesTransferred.newValue,
                     emissions: _emissions,
                     specificEmissions: averageSpecificEmissions,
@@ -171,10 +171,12 @@ export const usePopup = () => {
     });
 
     useMountEffect(() => {
-        emissionsRepository.getLastCalculation().then((emissionsData) => {
-            settotalBytesTransferred(emissionsData?.bytes ?? 0);
-            setEmissions(emissionsData?.emissions ?? 0);
-            setAverageSpecificEmissions(emissionsData?.specificEmissions ?? 0);
+        emissionsRepository.getLastCalculation().then((calculationData) => {
+            settotalBytesTransferred(calculationData?.bytes ?? 0);
+            setEmissions(calculationData?.emissions ?? 0);
+            setAverageSpecificEmissions(
+                calculationData?.specificEmissions ?? 0
+            );
         });
     });
 

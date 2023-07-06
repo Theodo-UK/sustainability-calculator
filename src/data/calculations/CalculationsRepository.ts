@@ -7,10 +7,10 @@ import {
 export class CalculationsRepository implements ICalculationsRepository {
     remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
-    async storeLastCalculation(emissionsData: CalculationData): Promise<void> {
+    async storeCalculation(calculationData: CalculationData): Promise<void> {
         try {
             const oldCalculations = await this.getAllCalculations();
-            const newCalculations = [emissionsData, ...oldCalculations];
+            const newCalculations = [calculationData, ...oldCalculations];
             await this.remoteDataSource.set({
                 allCalculations: JSON.stringify(newCalculations),
             });

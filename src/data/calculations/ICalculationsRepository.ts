@@ -21,9 +21,7 @@ export abstract class ICalculationsRepository {
         return this._instance;
     }
 
-    abstract storeLastCalculation(
-        emissionsData: CalculationData
-    ): Promise<void>;
+    abstract storeCalculation(calculationData: CalculationData): Promise<void>;
 
     abstract getLastCalculation(): Promise<CalculationData | undefined>;
 
