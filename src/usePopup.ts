@@ -146,6 +146,7 @@ export const usePopup = () => {
                     bytes: changes.totalBytesTransferred.newValue,
                     emissions: _emissions,
                     specificEmissions: averageSpecificEmissions,
+                    selectedCountries: selectedCountries,
                 });
             }
         };

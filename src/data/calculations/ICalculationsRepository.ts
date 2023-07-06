@@ -1,3 +1,4 @@
+import { CountryName } from "../../constants/Countries";
 import { CalculationsRepository } from "./CalculationsRepository";
 import { TestCalculationsRepository } from "./TestCalculationsRepository";
 
@@ -31,4 +32,5 @@ export type CalculationData = {
     bytes: number;
     emissions: number;
     specificEmissions: number;
+    selectedCountries: Map<CountryName, number>;
 };

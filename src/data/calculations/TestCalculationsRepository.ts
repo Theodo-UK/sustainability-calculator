@@ -1,3 +1,4 @@
+import { CountryName } from "../../constants/Countries";
 import {
     CalculationData,
     ICalculationsRepository,
@@ -8,6 +9,7 @@ export class TestCalculationsRepository implements ICalculationsRepository {
         bytes: 0,
         emissions: 0,
         specificEmissions: 0,
+        selectedCountries: new Map<CountryName, number>(),
     };
 
     async storeLastCalculation(emissionsData: CalculationData): Promise<void> {
