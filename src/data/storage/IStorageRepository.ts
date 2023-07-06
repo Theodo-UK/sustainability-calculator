@@ -1,7 +1,7 @@
 import { StorageRepository } from "./StorageRepository";
 import { TestStorageRepository } from "./TestStorageRepository";
 
-export type StorageDataType = string | number;
+export type StorageDataType = string | number | null;
 export abstract class IStorageRepository {
     private static _instance: IStorageRepository;
     static get instance(): IStorageRepository {

@@ -23,7 +23,13 @@ export abstract class ICalculationsRepository {
 
     abstract storeCalculation(calculationData: CalculationData): Promise<void>;
 
-    abstract getLastCalculation(): Promise<CalculationData | undefined>;
+    abstract cacheOngoingCalculation(
+        calculationData: CalculationData
+    ): Promise<void>;
+
+    abstract clearOngoingCalculation(): Promise<void>;
+
+    abstract getLastCalculation(): Promise<CalculationData | null>;
 
     abstract getAllCalculations(): Promise<CalculationData[]>;
 }

@@ -10,7 +10,7 @@ import { IBytesRepository } from "./data/bytes/IBytesRepository";
 export const usePopup = () => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
         ISelectedCountriesRepository.instance;
-    const emissionsRepository: ICalculationsRepository =
+    const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
     const bytesRepository: IBytesRepository = IBytesRepository.instance;
 
@@ -113,6 +113,13 @@ export const usePopup = () => {
                 }
             }
         });
+        calculationsRepository.storeCalculation({
+            bytes: totalBytesTransferred,
+            emissions: emissions,
+            specificEmissions: averageSpecificEmissions,
+            selectedCountries: selectedCountries,
+        });
+        calculationsRepository.clearOngoingCalculation();
     };
 
     const addSelectedCountry = async (country: CountryName) => {
@@ -142,7 +149,7 @@ export const usePopup = () => {
                     selectedCountries
                 );
                 setEmissions(_emissions);
-                emissionsRepository.storeCalculation({
+                calculationsRepository.cacheOngoingCalculation({
                     bytes: changes.totalBytesTransferred.newValue,
                     emissions: _emissions,
                     specificEmissions: averageSpecificEmissions,
@@ -160,7 +167,7 @@ export const usePopup = () => {
                 totalBytesTransferredListener
             );
         };
-    }, [selectedCountries, averageSpecificEmissions, emissionsRepository]);
+    }, [selectedCountries, averageSpecificEmissions, calculationsRepository]);
 
     useMountEffect(() => {
         selectedCountriesRepository
@@ -171,7 +178,7 @@ export const usePopup = () => {
     });
 
     useMountEffect(() => {
-        emissionsRepository.getLastCalculation().then((calculationData) => {
+        calculationsRepository.getLastCalculation().then((calculationData) => {
             settotalBytesTransferred(calculationData?.bytes ?? 0);
             setEmissions(calculationData?.emissions ?? 0);
             setAverageSpecificEmissions(
