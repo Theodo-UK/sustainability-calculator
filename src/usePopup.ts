@@ -188,21 +188,25 @@ export const usePopup = () => {
     }, [selectedCountries, averageSpecificEmissions, calculationsRepository]);
 
     useMountEffect(() => {
-        selectedCountriesRepository
-            .getSelectedCountriesAndPercentages()
-            .then((newMap) => {
-                setSelectedCountries(newMap);
-            });
+        const getSelectedCountriesAndSetState = async () => {
+            const newMap =
+                await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+            setSelectedCountries(newMap);
+        };
+        getSelectedCountriesAndSetState();
     });
 
     useMountEffect(() => {
-        calculationsRepository.getLastCalculation().then((calculationData) => {
+        const getLastCalculationAndSetState = async () => {
+            const calculationData =
+                await calculationsRepository.getLastCalculation();
             settotalBytesTransferred(calculationData?.bytes ?? 0);
             setEmissions(calculationData?.emissions ?? 0);
             setAverageSpecificEmissions(
                 calculationData?.specificEmissions ?? 0
             );
-        });
+        };
+        getLastCalculationAndSetState();
     });
 
     return {
