@@ -25,7 +25,9 @@ export abstract class ICalculationsRepository {
         emissionsData: CalculationData
     ): Promise<void>;
 
-    abstract getLastCalculation(): Promise<CalculationData>;
+    abstract getLastCalculation(): Promise<CalculationData | undefined>;
+
+    abstract getAllCalculations(): Promise<CalculationData[]>;
 }
 
 export type CalculationData = {

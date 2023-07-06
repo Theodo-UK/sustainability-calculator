@@ -169,11 +169,12 @@ export const usePopup = () => {
                 setSelectedCountries(newMap);
             });
     });
+
     useMountEffect(() => {
         emissionsRepository.getLastCalculation().then((emissionsData) => {
-            settotalBytesTransferred(emissionsData.bytes);
-            setEmissions(emissionsData.emissions);
-            setAverageSpecificEmissions(emissionsData.specificEmissions);
+            settotalBytesTransferred(emissionsData?.bytes ?? 0);
+            setEmissions(emissionsData?.emissions ?? 0);
+            setAverageSpecificEmissions(emissionsData?.specificEmissions ?? 0);
         });
     });
 

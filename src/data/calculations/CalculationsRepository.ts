@@ -9,27 +9,37 @@ export class CalculationsRepository implements ICalculationsRepository {
 
     async storeLastCalculation(emissionsData: CalculationData): Promise<void> {
         try {
+            const oldCalculations = await this.getAllCalculations();
+            const newCalculations = [emissionsData, ...oldCalculations];
             await this.remoteDataSource.set({
-                lastCalculation: JSON.stringify(emissionsData),
+                allCalculations: JSON.stringify(newCalculations),
             });
         } catch (e: unknown) {
             throw Error(e as string);
         }
     }
 
-    async getLastCalculation(): Promise<CalculationData> {
+    async getAllCalculations(): Promise<CalculationData[]> {
         try {
             const data = await this.remoteDataSource.get({
-                lastCalculation: JSON.stringify(<CalculationData>{
-                    bytes: 0,
-                    emissions: 0,
-                    specificEmissions: 0,
-                }),
+                allCalculations: JSON.stringify([]),
             });
 
             return JSON.parse(
-                data["lastCalculation"] as string
-            ) as CalculationData;
+                data["allCalculations"] as string
+            ) as CalculationData[];
+        } catch (e: unknown) {
+            throw Error(e as string);
+        }
+    }
+
+    async getLastCalculation(): Promise<CalculationData | undefined> {
+        try {
+            const oldCalculations = await this.getAllCalculations();
+            if (oldCalculations.length > 0) {
+                return oldCalculations[0];
+            }
+            return undefined;
         } catch (e: unknown) {
             throw Error(e as string);
         }
