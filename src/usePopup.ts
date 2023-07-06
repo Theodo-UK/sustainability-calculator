@@ -4,7 +4,10 @@ import { calculateAverageSpecificEmissionsHelper } from "./helpers/calculateAver
 import { calculateCarbon } from "./helpers/calculateCarbon";
 import { ISelectedCountriesRepository } from "./data/selected_countries/ISelectedCountriesRepository";
 import { useMountEffect } from "./helpers/useOnceAfterFirstMount";
-import { ICalculationsRepository } from "./data/calculations/ICalculationsRepository";
+import {
+    CalculationData,
+    ICalculationsRepository,
+} from "./data/calculations/ICalculationsRepository";
 import { IBytesRepository } from "./data/bytes/IBytesRepository";
 
 export const usePopup = () => {
@@ -21,6 +24,15 @@ export const usePopup = () => {
     >(new Map<CountryName, number>());
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [error, setError] = useState<string>();
+    const [calculationHistory, setCalculationHistory] = useState<
+        CalculationData[]
+    >([]);
+
+    const refreshCalculationHistory = async () => {
+        const calculationsData =
+            await calculationsRepository.getAllCalculations();
+        setCalculationHistory(calculationsData);
+    };
 
     const setCountryPercentage = async (
         country: CountryName,
@@ -197,6 +209,8 @@ export const usePopup = () => {
         averageSpecificEmissions,
         refreshAndGetSize,
         stopRecording,
+        calculationHistory,
+        refreshCalculationHistory,
         error,
     };
 };

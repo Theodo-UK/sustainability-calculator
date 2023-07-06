@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { CountryDropdown } from "./components/CountryDropdown";
 import { usePopup } from "./usePopup";
 import { SelectedCountries } from "./components/selected-countries/SelectedCountries";
+import { CalculationHistory } from "./components/calculation-history/CalculationHistory";
 
 export const Popup = () => {
     const {
@@ -15,6 +16,8 @@ export const Popup = () => {
         averageSpecificEmissions,
         refreshAndGetSize,
         stopRecording,
+        refreshCalculationHistory,
+        calculationHistory,
         error,
     } = usePopup();
 
@@ -45,6 +48,10 @@ export const Popup = () => {
                 setCountryPercentage={setCountryPercentage}
             />
             <CountryDropdown addSelectedCountry={addSelectedCountry} />
+            <CalculationHistory
+                calculationHistory={calculationHistory}
+                refreshCalculationHistory={refreshCalculationHistory}
+            />
             {error && <p>{error}</p>}
         </div>
     );
