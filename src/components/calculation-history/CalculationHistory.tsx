@@ -19,7 +19,6 @@ export const CalculationHistory = ({
                         <p>
                             Specific Emissions: {calculation.specificEmissions}
                         </p>
-                        {/* Render the selected countries */}
                         <ul>
                             {Array.from(calculation.selectedCountries).map(
                                 ([countryName, percentage]) => (

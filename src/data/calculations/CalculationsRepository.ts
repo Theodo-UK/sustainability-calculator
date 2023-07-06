@@ -60,7 +60,7 @@ export class CalculationsRepository implements ICalculationsRepository {
             const data = await this.remoteDataSource.get({
                 ongoingCalculation: null,
             });
-            console.log("data", data);
+
             if (data["ongoingCalculation"] !== null) {
                 return JSON.parse(
                     data["ongoingCalculation"] as string
@@ -76,12 +76,10 @@ export class CalculationsRepository implements ICalculationsRepository {
         try {
             const ongoingCalculation = await this._getOngoingCalculation();
             if (ongoingCalculation !== null) {
-                console.log("ongoingCalculation", ongoingCalculation);
                 return ongoingCalculation;
             }
             const oldCalculations = await this.getAllCalculations();
             if (oldCalculations.length > 0) {
-                console.log("oldCalculations", oldCalculations);
                 return oldCalculations[0];
             }
             return null;
