@@ -125,13 +125,19 @@ export const usePopup = () => {
                 }
             }
         });
-        calculationsRepository.storeCalculation({
-            bytes: totalBytesTransferred,
-            emissions: emissions,
-            specificEmissions: averageSpecificEmissions,
-            selectedCountries: selectedCountries,
-        });
-        calculationsRepository.clearOngoingCalculation();
+        try {
+            calculationsRepository.storeCalculation({
+                bytes: totalBytesTransferred,
+                emissions: emissions,
+                specificEmissions: averageSpecificEmissions,
+                selectedCountries: selectedCountries,
+            });
+            calculationsRepository.clearOngoingCalculation();
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setError(e.message);
+            }
+        }
     };
 
     const addSelectedCountry = async (country: CountryName) => {
