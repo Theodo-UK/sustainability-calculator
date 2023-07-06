@@ -4,14 +4,14 @@ import { calculateAverageSpecificEmissionsHelper } from "./helpers/calculateAver
 import { calculateCarbon } from "./helpers/calculateCarbon";
 import { ISelectedCountriesRepository } from "./data/selected_countries/ISelectedCountriesRepository";
 import { useMountEffect } from "./helpers/useOnceAfterFirstMount";
-import { IEmissionsRepository } from "./data/emissions/IEmissionsRepository";
+import { ICalculationsRepository } from "./data/calculations/ICalculationsRepository";
 import { IBytesRepository } from "./data/bytes/IBytesRepository";
 
 export const usePopup = () => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
         ISelectedCountriesRepository.instance;
-    const emissionsRepository: IEmissionsRepository =
-        IEmissionsRepository.instance;
+    const emissionsRepository: ICalculationsRepository =
+        ICalculationsRepository.instance;
     const bytesRepository: IBytesRepository = IBytesRepository.instance;
 
     const [totalBytesTransferred, settotalBytesTransferred] = useState(0);

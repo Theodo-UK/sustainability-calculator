@@ -1,10 +1,13 @@
 import { IStorageRepository } from "../storage/IStorageRepository";
-import { EmissionsData, IEmissionsRepository } from "./IEmissionsRepository";
+import {
+    CalculationData,
+    ICalculationsRepository,
+} from "./ICalculationsRepository";
 
-export class EmissionsRepository implements IEmissionsRepository {
+export class CalculationsRepository implements ICalculationsRepository {
     remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
-    async storeLastCalculation(emissionsData: EmissionsData): Promise<void> {
+    async storeLastCalculation(emissionsData: CalculationData): Promise<void> {
         try {
             await this.remoteDataSource.set({
                 lastCalculation: JSON.stringify(emissionsData),
@@ -14,10 +17,10 @@ export class EmissionsRepository implements IEmissionsRepository {
         }
     }
 
-    async getLastCalculation(): Promise<EmissionsData> {
+    async getLastCalculation(): Promise<CalculationData> {
         try {
             const data = await this.remoteDataSource.get({
-                lastCalculation: JSON.stringify(<EmissionsData>{
+                lastCalculation: JSON.stringify(<CalculationData>{
                     bytes: 0,
                     emissions: 0,
                     specificEmissions: 0,
@@ -26,7 +29,7 @@ export class EmissionsRepository implements IEmissionsRepository {
 
             return JSON.parse(
                 data["lastCalculation"] as string
-            ) as EmissionsData;
+            ) as CalculationData;
         } catch (e: unknown) {
             throw Error(e as string);
         }
