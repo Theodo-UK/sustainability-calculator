@@ -38,12 +38,14 @@ export const Popup = () => {
                 Total Data Received: {formatBytesString(totalBytesTransferred)}
             </p>
             <p>
-                Specific Carbon Emissions (grams of C02 per gigabyte):
-                {Math.round(averageSpecificEmissions * 100) / 100}
+                Specific Carbon Emissions:
+                {` ${averageSpecificEmissions.toFixed(
+                    0
+                )} grams of C02 per gigabyte`}
             </p>
             <p>
-                Software Carbon Intensity: {Math.round(emissions * 100) / 100}
-                grams of CO2
+                Software Carbon Intensity:
+                {` ${emissions.toFixed(2)} grams of CO2`}
             </p>
             <SelectedCountries
                 selectedCountries={selectedCountries}
