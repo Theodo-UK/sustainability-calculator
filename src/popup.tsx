@@ -4,6 +4,7 @@ import { CountryDropdown } from "./components/CountryDropdown";
 import { usePopup } from "./usePopup";
 import { SelectedCountries } from "./components/selected-countries/SelectedCountries";
 import { CalculationHistory } from "./components/calculation-history/CalculationHistory";
+import { formatBytesString } from "./helpers/formatBytesString";
 
 export const Popup = () => {
     const {
@@ -33,13 +34,15 @@ export const Popup = () => {
                 Calculate CO2 emissions as new user
             </button>
             <button onClick={() => stopRecording()}>Stop calculation</button>
-            <p>Total Data Received: {totalBytesTransferred} bytes</p>
             <p>
-                Specific Carbon Emissions (grams of C02 per gigabyte):{" "}
+                Total Data Received: {formatBytesString(totalBytesTransferred)}
+            </p>
+            <p>
+                Specific Carbon Emissions (grams of C02 per gigabyte):
                 {Math.round(averageSpecificEmissions * 100) / 100}
             </p>
             <p>
-                Software Carbon Intensity: {Math.round(emissions * 100) / 100}{" "}
+                Software Carbon Intensity: {Math.round(emissions * 100) / 100}
                 grams of CO2
             </p>
             <SelectedCountries
