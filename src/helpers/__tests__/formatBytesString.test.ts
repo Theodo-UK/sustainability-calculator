@@ -10,4 +10,10 @@ describe("formatBytesString", () => {
     it("format kilobytes as megabytes", () => {
         expect(formatBytesString(999999)).toBe("1 MB");
     });
+    it("format megabytes as gigabytes", () => {
+        expect(formatBytesString(999999999)).toBe("1 GB");
+    });
+    it("format gigabytes as terabytes", () => {
+        expect(formatBytesString(999999999999)).toBe("1 TB");
+    });
 });
