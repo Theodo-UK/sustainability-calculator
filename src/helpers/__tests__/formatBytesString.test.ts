@@ -5,7 +5,7 @@ describe("formatBytesString", () => {
         expect(formatBytesString(999)).toBe("999 B");
     });
     it("format bytes as kilobytes", () => {
-        expect(formatBytesString(9999)).toBe("10 KB"); // 9.999 KB
+        expect(formatBytesString(9999)).toBe("10 KB");
     });
     it("format kilobytes as megabytes", () => {
         expect(formatBytesString(999999)).toBe("1 MB");
