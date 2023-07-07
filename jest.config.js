@@ -7,7 +7,7 @@ module.exports = {
     testEnvironment: "jsdom",
     clearMocks: true,
     collectCoverage: true,
-    collectCoverageFrom: ["./src/**/*.{js,jsx,ts,tsx}"],
+    collectCoverageFrom: ["<rootDir>/src/**/*.{js,jsx,ts,tsx}"],
     coverageThreshold: {
         global: {
             statements: 100,
@@ -16,7 +16,7 @@ module.exports = {
             lines: 100,
         },
     },
-
+    testMatch: ["<rootDir>/src/**/__tests__/*.test.ts"],
     moduleDirectories: ["src", "node_modules"],
     moduleFileExtensions: ["ts", "tsx", "js"],
 
