@@ -2,29 +2,7 @@ import { renderHook, act } from "@testing-library/react";
 
 import { usePopup } from "../usePopup";
 import { ICalculationsRepository } from "../data/calculations/ICalculationsRepository";
-
-const mockChrome = {
-    tabs: {
-        query: jest.fn(),
-        reload: jest.fn(),
-    },
-    runtime: {
-        onMessage: {
-            addListener: jest.fn(),
-        },
-        sendMessage: jest.fn(),
-    },
-    storage: {
-        local: {
-            get: jest.fn(),
-            set: jest.fn(),
-            onChanged: {
-                addListener: jest.fn(),
-                removeListener: jest.fn(),
-            },
-        },
-    },
-};
+import { mockChrome } from "./mockChrome";
 
 (global as any).chrome = mockChrome;
 

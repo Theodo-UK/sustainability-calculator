@@ -2,29 +2,7 @@ import { renderHook, act } from "@testing-library/react";
 
 import { CO2_EMISSIONS_GRAMS_PER_GB } from "../constants/Countries";
 import { usePopup } from "../usePopup";
-
-const mockChrome = {
-    tabs: {
-        query: jest.fn(),
-        reload: jest.fn(),
-    },
-    runtime: {
-        onMessage: {
-            addListener: jest.fn(),
-        },
-        sendMessage: jest.fn(),
-    },
-    storage: {
-        local: {
-            get: jest.fn(),
-            set: jest.fn(),
-            onChanged: {
-                addListener: jest.fn(),
-                removeListener: jest.fn(),
-            },
-        },
-    },
-};
+import { mockChrome } from "./mockChrome";
 
 (global as any).chrome = mockChrome;
 
