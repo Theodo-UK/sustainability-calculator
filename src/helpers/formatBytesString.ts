@@ -12,9 +12,12 @@ export const formatBytesString = (bytes: number): string => {
     }
 
     const roundedBytes = Math.round(bytes);
+    const decimalPlaces = i === 0 ? 0 : 2;
     if (roundedBytes.toFixed(0).length > 3) {
-        return `${(roundedBytes / BASE).toFixed(0)} ${units[i + 1]}`;
+        return `${(roundedBytes / BASE).toFixed(decimalPlaces)} ${
+            units[i + 1]
+        }`;
     }
 
-    return `${bytes.toFixed(0)} ${units[i]}`;
+    return `${bytes.toFixed(decimalPlaces)} ${units[i]}`;
 };
