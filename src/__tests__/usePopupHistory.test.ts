@@ -16,15 +16,15 @@ describe("usePopup", () => {
 
         const mockCalculationRepository = ICalculationsRepository.instance;
         mockCalculationRepository.storeCalculation({
-            bytes: -1,
-            emissions: -1,
-            specificEmissions: -1,
+            bytes: 12345,
+            emissions: 12345,
+            specificEmissions: 12345,
             selectedCountries: new Map([["World Average", 0]]),
         });
         mockCalculationRepository.storeCalculation({
-            bytes: -2,
-            emissions: -2,
-            specificEmissions: -2,
+            bytes: 54321,
+            emissions: 54321,
+            specificEmissions: 54321,
             selectedCountries: new Map([["World Average", 0]]),
         });
 
@@ -34,15 +34,15 @@ describe("usePopup", () => {
 
         expect(result.current.calculationHistory).toStrictEqual([
             {
-                bytes: -2,
-                emissions: -2,
-                specificEmissions: -2,
+                bytes: 54321,
+                emissions: 54321,
+                specificEmissions: 54321,
                 selectedCountries: new Map([["World Average", 0]]),
             },
             {
-                bytes: -1,
-                emissions: -1,
-                specificEmissions: -1,
+                bytes: 12345,
+                emissions: 12345,
+                specificEmissions: 12345,
                 selectedCountries: new Map([["World Average", 0]]),
             },
         ]);
