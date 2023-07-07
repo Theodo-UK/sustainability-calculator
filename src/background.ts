@@ -51,7 +51,7 @@ const webRequestOnBeforeSendHeaders = (
     }
 };
 
-chrome.runtime.onMessage.addListener((message) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const { tabId } = message;
 
     if (message.command === "startStoringWebRequestPayloadSize") {
@@ -77,6 +77,6 @@ chrome.runtime.onMessage.addListener((message) => {
             webRequestOnCompleteListener
         );
     }
-
+    sendResponse(true);
     return true;
 });
