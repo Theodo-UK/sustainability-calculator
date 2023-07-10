@@ -1,9 +1,9 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { CountryDropdown } from "../../components/CountryDropdown";
+import { CountryDropdown } from "../components/country-dropdown/CountryDropdown";
 import { usePopup } from "./usePopup";
-import { SelectedCountries } from "../../components/selected-countries/SelectedCountries";
-import { CalculationHistory } from "../../components/calculation-history/CalculationHistory";
+import { SelectedCountries } from "../components/selected-countries/SelectedCountries";
+import { CalculationHistory } from "../components/calculation-history/CalculationHistory";
 import { formatBytesString } from "../../utils/helpers/formatBytesString";
 
 export const Popup = () => {

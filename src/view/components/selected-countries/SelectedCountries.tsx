@@ -1,5 +1,5 @@
 import React from "react";
-import { CountryName } from "../../data/constants/CountryEmissions";
+import { CountryName } from "../../../data/constants/CountryEmissions";
 
 type SelectedCountriesType = {
     selectedCountries: Map<CountryName, number>;
