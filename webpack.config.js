@@ -23,7 +23,7 @@ module.exports = (env, argv) => {
 
     return {
         entry: {
-            popup: "./src/popup.tsx",
+            popup: "./src//view/popup/popup.tsx",
             background: "./src/background/background.ts",
         },
         output: {
@@ -52,7 +52,7 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                template: "./src/popup.html",
+                template: "./src/view/popup/popup.html",
                 filename: "popup.html",
             }),
             new CopyPlugin({

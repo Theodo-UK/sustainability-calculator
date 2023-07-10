@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { CountryName } from "./data/constants/CountryEmissions";
-import { calculateAverageSpecificEmissionsHelper } from "./utils/helpers/calculateAverageSpecificEmissions";
-import { calculateCarbon } from "./utils/helpers/calculateCarbon";
-import { ISelectedCountriesRepository } from "./data/selected-countries/ISelectedCountriesRepository";
-import { useMountEffect } from "./utils/helpers/useOnceAfterFirstMount";
+import { CountryName } from "../../data/constants/CountryEmissions";
+import { calculateAverageSpecificEmissionsHelper } from "../../utils/helpers/calculateAverageSpecificEmissions";
+import { calculateCarbon } from "../../utils/helpers/calculateCarbon";
+import { ISelectedCountriesRepository } from "../../data/selected-countries/ISelectedCountriesRepository";
+import { useMountEffect } from "../../utils/helpers/useOnceAfterFirstMount";
 import {
     CalculationData,
     ICalculationsRepository,
-} from "./data/calculations/ICalculationsRepository";
-import { IBytesRepository } from "./data/bytes/IBytesRepository";
+} from "../../data/calculations/ICalculationsRepository";
+import { IBytesRepository } from "../../data/bytes/IBytesRepository";
 
 export const usePopup = () => {
     const selectedCountriesRepository: ISelectedCountriesRepository =

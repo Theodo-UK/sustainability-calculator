@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 
-import { COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB } from "../data/constants/CountryEmissions";
+import { COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB } from "../../../data/constants/CountryEmissions";
 import { usePopup } from "../usePopup";
 import { mockChrome } from "./mockChrome";
 
@@ -19,8 +19,10 @@ describe("usePopup", () => {
         const mockCountry1Percentage = 0.4;
         const mockCountry2Percentage = 0.4;
         const mockAverageSpecificEmissions =
-            mockCountry1Percentage * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[mockCountry1] +
-            mockCountry2Percentage * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[mockCountry2] +
+            mockCountry1Percentage *
+                COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[mockCountry1] +
+            mockCountry2Percentage *
+                COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[mockCountry2] +
             (1 - mockCountry1Percentage - mockCountry2Percentage) *
                 COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["World Average"];
 
