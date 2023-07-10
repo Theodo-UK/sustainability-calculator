@@ -22,7 +22,10 @@ module.exports = (env, argv) => {
     }, {});
 
     return {
-        entry: { popup: "./src/popup.tsx", background: "./src/background.ts" },
+        entry: {
+            popup: "./src/popup.tsx",
+            background: "./src/background/background.ts",
+        },
         output: {
             path: path.resolve(__dirname, "dist"),
             filename: "[name].js",

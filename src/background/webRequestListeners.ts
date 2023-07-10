@@ -1,6 +1,6 @@
-import { IBytesRepository } from "./data/bytes/IBytesRepository";
+import { IBytesRepository } from "../data/bytes/IBytesRepository";
 
-const webRequestOnCompleteListener = (
+export const webRequestOnCompleteListener = (
     details: chrome.webRequest.WebResponseCacheDetails
 ) => {
     // Catch all response header+body size
@@ -25,7 +25,7 @@ const webRequestOnCompleteListener = (
     IBytesRepository.instance.addBytesTransferred(headerSize + bodySize);
 };
 
-const webRequestOnBeforeRequestListener = (
+export const webRequestOnBeforeRequestListener = (
     details: chrome.webRequest.WebRequestBodyDetails
 ) => {
     // Catch POST request body size
@@ -35,7 +35,7 @@ const webRequestOnBeforeRequestListener = (
     }
 };
 
-const webRequestOnBeforeSendHeaders = (
+export const webRequestOnBeforeSendHeaders = (
     details: chrome.webRequest.WebRequestHeadersDetails
 ) => {
     // Catch all requests header size
@@ -50,33 +50,3 @@ const webRequestOnBeforeSendHeaders = (
         IBytesRepository.instance.addBytesTransferred(headerSize);
     }
 };
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    const { tabId } = message;
-
-    if (message.command === "startStoringWebRequestPayloadSize") {
-        chrome.webRequest.onBeforeRequest.addListener(
-            webRequestOnBeforeRequestListener,
-            { urls: ["<all_urls>"], tabId },
-            ["requestBody"]
-        );
-        chrome.webRequest.onBeforeSendHeaders.addListener(
-            webRequestOnBeforeSendHeaders,
-            { urls: ["<all_urls>"], tabId },
-            ["requestHeaders"]
-        );
-        chrome.webRequest.onCompleted.addListener(
-            webRequestOnCompleteListener,
-            { urls: ["<all_urls>"], tabId },
-            ["responseHeaders"]
-        );
-    }
-
-    if (message.command === "stopStoringWebRequestPayloadSize") {
-        chrome.webRequest.onCompleted.removeListener(
-            webRequestOnCompleteListener
-        );
-    }
-    sendResponse(true);
-    return true;
-});
