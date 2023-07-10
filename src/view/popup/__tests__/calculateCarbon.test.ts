@@ -1,5 +1,5 @@
 import { CountryName } from "../../../data/constants/CountryEmissions";
-import { calculateCarbon } from "../calculateCarbon";
+import { calculateCarbon } from "../utils/calculateCarbon";
 
 const mockCountry: Map<CountryName, number> = new Map([["Australia", 0.5]]);
 

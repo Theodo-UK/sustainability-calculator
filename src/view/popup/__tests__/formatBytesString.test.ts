@@ -1,4 +1,4 @@
-import { formatBytesString } from "../formatBytesString";
+import { formatBytesString } from "../utils/formatBytesString";
 
 describe("formatBytesString", () => {
     it("format as bytes", () => {

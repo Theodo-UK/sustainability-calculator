@@ -1,7 +1,7 @@
 import {
     COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
     CountryName,
-} from "../../data/constants/CountryEmissions";
+} from "../../../data/constants/CountryEmissions";
 
 export const calculateAverageSpecificEmissionsHelper = (
     selectedCountries: Map<CountryName, number>
@@ -16,7 +16,8 @@ export const calculateAverageSpecificEmissionsHelper = (
             noOfCountriesMissingPercentages += 1;
             return;
         }
-        averageSpecificEmissions += value * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[key];
+        averageSpecificEmissions +=
+            value * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[key];
     });
 
     const remainingPercentage = 1 - totalPercentage;
@@ -32,7 +33,8 @@ export const calculateAverageSpecificEmissionsHelper = (
         });
     } else if (totalPercentage < 1) {
         averageSpecificEmissions +=
-            remainingPercentage * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["World Average"];
+            remainingPercentage *
+            COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["World Average"];
     }
 
     return averageSpecificEmissions;
