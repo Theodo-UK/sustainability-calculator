@@ -1,5 +1,5 @@
 import { CountryName } from "../constants/CountryEmissions";
-import { JSONtoMap, maptoJSON } from "../../helpers/jsonHelpers";
+import { JSONtoMap, maptoJSON } from "../../utils/helpers/jsonHelpers";
 import { IStorageRepository } from "../storage/IStorageRepository";
 import { ISelectedCountriesRepository } from "./ISelectedCountriesRepository";
 

@@ -1,7 +1,7 @@
 import {
     COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
     CountryName,
-} from "../data/constants/CountryEmissions";
+} from "../../data/constants/CountryEmissions";
 
 export const calculateAverageSpecificEmissionsHelper = (
     selectedCountries: Map<CountryName, number>
