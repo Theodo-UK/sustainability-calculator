@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { CountryName } from "./data/constants/CountryEmissions";
 import { calculateAverageSpecificEmissionsHelper } from "./helpers/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "./helpers/calculateCarbon";
-import { ISelectedCountriesRepository } from "./data/selected_countries/ISelectedCountriesRepository";
+import { ISelectedCountriesRepository } from "./data/selected-countries/ISelectedCountriesRepository";
 import { useMountEffect } from "./helpers/useOnceAfterFirstMount";
 import {
     CalculationData,
