@@ -1,4 +1,4 @@
-import { CountryName } from "../../constants/Countries";
+import { CountryName } from "../constants/CountryEmissions";
 import { ISelectedCountriesRepository } from "./ISelectedCountriesRepository";
 
 export class TestSelectedCountriesRepository

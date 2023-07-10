@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 
-import { CountryName } from "../constants/Countries";
+import { CountryName } from "../data/constants/CountryEmissions";
 import { areMapsDeepEqual } from "../helpers/areMapsDeepEqual";
 import { usePopup } from "../usePopup";
 import { mockChrome } from "./mockChrome";

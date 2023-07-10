@@ -1,4 +1,4 @@
-export const CO2_EMISSIONS_GRAMS_PER_GB: Record<string, number> = {
+export const COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB: Record<string, number> = {
     "World Average": 421,
     "United Kingdom": 212.3,
     Austria: 111.2,
@@ -52,4 +52,4 @@ export const CO2_EMISSIONS_GRAMS_PER_GB: Record<string, number> = {
     Brazil: 61.7,
 };
 
-export type CountryName = keyof typeof CO2_EMISSIONS_GRAMS_PER_GB;
+export type CountryName = keyof typeof COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB;

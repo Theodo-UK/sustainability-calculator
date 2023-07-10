@@ -1,7 +1,7 @@
 import {
-    CO2_EMISSIONS_GRAMS_PER_GB,
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
     CountryName,
-} from "../constants/Countries";
+} from "../data/constants/CountryEmissions";
 
 export const calculateCarbon = (
     bytes: number,
@@ -36,7 +36,7 @@ export const calculateCarbon = (
     _selectedCountries.forEach((percentage, country) => {
         carbon +=
             (bytes / 1073741824) *
-            CO2_EMISSIONS_GRAMS_PER_GB[country] *
+            COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[country] *
             percentage;
     });
     return carbon;

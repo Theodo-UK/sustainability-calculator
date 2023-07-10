@@ -1,4 +1,4 @@
-import { CountryName } from "../../constants/Countries";
+import { CountryName } from "../../data/constants/CountryEmissions";
 import { areMapsDeepEqual } from "../areMapsDeepEqual";
 
 const mockMap1: Map<CountryName, number> = new Map([
