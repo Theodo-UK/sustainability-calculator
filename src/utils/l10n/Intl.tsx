@@ -1,7 +1,7 @@
 import { IntlProvider } from "react-intl";
 import React from "react";
-import { flattenMessages } from "../services/intl";
-import en from "../translations/en.json";
+import { flattenMessages } from "./flattenMessages";
+import en from "./translations/en.json";
 
 const loadLocaleData = (locale: string) => {
     switch (locale) {
