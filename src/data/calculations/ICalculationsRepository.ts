@@ -25,14 +25,16 @@ export abstract class ICalculationsRepository {
 
     abstract setOngoingCalculation(ongoing: boolean): Promise<void>;
 
-    abstract storeCalculation(calculationData: CalculationData): Promise<void>;
+    abstract storeCalculation(
+        calculationData: CalculationDataType
+    ): Promise<void>;
 
-    abstract getLastCalculation(): Promise<CalculationData | null>;
+    abstract getLastCalculation(): Promise<CalculationDataType | null>;
 
-    abstract getAllCalculations(): Promise<CalculationData[]>;
+    abstract getAllCalculations(): Promise<CalculationDataType[]>;
 }
 
-export type CalculationData = {
+export type CalculationDataType = {
     bytes: number;
     emissions: number;
     specificEmissions: number;

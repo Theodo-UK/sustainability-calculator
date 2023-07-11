@@ -1,8 +1,8 @@
 import React from "react";
-import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
+import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
 type CountryDropdownType = {
     refreshCalculationHistory: () => void;
-    calculationHistory: CalculationData[];
+    calculationHistory: CalculationDataType[];
 };
 export const CalculationHistory = ({
     refreshCalculationHistory,
