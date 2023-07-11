@@ -21,13 +21,11 @@ export abstract class ICalculationsRepository {
         return this._instance;
     }
 
+    abstract isOngoingCalculation(): Promise<boolean>;
+
+    abstract setOngoingCalculation(ongoing: boolean): Promise<void>;
+
     abstract storeCalculation(calculationData: CalculationData): Promise<void>;
-
-    abstract cacheOngoingCalculation(
-        calculationData: CalculationData
-    ): Promise<void>;
-
-    abstract clearOngoingCalculation(): Promise<void>;
 
     abstract getLastCalculation(): Promise<CalculationData | null>;
 

@@ -47,12 +47,6 @@ export const usePopup = () => {
         setSelectedCountries(newMap);
     };
 
-    const calculateAverageSpecificEmissions = () => {
-        const newAverageSpecificEmissions =
-            calculateAverageSpecificEmissionsHelper(selectedCountries);
-        setAverageSpecificEmissions(newAverageSpecificEmissions);
-    };
-
     const sumPercentages = () => {
         const percentage = Array.from(selectedCountries.values()).reduce(
             (accumulator, country) => {
@@ -75,7 +69,9 @@ export const usePopup = () => {
     const refreshAndGetSize = async (bypassCache: boolean) => {
         try {
             sumPercentages();
-            calculateAverageSpecificEmissions();
+            setAverageSpecificEmissions(
+                calculateAverageSpecificEmissionsHelper(selectedCountries)
+            );
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
@@ -83,6 +79,7 @@ export const usePopup = () => {
             return;
         }
         try {
+            await calculationsRepository.setOngoingCalculation(true);
             await bytesRepository.clearTotalBytesTransferred();
         } catch (e: unknown) {
             if (e instanceof Error) {
@@ -132,7 +129,7 @@ export const usePopup = () => {
                 specificEmissions: averageSpecificEmissions,
                 selectedCountries: selectedCountries,
             });
-            calculationsRepository.clearOngoingCalculation();
+            calculationsRepository.setOngoingCalculation(false);
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
@@ -167,12 +164,6 @@ export const usePopup = () => {
                     selectedCountries
                 );
                 setEmissions(_emissions);
-                calculationsRepository.cacheOngoingCalculation({
-                    bytes: changes.totalBytesTransferred.newValue,
-                    emissions: _emissions,
-                    specificEmissions: averageSpecificEmissions,
-                    selectedCountries: selectedCountries,
-                });
             }
         };
 
@@ -188,23 +179,35 @@ export const usePopup = () => {
     }, [selectedCountries, averageSpecificEmissions, calculationsRepository]);
 
     useMountEffect(() => {
-        const getSelectedCountriesAndSetState = async () => {
-            const newMap =
-                await selectedCountriesRepository.getSelectedCountriesAndPercentages();
-            setSelectedCountries(newMap);
-        };
-        getSelectedCountriesAndSetState();
-    });
-
-    useMountEffect(() => {
         const getLastCalculationAndSetState = async () => {
+            const _selectedCountries =
+                await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+            setSelectedCountries(_selectedCountries);
+
+            if (await calculationsRepository.isOngoingCalculation()) {
+                const _bytes = await bytesRepository.getTotalBytesTransferred();
+                console.log("ongoing calculation");
+                settotalBytesTransferred(_bytes);
+                setEmissions(calculateCarbon(_bytes, _selectedCountries));
+                setAverageSpecificEmissions(
+                    calculateAverageSpecificEmissionsHelper(_selectedCountries)
+                );
+                return;
+            }
+
             const calculationData =
                 await calculationsRepository.getLastCalculation();
-            settotalBytesTransferred(calculationData?.bytes ?? 0);
-            setEmissions(calculationData?.emissions ?? 0);
-            setAverageSpecificEmissions(
-                calculationData?.specificEmissions ?? 0
-            );
+            if (!(calculationData === null)) {
+                console.log("last calculation", calculationData);
+                settotalBytesTransferred(calculationData.bytes);
+                setEmissions(calculationData.emissions);
+                setAverageSpecificEmissions(calculationData.specificEmissions);
+                return;
+            }
+
+            settotalBytesTransferred(0);
+            setEmissions(0);
+            setAverageSpecificEmissions(0);
         };
         getLastCalculationAndSetState();
     });

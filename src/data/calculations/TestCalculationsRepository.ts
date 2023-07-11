@@ -5,21 +5,19 @@ import {
 
 export class TestCalculationsRepository implements ICalculationsRepository {
     private _allCalculations: CalculationData[] = [];
-    private _ongoingCalculation: CalculationData | null = null;
+    private _ongoingCalculation = false;
 
     async storeCalculation(calculationData: CalculationData): Promise<void> {
         const tempArray = [calculationData, ...this._allCalculations];
         this._allCalculations = tempArray;
     }
 
-    async cacheOngoingCalculation(
-        calculationData: CalculationData
-    ): Promise<void> {
-        this._ongoingCalculation = calculationData;
+    async isOngoingCalculation(): Promise<boolean> {
+        return this._ongoingCalculation;
     }
 
-    async clearOngoingCalculation(): Promise<void> {
-        this._ongoingCalculation = null;
+    async setOngoingCalculation(ongoing: boolean): Promise<void> {
+        this._ongoingCalculation = ongoing;
     }
 
     async getAllCalculations(): Promise<CalculationData[]> {
@@ -27,9 +25,6 @@ export class TestCalculationsRepository implements ICalculationsRepository {
     }
 
     async getLastCalculation(): Promise<CalculationData | null> {
-        if (this._ongoingCalculation !== null) {
-            return this._ongoingCalculation;
-        }
         if (this._allCalculations.length > 0) {
             return this._allCalculations[0];
         }

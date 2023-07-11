@@ -7,25 +7,23 @@ import {
 export class CalculationsRepository implements ICalculationsRepository {
     remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
+    async isOngoingCalculation(): Promise<boolean> {
+        const data = await this.remoteDataSource.get({
+            ongoingCalculation: false,
+        });
+        return data["ongoingCalculation"] as boolean;
+    }
+
+    async setOngoingCalculation(ongoing: boolean): Promise<void> {
+        await this.remoteDataSource.set({
+            ongoingCalculation: ongoing,
+        });
+    }
     async storeCalculation(calculationData: CalculationData): Promise<void> {
         const oldCalculations = await this.getAllCalculations();
         const newCalculations = [calculationData, ...oldCalculations];
         await this.remoteDataSource.set({
             allCalculations: JSON.stringify(newCalculations),
-        });
-    }
-
-    async cacheOngoingCalculation(
-        calculationData: CalculationData
-    ): Promise<void> {
-        await this.remoteDataSource.set({
-            ongoingCalculation: JSON.stringify(calculationData),
-        });
-    }
-
-    async clearOngoingCalculation(): Promise<void> {
-        await this.remoteDataSource.set({
-            ongoingCalculation: null,
         });
     }
 
@@ -53,10 +51,6 @@ export class CalculationsRepository implements ICalculationsRepository {
     }
 
     async getLastCalculation(): Promise<CalculationData | null> {
-        const ongoingCalculation = await this._getOngoingCalculation();
-        if (ongoingCalculation !== null) {
-            return ongoingCalculation;
-        }
         const oldCalculations = await this.getAllCalculations();
         if (oldCalculations.length > 0) {
             return oldCalculations[0];
