@@ -17,7 +17,7 @@ export const usePopup = () => {
         ICalculationsRepository.instance;
     const bytesRepository: IBytesRepository = IBytesRepository.instance;
 
-    const [totalBytesTransferred, setBytesTransferred] = useState(0);
+    const [bytesTransferred, setBytesTransferred] = useState(0);
     const [emissions, setEmissions] = useState(0);
     const [selectedCountries, setSelectedCountries] = useState<
         Map<CountryName, number>
@@ -124,7 +124,7 @@ export const usePopup = () => {
         });
         try {
             calculationsRepository.storeCalculation({
-                bytes: totalBytesTransferred,
+                bytes: bytesTransferred,
                 emissions: emissions,
                 specificEmissions: averageSpecificEmissions,
                 selectedCountries: selectedCountries,
@@ -155,10 +155,10 @@ export const usePopup = () => {
         const totalBytesTransferredListener = (changes: {
             [key: string]: chrome.storage.StorageChange;
         }) => {
-            if (changes.totalBytesTransferred) {
-                setBytesTransferred(changes.totalBytesTransferred.newValue);
+            if (changes.bytesTransferred) {
+                setBytesTransferred(changes.bytesTransferred.newValue);
                 const _emissions = calculateCarbon(
-                    changes.totalBytesTransferred.newValue,
+                    changes.bytesTransferred.newValue,
                     selectedCountries
                 );
                 setEmissions(_emissions);
@@ -210,7 +210,7 @@ export const usePopup = () => {
 
     return {
         emissions,
-        totalBytesTransferred,
+        bytesTransferred,
         selectedCountries,
         addSelectedCountry,
         removeSelectedCountry,
