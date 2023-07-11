@@ -5,7 +5,7 @@ import { calculateCarbon } from "./utils/calculateCarbon";
 import { ISelectedCountriesRepository } from "../../data/selected-countries/ISelectedCountriesRepository";
 import { useMountEffect } from "./useOnceAfterFirstMount";
 import {
-    CalculationData,
+    CalculationDataType,
     ICalculationsRepository,
 } from "../../data/calculations/ICalculationsRepository";
 import { IBytesRepository } from "../../data/bytes/IBytesRepository";
@@ -17,7 +17,7 @@ export const usePopup = () => {
         ICalculationsRepository.instance;
     const bytesRepository: IBytesRepository = IBytesRepository.instance;
 
-    const [totalBytesTransferred, settotalBytesTransferred] = useState(0);
+    const [totalBytesTransferred, setBytesTransferred] = useState(0);
     const [emissions, setEmissions] = useState(0);
     const [selectedCountries, setSelectedCountries] = useState<
         Map<CountryName, number>
@@ -25,7 +25,7 @@ export const usePopup = () => {
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [error, setError] = useState<string>();
     const [calculationHistory, setCalculationHistory] = useState<
-        CalculationData[]
+        CalculationDataType[]
     >([]);
 
     const refreshCalculationHistory = async () => {
@@ -45,12 +45,6 @@ export const usePopup = () => {
         const newMap =
             await selectedCountriesRepository.getSelectedCountriesAndPercentages();
         setSelectedCountries(newMap);
-    };
-
-    const calculateAverageSpecificEmissions = () => {
-        const newAverageSpecificEmissions =
-            calculateAverageSpecificEmissionsHelper(selectedCountries);
-        setAverageSpecificEmissions(newAverageSpecificEmissions);
     };
 
     const sumPercentages = () => {
@@ -75,7 +69,9 @@ export const usePopup = () => {
     const refreshAndGetSize = async (bypassCache: boolean) => {
         try {
             sumPercentages();
-            calculateAverageSpecificEmissions();
+            setAverageSpecificEmissions(
+                calculateAverageSpecificEmissionsHelper(selectedCountries)
+            );
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
@@ -83,6 +79,7 @@ export const usePopup = () => {
             return;
         }
         try {
+            await calculationsRepository.setOngoingCalculation(true);
             await bytesRepository.clearTotalBytesTransferred();
         } catch (e: unknown) {
             if (e instanceof Error) {
@@ -132,7 +129,7 @@ export const usePopup = () => {
                 specificEmissions: averageSpecificEmissions,
                 selectedCountries: selectedCountries,
             });
-            calculationsRepository.clearOngoingCalculation();
+            calculationsRepository.setOngoingCalculation(false);
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
@@ -159,20 +156,12 @@ export const usePopup = () => {
             [key: string]: chrome.storage.StorageChange;
         }) => {
             if (changes.totalBytesTransferred) {
-                settotalBytesTransferred(
-                    changes.totalBytesTransferred.newValue
-                );
+                setBytesTransferred(changes.totalBytesTransferred.newValue);
                 const _emissions = calculateCarbon(
                     changes.totalBytesTransferred.newValue,
                     selectedCountries
                 );
                 setEmissions(_emissions);
-                calculationsRepository.cacheOngoingCalculation({
-                    bytes: changes.totalBytesTransferred.newValue,
-                    emissions: _emissions,
-                    specificEmissions: averageSpecificEmissions,
-                    selectedCountries: selectedCountries,
-                });
             }
         };
 
@@ -188,23 +177,33 @@ export const usePopup = () => {
     }, [selectedCountries, averageSpecificEmissions, calculationsRepository]);
 
     useMountEffect(() => {
-        const getSelectedCountriesAndSetState = async () => {
-            const newMap =
-                await selectedCountriesRepository.getSelectedCountriesAndPercentages();
-            setSelectedCountries(newMap);
-        };
-        getSelectedCountriesAndSetState();
-    });
-
-    useMountEffect(() => {
         const getLastCalculationAndSetState = async () => {
+            const _selectedCountries =
+                await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+            setSelectedCountries(_selectedCountries);
+
+            if (await calculationsRepository.isOngoingCalculation()) {
+                const _bytes = await bytesRepository.getTotalBytesTransferred();
+                setBytesTransferred(_bytes);
+                setEmissions(calculateCarbon(_bytes, _selectedCountries));
+                setAverageSpecificEmissions(
+                    calculateAverageSpecificEmissionsHelper(_selectedCountries)
+                );
+                return;
+            }
+
             const calculationData =
                 await calculationsRepository.getLastCalculation();
-            settotalBytesTransferred(calculationData?.bytes ?? 0);
-            setEmissions(calculationData?.emissions ?? 0);
-            setAverageSpecificEmissions(
-                calculationData?.specificEmissions ?? 0
-            );
+            if (!(calculationData === null)) {
+                setBytesTransferred(calculationData.bytes);
+                setEmissions(calculationData.emissions);
+                setAverageSpecificEmissions(calculationData.specificEmissions);
+                return;
+            }
+
+            setBytesTransferred(0);
+            setEmissions(0);
+            setAverageSpecificEmissions(0);
         };
         getLastCalculationAndSetState();
     });
