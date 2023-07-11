@@ -51,7 +51,9 @@ export class StorageRemoteDataSource {
                 return result;
             });
         } catch (e) {
-            throw new Error("getTotalBytesTransferred failed: " + e);
+            throw new Error(
+                `StorageRemoteDataSource failed to get: ${data}: ${e}`
+            );
         }
     }
 
@@ -59,7 +61,9 @@ export class StorageRemoteDataSource {
         try {
             await this.storage.write(data);
         } catch (e) {
-            throw new Error("addBytesTransferred failed: " + e);
+            throw new Error(
+                `StorageRemoteDataSource failed to set: ${data}: ${e}`
+            );
         }
     }
 
@@ -67,7 +71,7 @@ export class StorageRemoteDataSource {
         try {
             await this.storage.clear();
         } catch (e) {
-            throw new Error("clearTotalBytesTransferred failed: " + e);
+            throw new Error(`StorageRemoteDataSource failed to clear: ${e}`);
         }
     }
 }

@@ -8,7 +8,7 @@ import { formatBytesString } from "./utils/formatBytesString";
 
 export const Popup = () => {
     const {
-        totalBytesTransferred,
+        bytesTransferred,
         emissions,
         selectedCountries,
         addSelectedCountry,
@@ -34,9 +34,7 @@ export const Popup = () => {
                 Calculate CO2 emissions as new user
             </button>
             <button onClick={() => stopRecording()}>Stop calculation</button>
-            <p>
-                Total Data Received: {formatBytesString(totalBytesTransferred)}
-            </p>
+            <p>Total Data Received: {formatBytesString(bytesTransferred)}</p>
             <p>
                 Specific Carbon Emissions:
                 {` ${averageSpecificEmissions.toFixed(

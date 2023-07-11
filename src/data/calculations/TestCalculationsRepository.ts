@@ -1,35 +1,32 @@
 import {
-    CalculationData,
+    CalculationDataType,
     ICalculationsRepository,
 } from "./ICalculationsRepository";
 
 export class TestCalculationsRepository implements ICalculationsRepository {
-    private _allCalculations: CalculationData[] = [];
-    private _ongoingCalculation: CalculationData | null = null;
+    private _allCalculations: CalculationDataType[] = [];
+    private _ongoingCalculation = false;
 
-    async storeCalculation(calculationData: CalculationData): Promise<void> {
+    async storeCalculation(
+        calculationData: CalculationDataType
+    ): Promise<void> {
         const tempArray = [calculationData, ...this._allCalculations];
         this._allCalculations = tempArray;
     }
 
-    async cacheOngoingCalculation(
-        calculationData: CalculationData
-    ): Promise<void> {
-        this._ongoingCalculation = calculationData;
+    async isOngoingCalculation(): Promise<boolean> {
+        return this._ongoingCalculation;
     }
 
-    async clearOngoingCalculation(): Promise<void> {
-        this._ongoingCalculation = null;
+    async setOngoingCalculation(ongoing: boolean): Promise<void> {
+        this._ongoingCalculation = ongoing;
     }
 
-    async getAllCalculations(): Promise<CalculationData[]> {
+    async getAllCalculations(): Promise<CalculationDataType[]> {
         return this._allCalculations;
     }
 
-    async getLastCalculation(): Promise<CalculationData | null> {
-        if (this._ongoingCalculation !== null) {
-            return this._ongoingCalculation;
-        }
+    async getLastCalculation(): Promise<CalculationDataType | null> {
         if (this._allCalculations.length > 0) {
             return this._allCalculations[0];
         }

@@ -21,20 +21,20 @@ export abstract class ICalculationsRepository {
         return this._instance;
     }
 
-    abstract storeCalculation(calculationData: CalculationData): Promise<void>;
+    abstract isOngoingCalculation(): Promise<boolean>;
 
-    abstract cacheOngoingCalculation(
-        calculationData: CalculationData
+    abstract setOngoingCalculation(ongoing: boolean): Promise<void>;
+
+    abstract storeCalculation(
+        calculationData: CalculationDataType
     ): Promise<void>;
 
-    abstract clearOngoingCalculation(): Promise<void>;
+    abstract getLastCalculation(): Promise<CalculationDataType | null>;
 
-    abstract getLastCalculation(): Promise<CalculationData | null>;
-
-    abstract getAllCalculations(): Promise<CalculationData[]>;
+    abstract getAllCalculations(): Promise<CalculationDataType[]>;
 }
 
-export type CalculationData = {
+export type CalculationDataType = {
     bytes: number;
     emissions: number;
     specificEmissions: number;
