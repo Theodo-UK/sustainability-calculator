@@ -9,6 +9,7 @@ import {
     ICalculationsRepository,
 } from "../../data/calculations/ICalculationsRepository";
 import { IBytesRepository } from "../../data/bytes/IBytesRepository";
+import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
 
 export const usePopup = () => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
@@ -88,26 +89,7 @@ export const usePopup = () => {
             return;
         }
         setError(undefined);
-
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (tabs.length > 0) {
-                const tabId = tabs[0].id;
-                if (tabId) {
-                    chrome.tabs.reload(
-                        tabId,
-                        {
-                            bypassCache: bypassCache,
-                        },
-                        () => {
-                            chrome.runtime.sendMessage({
-                                command: "startStoringWebRequestPayloadSize",
-                                tabId,
-                            });
-                        }
-                    );
-                }
-            }
-        });
+        refreshActiveTabAndRecordBytes(bypassCache);
     };
 
     const stopRecording = () => {
