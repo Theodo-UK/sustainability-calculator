@@ -24,4 +24,16 @@ describe("usePopup", () => {
             tabId: mockTabId,
         });
     });
+    it("stopRecording send a message to runtime to stop recording", async () => {
+        const { result } = renderHook(() => usePopup());
+
+        await act(async () => {
+            await result.current.stopRecording();
+        });
+
+        expect(chrome.runtime.sendMessage).toBeCalledWith({
+            command: "stopStoringWebRequestPayloadSize",
+            tabId: mockTabId,
+        });
+    });
 });
