@@ -3,7 +3,7 @@ import { renderHook, act } from "@testing-library/react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
 import { areMapsDeepEqual } from "../../../utils/helpers/areMapsDeepEqual";
 import { usePopup } from "../usePopup";
-import { mockChrome } from "./mockChrome";
+import { mockChrome } from "../../../utils/test-objects/mockChrome";
 
 (global as any).chrome = mockChrome;
 

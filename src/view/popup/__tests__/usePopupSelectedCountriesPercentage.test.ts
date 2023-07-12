@@ -2,7 +2,7 @@ import { renderHook, act } from "@testing-library/react";
 
 import { COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB } from "../../../data/constants/CountryEmissions";
 import { usePopup } from "../usePopup";
-import { mockChrome } from "./mockChrome";
+import { mockChrome } from "../../../utils/test-objects/mockChrome";
 
 (global as any).chrome = mockChrome;
 
