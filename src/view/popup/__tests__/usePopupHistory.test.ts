@@ -2,7 +2,7 @@ import { renderHook, act } from "@testing-library/react";
 
 import { usePopup } from "../usePopup";
 import { ICalculationsRepository } from "../../../data/calculations/ICalculationsRepository";
-import { mockChrome } from "./mockChrome";
+import { mockChrome } from "../../../utils/test-objects/mockChrome";
 
 (global as any).chrome = mockChrome;
 
