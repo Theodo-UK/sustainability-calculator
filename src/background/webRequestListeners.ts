@@ -1,5 +1,55 @@
 import { IBytesRepository } from "../data/bytes/IBytesRepository";
 
+export const webRequestOnBeforeRedirectListener = (
+    details: chrome.webRequest.WebRedirectionResponseDetails
+) => {
+    // When server response starts,
+    // catch response header+body size
+    const headerSize =
+        details.responseHeaders?.reduce((acc, header) => {
+            const encoder = new TextEncoder();
+            const headerLength = encoder.encode(
+                header.name + ": " + (header.value ?? "")
+            ).length;
+            return acc + headerLength;
+        }, 0) ?? 0;
+
+    const contentLengthHeader = details.responseHeaders?.find(
+        (header) => header.name.toLowerCase() === "content-length"
+    );
+
+    const bodySize =
+        contentLengthHeader?.value !== undefined
+            ? parseInt(contentLengthHeader.value, 10)
+            : 0;
+
+    IBytesRepository.instance.addBytesTransferred(headerSize + bodySize);
+};
+export const webRequestOnHeadersReceivedListener = (
+    details: chrome.webRequest.WebResponseHeadersDetails
+) => {
+    // When server response starts,
+    // catch response header+body size
+    const headerSize =
+        details.responseHeaders?.reduce((acc, header) => {
+            const encoder = new TextEncoder();
+            const headerLength = encoder.encode(
+                header.name + ": " + (header.value ?? "")
+            ).length;
+            return acc + headerLength;
+        }, 0) ?? 0;
+
+    const contentLengthHeader = details.responseHeaders?.find(
+        (header) => header.name.toLowerCase() === "content-length"
+    );
+
+    const bodySize =
+        contentLengthHeader?.value !== undefined
+            ? parseInt(contentLengthHeader.value, 10)
+            : 0;
+
+    IBytesRepository.instance.addBytesTransferred(headerSize + bodySize);
+};
 export const webRequestOnResponseStartedListener = (
     details: chrome.webRequest.WebResponseCacheDetails
 ) => {

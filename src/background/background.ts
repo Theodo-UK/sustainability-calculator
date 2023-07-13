@@ -1,7 +1,9 @@
 import {
+    webRequestOnBeforeRedirectListener,
     webRequestOnBeforeRequestListener,
     webRequestOnBeforeSendHeaders,
     webRequestOnCompleteListener,
+    webRequestOnHeadersReceivedListener,
     webRequestOnResponseStartedListener,
 } from "./webRequestListeners";
 
@@ -9,6 +11,16 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const { tabId } = message;
 
     if (message.command === "startStoringWebRequestPayloadSize") {
+        chrome.webRequest.onBeforeRedirect.addListener(
+            webRequestOnBeforeRedirectListener,
+            { urls: ["<all_urls>"], tabId },
+            ["responseHeaders"]
+        );
+        chrome.webRequest.onHeadersReceived.addListener(
+            webRequestOnHeadersReceivedListener,
+            { urls: ["<all_urls>"], tabId },
+            ["responseHeaders"]
+        );
         chrome.webRequest.onBeforeRequest.addListener(
             webRequestOnBeforeRequestListener,
             { urls: ["<all_urls>"], tabId },
