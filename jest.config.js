@@ -16,7 +16,7 @@ module.exports = {
             lines: 100,
         },
     },
-    testMatch: ["<rootDir>/src/**/__tests__/*.test.ts"],
+    testMatch: ["<rootDir>/src/**/__tests__/*.test.{js,jsx,ts,tsx}"],
     moduleDirectories: ["src", "node_modules"],
     moduleFileExtensions: ["ts", "tsx", "js"],
 
