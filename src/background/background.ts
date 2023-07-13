@@ -2,6 +2,7 @@ import {
     webRequestOnBeforeRequestListener,
     webRequestOnBeforeSendHeaders,
     webRequestOnCompleteListener,
+    webRequestOnResponseStartedListener,
 } from "./webRequestListeners";
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -20,6 +21,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         );
         chrome.webRequest.onCompleted.addListener(
             webRequestOnCompleteListener,
+            { urls: ["<all_urls>"], tabId },
+            ["responseHeaders"]
+        );
+        chrome.webRequest.onResponseStarted.addListener(
+            webRequestOnResponseStartedListener,
             { urls: ["<all_urls>"], tabId },
             ["responseHeaders"]
         );
