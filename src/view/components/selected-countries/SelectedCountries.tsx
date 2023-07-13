@@ -14,7 +14,7 @@ export const SelectedCountries = ({
 }: SelectedCountriesType) => {
     return (
         <div>
-            <h3>Selected Countries</h3>
+            <h3>My users are based in...</h3>
             <ul>
                 {Array.from(selectedCountries).map(([country, percentage]) => (
                     <li key={country}>
