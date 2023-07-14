@@ -12,10 +12,26 @@ export class BytesRepository implements IBytesRepository {
     }
 
     async addBytesTransferred(bytes: number): Promise<void> {
-        const currentBytes = await this.getTotalBytesTransferred();
-        await this.remoteDataSource.set({
-            bytesTransferred: currentBytes + bytes,
+        // ! get and set
+        this.remoteDataSource.getAndSet("bytesTransferred", (object: any) => {
+            // console.log(
+            //     `BytesRepository.addBytesTransferred, ${object["bytesTransferred"]}`
+            // );
+            return object["bytesTransferred"] + bytes;
         });
+        // ! then
+        // this.getTotalBytesTransferred().then(async (currentBytes) => {
+        //     console.log(`BytesRepository.addBytesTransferred, ${currentBytes}`);
+        //     await this.remoteDataSource.set({
+        //         bytesTransferred: currentBytes + bytes,
+        //     });
+        // });
+        // ! Await only
+        // const currentBytes = await this.getTotalBytesTransferred().then();
+        // await this.remoteDataSource.set({
+        //     bytesTransferred: currentBytes + bytes,
+        // });
+        // console.log(`BytesRepository.addBytesTransferred, ${currentBytes}`);
     }
 
     async clearTotalBytesTransferred(): Promise<void> {
