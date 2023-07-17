@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../button/Button";
+import { Button } from "../atomic/Button";
 import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
 
 type CountryDropdownType = {

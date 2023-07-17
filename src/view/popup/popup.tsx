@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { CountryDropdown } from "../components/country-dropdown/CountryDropdown";
-import { Button } from "../components/button/Button";
+import { Button } from "../components/atomic/Button";
 import { usePopup } from "./usePopup";
 import { SelectedCountries } from "../components/selected-countries/SelectedCountries";
 import { CalculationHistory } from "../components/calculation-history/CalculationHistory";
