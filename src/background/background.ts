@@ -9,9 +9,15 @@ import {
 } from "./webRequestListeners";
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message === "getBytesTransferred") {
+        sendResponse(IBytesRepository.instance.getBytesTransferred());
+    }
+
     const { tabId } = message;
 
     if (message.command === "startRecordingBytesTransferred") {
+        IBytesRepository.instance.clearBytesTransferred();
+
         chrome.webRequest.onBeforeRedirect.addListener(
             webRequestOnBeforeRedirectListener,
             { urls: ["<all_urls>"], tabId },
@@ -42,6 +48,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             { urls: ["<all_urls>"], tabId },
             ["responseHeaders"]
         );
+        sendResponse(true);
     }
 
     if (message.command === "stopRecordingBytesTransferred") {
@@ -63,7 +70,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.webRequest.onResponseStarted.removeListener(
             webRequestOnResponseStartedListener
         );
+        sendResponse(true);
     }
-    sendResponse(true);
     return true;
 });

@@ -8,9 +8,7 @@ import {
     CalculationDataType,
     ICalculationsRepository,
 } from "../../data/calculations/ICalculationsRepository";
-import { IBytesRepository } from "../../data/bytes/IBytesRepository";
 import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
-import { Listener } from "../../data/bytes/Listener";
 import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
 
 export const usePopup = () => {
@@ -18,7 +16,6 @@ export const usePopup = () => {
         ISelectedCountriesRepository.instance;
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
-    const bytesRepository: IBytesRepository = IBytesRepository.instance;
 
     const [bytesTransferred, setBytesTransferred] = useState(0);
     const [emissions, setEmissions] = useState(0);
@@ -84,7 +81,6 @@ export const usePopup = () => {
         try {
             await calculationsRepository.setOngoingCalculation(true);
             backgroundStopRecordingBytes();
-            bytesRepository.clearBytesTransferred();
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
@@ -127,26 +123,27 @@ export const usePopup = () => {
     };
 
     useEffect(() => {
-        /* 
-         We define the listener to link the class and the UI in a reactive way.
-         When the count variable is updated in the class, the listeners are notified and the state variable
-         is updated (setCount), triggering the UI to update
-        */
-        const listener: Listener = {
-            update: () => {
-                const _bytes = IBytesRepository.instance.getBytesTransferred();
+        const bytesTransferredChangedListener = (
+            message: { command: { bytesTransferredChanged: number } },
+            sender: chrome.runtime.MessageSender,
+            sendResponse: (response?: boolean) => void
+        ) => {
+            if (message.command.bytesTransferredChanged) {
+                const _bytes = message.command.bytesTransferredChanged;
                 setBytesTransferred(_bytes);
                 const _emissions = calculateCarbon(_bytes, selectedCountries);
                 setEmissions(_emissions);
-            },
+            }
+            sendResponse(true);
+            return true;
         };
 
-        // "subscribe" the listener to the class instance
-        IBytesRepository.instance.addListener(listener);
+        chrome.runtime.onMessage.addListener(bytesTransferredChangedListener);
 
-        // clear the listener when it's not needed anymore (i.e. on dismount)
         return () => {
-            IBytesRepository.instance.removeListener(listener);
+            chrome.runtime.onMessage.removeListener(
+                bytesTransferredChangedListener
+            );
         };
     }, [selectedCountries]);
 
@@ -157,7 +154,10 @@ export const usePopup = () => {
             setSelectedCountries(_selectedCountries);
 
             if (await calculationsRepository.isOngoingCalculation()) {
-                const _bytes = bytesRepository.getBytesTransferred();
+                const _bytes = await chrome.runtime.sendMessage(
+                    "getBytesTransferred"
+                );
+
                 setBytesTransferred(_bytes);
                 setEmissions(calculateCarbon(_bytes, _selectedCountries));
                 setAverageSpecificEmissions(
@@ -180,29 +180,6 @@ export const usePopup = () => {
             setAverageSpecificEmissions(0);
         };
         getLastCalculationAndSetState();
-    });
-
-    useMountEffect(() => {
-        const addBytesTransferredListener = (
-            message: any,
-            sender: chrome.runtime.MessageSender,
-            sendResponse: (response?: any) => void
-        ) => {
-            if (message.command.addBytesTransferred) {
-                IBytesRepository.instance.addBytesTransferred(
-                    message.command.addBytesTransferred
-                );
-            }
-            sendResponse(true);
-            return false;
-        };
-
-        chrome.runtime.onMessage.addListener(addBytesTransferredListener);
-        return () => {
-            chrome.runtime.onMessage.removeListener(
-                addBytesTransferredListener
-            );
-        };
     });
 
     return {

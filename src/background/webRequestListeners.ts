@@ -1,3 +1,28 @@
+import { IBytesRepository } from "../data/bytes/IBytesRepository";
+
+const addBytesTransferred = async (bytes: number) => {
+    IBytesRepository.instance.addBytesTransferred(bytes);
+
+    try {
+        await chrome.runtime.sendMessage({
+            command: {
+                bytesTransferredChanged:
+                    IBytesRepository.instance.getBytesTransferred(),
+            },
+        });
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            if (
+                e.message ===
+                "Could not establish connection. Receiving end does not exist."
+            ) {
+                console.log("If popup is not open, this is expected.");
+            }
+        } else {
+            throw e;
+        }
+    }
+};
 export const webRequestOnBeforeRedirectListener = (
     details: chrome.webRequest.WebRedirectionResponseDetails
 ) => {
@@ -20,10 +45,7 @@ export const webRequestOnBeforeRedirectListener = (
         contentLengthHeader?.value !== undefined
             ? parseInt(contentLengthHeader.value, 10)
             : 0;
-
-    chrome.runtime.sendMessage({
-        command: { addBytesTransferred: headerSize + bodySize },
-    });
+    addBytesTransferred(headerSize + bodySize);
 };
 export const webRequestOnHeadersReceivedListener = (
     details: chrome.webRequest.WebResponseHeadersDetails
@@ -47,10 +69,7 @@ export const webRequestOnHeadersReceivedListener = (
         contentLengthHeader?.value !== undefined
             ? parseInt(contentLengthHeader.value, 10)
             : 0;
-
-    chrome.runtime.sendMessage({
-        command: { addBytesTransferred: headerSize + bodySize },
-    });
+    addBytesTransferred(headerSize + bodySize);
 };
 export const webRequestOnResponseStartedListener = (
     details: chrome.webRequest.WebResponseCacheDetails
@@ -74,10 +93,7 @@ export const webRequestOnResponseStartedListener = (
         contentLengthHeader?.value !== undefined
             ? parseInt(contentLengthHeader.value, 10)
             : 0;
-
-    chrome.runtime.sendMessage({
-        command: { addBytesTransferred: headerSize + bodySize },
-    });
+    addBytesTransferred(headerSize + bodySize);
 };
 
 export const webRequestOnCompleteListener = (
@@ -103,10 +119,7 @@ export const webRequestOnCompleteListener = (
         contentLengthHeader?.value !== undefined
             ? parseInt(contentLengthHeader.value, 10)
             : 0;
-
-    chrome.runtime.sendMessage({
-        command: { addBytesTransferred: headerSize + bodySize },
-    });
+    addBytesTransferred(headerSize + bodySize);
 };
 
 export const webRequestOnBeforeRequestListener = (
@@ -117,9 +130,7 @@ export const webRequestOnBeforeRequestListener = (
     const bodySize = details.requestBody?.raw?.[0].bytes?.byteLength;
 
     if (bodySize) {
-        chrome.runtime.sendMessage({
-            command: { addBytesTransferred: bodySize },
-        });
+        addBytesTransferred(bodySize);
     }
 };
 
@@ -136,8 +147,6 @@ export const webRequestOnBeforeSendHeaders = (
         return acc + headerLength;
     }, 0);
     if (headerSize !== undefined && headerSize > 0) {
-        chrome.runtime.sendMessage({
-            command: { addBytesTransferred: headerSize },
-        });
+        addBytesTransferred(headerSize);
     }
 };

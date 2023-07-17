@@ -4,9 +4,10 @@ import { Listener } from "./Listener";
 
 export class TestBytesRepository implements IBytesRepository {
     private localDataSource: BytesLocalDataSource = new BytesLocalDataSource();
-    private _remoteBytesTransferred: number = 0;
+    private _remoteBytesTransferred = 0;
     async saveBytesTransferred(): Promise<void> {
-        this._remoteBytesTransferred = this.localDataSource.getBytesTransferred();
+        this._remoteBytesTransferred =
+            this.localDataSource.getBytesTransferred();
     }
     getBytesTransferred(): number {
         return this.localDataSource.getBytesTransferred();

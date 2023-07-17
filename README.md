@@ -18,3 +18,6 @@
 ### Inaccurate recording of data transferred when on website with streaming data (e.g. Youtube with Live Chat)
 
 Partially fixed by the following [PR](https://github.com/Theodo-UK/sustainability-calculator/pull/22).
+
+## Note
+- background has a different environment from popup, scope is not shared
