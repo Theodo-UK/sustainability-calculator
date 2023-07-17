@@ -1,5 +1,6 @@
 import React from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
+import { Tooltip } from "react-tooltip";
 
 type SelectedCountriesType = {
     selectedCountries: Map<CountryName, number>;
@@ -14,7 +15,16 @@ export const SelectedCountries = ({
 }: SelectedCountriesType) => {
     return (
         <div>
-            <h3>My users are based in...</h3>
+            <div className="flex">
+                <h3>My users are based in...</h3>
+                <a
+                    data-tooltip-id="world-average-tip"
+                    data-tooltip-html="The figure is used by default<br />where countries have not been<br />specified for a % of users"
+                >
+                    ?
+                </a>
+                <Tooltip id="world-average-tip" />
+            </div>
             <ul>
                 {Array.from(selectedCountries).map(([country, percentage]) => (
                     <li key={country}>
