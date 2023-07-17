@@ -1,17 +1,40 @@
+import { BytesLocalDataSource } from "./BytesLocalDataSource";
 import { IBytesRepository } from "./IBytesRepository";
+import { Listener } from "./Listener";
 
 export class TestBytesRepository implements IBytesRepository {
-    private _bytes = 0;
-
-    async getTotalBytesTransferred(): Promise<number> {
-        return this._bytes;
+    private localDataSource: BytesLocalDataSource = new BytesLocalDataSource();
+    private _remoteBytesTransferred: number = 0;
+    async saveBytesTransferred(): Promise<void> {
+        this._remoteBytesTransferred = this.localDataSource.getBytesTransferred();
+    }
+    getBytesTransferred(): number {
+        return this.localDataSource.getBytesTransferred();
     }
 
-    async addBytesTransferred(bytes: number): Promise<void> {
-        this._bytes = this._bytes + bytes;
+    addBytesTransferred(bytes: number): void {
+        this.localDataSource.addBytesTransferred(bytes);
+        this.notifyListeners();
     }
 
-    async clearTotalBytesTransferred(): Promise<void> {
-        this._bytes = 0;
+    clearBytesTransferred(): void {
+        this.localDataSource.clearBytesTransferred();
+    }
+
+    private listeners: Listener[] = [];
+
+    addListener(listener: Listener): void {
+        this.listeners.push(listener);
+    }
+
+    removeListener(listener: Listener): void {
+        const index = this.listeners.indexOf(listener);
+        if (index !== -1) this.listeners.splice(index, 1);
+    }
+
+    notifyListeners(): void {
+        this.listeners.forEach((listener: Listener) => {
+            listener.update();
+        });
     }
 }

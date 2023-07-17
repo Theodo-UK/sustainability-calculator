@@ -1,3 +1,4 @@
+import { IBytesRepository } from "../data/bytes/IBytesRepository";
 import {
     webRequestOnBeforeRedirectListener,
     webRequestOnBeforeRequestListener,
@@ -10,7 +11,7 @@ import {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const { tabId } = message;
 
-    if (message.command === "startStoringWebRequestPayloadSize") {
+    if (message.command === "startRecordingBytesTransferred") {
         chrome.webRequest.onBeforeRedirect.addListener(
             webRequestOnBeforeRedirectListener,
             { urls: ["<all_urls>"], tabId },
@@ -43,9 +44,24 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         );
     }
 
-    if (message.command === "stopStoringWebRequestPayloadSize") {
+    if (message.command === "stopRecordingBytesTransferred") {
         chrome.webRequest.onCompleted.removeListener(
             webRequestOnCompleteListener
+        );
+        chrome.webRequest.onBeforeRedirect.removeListener(
+            webRequestOnBeforeRedirectListener
+        );
+        chrome.webRequest.onHeadersReceived.removeListener(
+            webRequestOnHeadersReceivedListener
+        );
+        chrome.webRequest.onBeforeRequest.removeListener(
+            webRequestOnBeforeRequestListener
+        );
+        chrome.webRequest.onBeforeSendHeaders.removeListener(
+            webRequestOnBeforeSendHeaders
+        );
+        chrome.webRequest.onResponseStarted.removeListener(
+            webRequestOnResponseStartedListener
         );
     }
     sendResponse(true);

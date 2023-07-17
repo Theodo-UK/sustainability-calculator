@@ -27,7 +27,6 @@ export class StorageRemoteDataSource {
         const getAndSet = (key: string, mutateValue: (value: any) => any) => {
             return new Promise((resolve) => {
                 syncGet(key).then((currentValue: any) => {
-                    console.log("currentValue", currentValue.bytesTransferred);
                     const newValue = mutateValue(currentValue);
                     syncSet({ [key]: newValue }).then(() => resolve(null));
                 });

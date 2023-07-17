@@ -1,42 +1,47 @@
 import { IStorageRepository } from "../storage/IStorageRepository";
+import { BytesLocalDataSource } from "./BytesLocalDataSource";
 import { IBytesRepository } from "./IBytesRepository";
+import { Listener } from "./Listener";
 
 export class BytesRepository implements IBytesRepository {
+    private localDataSource: BytesLocalDataSource = new BytesLocalDataSource();
     private remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
-    async getTotalBytesTransferred(): Promise<number> {
-        const object = await this.remoteDataSource.get({
-            bytesTransferred: 0,
+    async saveBytesTransferred(): Promise<void> {
+        this.remoteDataSource.set({
+            bytesTransferred: this.localDataSource.getBytesTransferred(),
         });
-        return object.bytesTransferred as number;
+    }
+    getBytesTransferred(): number {
+        return this.localDataSource.getBytesTransferred();
     }
 
-    async addBytesTransferred(bytes: number): Promise<void> {
-        // ! get and set
-        this.remoteDataSource.getAndSet("bytesTransferred", (object: any) => {
-            // console.log(
-            //     `BytesRepository.addBytesTransferred, ${object["bytesTransferred"]}`
-            // );
-            return object["bytesTransferred"] + bytes;
-        });
-        // ! then
-        // this.getTotalBytesTransferred().then(async (currentBytes) => {
-        //     console.log(`BytesRepository.addBytesTransferred, ${currentBytes}`);
-        //     await this.remoteDataSource.set({
-        //         bytesTransferred: currentBytes + bytes,
-        //     });
-        // });
-        // ! Await only
-        // const currentBytes = await this.getTotalBytesTransferred().then();
-        // await this.remoteDataSource.set({
-        //     bytesTransferred: currentBytes + bytes,
-        // });
-        // console.log(`BytesRepository.addBytesTransferred, ${currentBytes}`);
+    addBytesTransferred(bytes: number): void {
+        this.localDataSource.addBytesTransferred(bytes);
+        this.notifyListeners();
     }
 
-    async clearTotalBytesTransferred(): Promise<void> {
-        await this.remoteDataSource.set({
-            bytesTransferred: 0,
+    clearBytesTransferred(): void {
+        this.localDataSource.clearBytesTransferred();
+    }
+    listeners: Listener[] = [];
+
+    addListener(listener: Listener): void {
+        this.listeners = [...this.listeners, listener];
+    }
+
+    removeListener(listener: Listener): void {
+        const index = this.listeners.indexOf(listener);
+        if (index !== -1) {
+            const temp = [...this.listeners];
+            temp.splice(index, 1);
+            this.listeners = temp;
+        }
+    }
+
+    notifyListeners(): void {
+        this.listeners.forEach((listener: Listener) => {
+            listener.update();
         });
     }
 }

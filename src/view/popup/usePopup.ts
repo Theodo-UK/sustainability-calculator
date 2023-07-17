@@ -10,6 +10,8 @@ import {
 } from "../../data/calculations/ICalculationsRepository";
 import { IBytesRepository } from "../../data/bytes/IBytesRepository";
 import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
+import { Listener } from "../../data/bytes/Listener";
+import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
 
 export const usePopup = () => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
@@ -81,7 +83,8 @@ export const usePopup = () => {
         }
         try {
             await calculationsRepository.setOngoingCalculation(true);
-            await bytesRepository.clearTotalBytesTransferred();
+            backgroundStopRecordingBytes();
+            bytesRepository.clearBytesTransferred();
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
@@ -93,17 +96,7 @@ export const usePopup = () => {
     };
 
     const stopRecording = () => {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (tabs.length > 0) {
-                const tabId = tabs[0].id;
-                if (tabId) {
-                    chrome.runtime.sendMessage({
-                        command: "stopStoringWebRequestPayloadSize",
-                        tabId,
-                    });
-                }
-            }
-        });
+        backgroundStopRecordingBytes();
         try {
             calculationsRepository.storeCalculation({
                 bytes: bytesTransferred,
@@ -134,29 +127,28 @@ export const usePopup = () => {
     };
 
     useEffect(() => {
-        const totalBytesTransferredListener = (changes: {
-            [key: string]: chrome.storage.StorageChange;
-        }) => {
-            if (changes.bytesTransferred) {
-                setBytesTransferred(changes.bytesTransferred.newValue);
-                const _emissions = calculateCarbon(
-                    changes.bytesTransferred.newValue,
-                    selectedCountries
-                );
+        /* 
+         We define the listener to link the class and the UI in a reactive way.
+         When the count variable is updated in the class, the listeners are notified and the state variable
+         is updated (setCount), triggering the UI to update
+        */
+        const listener: Listener = {
+            update: () => {
+                const _bytes = IBytesRepository.instance.getBytesTransferred();
+                setBytesTransferred(_bytes);
+                const _emissions = calculateCarbon(_bytes, selectedCountries);
                 setEmissions(_emissions);
-            }
+            },
         };
 
-        chrome.storage.local.onChanged.addListener(
-            totalBytesTransferredListener
-        );
+        // "subscribe" the listener to the class instance
+        IBytesRepository.instance.addListener(listener);
 
+        // clear the listener when it's not needed anymore (i.e. on dismount)
         return () => {
-            chrome.storage.local.onChanged.removeListener(
-                totalBytesTransferredListener
-            );
+            IBytesRepository.instance.removeListener(listener);
         };
-    }, [selectedCountries, averageSpecificEmissions, calculationsRepository]);
+    }, [selectedCountries]);
 
     useMountEffect(() => {
         const getLastCalculationAndSetState = async () => {
@@ -165,7 +157,7 @@ export const usePopup = () => {
             setSelectedCountries(_selectedCountries);
 
             if (await calculationsRepository.isOngoingCalculation()) {
-                const _bytes = await bytesRepository.getTotalBytesTransferred();
+                const _bytes = bytesRepository.getBytesTransferred();
                 setBytesTransferred(_bytes);
                 setEmissions(calculateCarbon(_bytes, _selectedCountries));
                 setAverageSpecificEmissions(
@@ -188,6 +180,29 @@ export const usePopup = () => {
             setAverageSpecificEmissions(0);
         };
         getLastCalculationAndSetState();
+    });
+
+    useMountEffect(() => {
+        const addBytesTransferredListener = (
+            message: any,
+            sender: chrome.runtime.MessageSender,
+            sendResponse: (response?: any) => void
+        ) => {
+            if (message.command.addBytesTransferred) {
+                IBytesRepository.instance.addBytesTransferred(
+                    message.command.addBytesTransferred
+                );
+            }
+            sendResponse(true);
+            return false;
+        };
+
+        chrome.runtime.onMessage.addListener(addBytesTransferredListener);
+        return () => {
+            chrome.runtime.onMessage.removeListener(
+                addBytesTransferredListener
+            );
+        };
     });
 
     return {

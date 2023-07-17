@@ -1,5 +1,3 @@
-import { IBytesRepository } from "../data/bytes/IBytesRepository";
-
 export const webRequestOnBeforeRedirectListener = (
     details: chrome.webRequest.WebRedirectionResponseDetails
 ) => {
@@ -23,12 +21,9 @@ export const webRequestOnBeforeRedirectListener = (
             ? parseInt(contentLengthHeader.value, 10)
             : 0;
 
-    IBytesRepository.instance.addBytesTransferred(headerSize + bodySize);
-    // console.log(
-    //     `webRequestOnBeforeRedirectListener, ${details.url}, ${details.type}, ${
-    //         headerSize + bodySize
-    //     }`
-    // );
+    chrome.runtime.sendMessage({
+        command: { addBytesTransferred: headerSize + bodySize },
+    });
 };
 export const webRequestOnHeadersReceivedListener = (
     details: chrome.webRequest.WebResponseHeadersDetails
@@ -53,12 +48,9 @@ export const webRequestOnHeadersReceivedListener = (
             ? parseInt(contentLengthHeader.value, 10)
             : 0;
 
-    IBytesRepository.instance.addBytesTransferred(headerSize + bodySize);
-    // console.log(
-    //     `webRequestOnHeadersReceivedListener, ${details.url}, ${
-    //         details.type
-    //     }, ${headerSize + bodySize}`
-    // );
+    chrome.runtime.sendMessage({
+        command: { addBytesTransferred: headerSize + bodySize },
+    });
 };
 export const webRequestOnResponseStartedListener = (
     details: chrome.webRequest.WebResponseCacheDetails
@@ -83,12 +75,9 @@ export const webRequestOnResponseStartedListener = (
             ? parseInt(contentLengthHeader.value, 10)
             : 0;
 
-    IBytesRepository.instance.addBytesTransferred(headerSize + bodySize);
-    // console.log(
-    //     `webRequestOnResponseStartedListener, ${details.url}, ${
-    //         details.type
-    //     }, ${headerSize + bodySize}`
-    // );
+    chrome.runtime.sendMessage({
+        command: { addBytesTransferred: headerSize + bodySize },
+    });
 };
 
 export const webRequestOnCompleteListener = (
@@ -115,13 +104,9 @@ export const webRequestOnCompleteListener = (
             ? parseInt(contentLengthHeader.value, 10)
             : 0;
 
-    // console.log(
-    //     `webRequestOnCompleteListener, ${details.url}, ${details.type}, ${
-    //         headerSize + bodySize
-    //     }`
-    // );
-
-    IBytesRepository.instance.addBytesTransferred(headerSize + bodySize);
+    chrome.runtime.sendMessage({
+        command: { addBytesTransferred: headerSize + bodySize },
+    });
 };
 
 export const webRequestOnBeforeRequestListener = (
@@ -132,11 +117,10 @@ export const webRequestOnBeforeRequestListener = (
     const bodySize = details.requestBody?.raw?.[0].bytes?.byteLength;
 
     if (bodySize) {
-        IBytesRepository.instance.addBytesTransferred(bodySize);
+        chrome.runtime.sendMessage({
+            command: { addBytesTransferred: bodySize },
+        });
     }
-    // console.log(
-    //     `webRequestOnBeforeRequestListener, ${details.url}, ${details.type}, ${bodySize}`
-    // );
 };
 
 export const webRequestOnBeforeSendHeaders = (
@@ -152,9 +136,8 @@ export const webRequestOnBeforeSendHeaders = (
         return acc + headerLength;
     }, 0);
     if (headerSize !== undefined && headerSize > 0) {
-        IBytesRepository.instance.addBytesTransferred(headerSize);
+        chrome.runtime.sendMessage({
+            command: { addBytesTransferred: headerSize },
+        });
     }
-    // console.log(
-    //     `webRequestOnBeforeSendHeaders, ${details.url}, ${details.type}, ${headerSize}`
-    // );
 };

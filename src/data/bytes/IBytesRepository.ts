@@ -1,4 +1,5 @@
 import { BytesRepository } from "./BytesRepository";
+import { Listener } from "./Listener";
 import { TestBytesRepository } from "./TestBytesRepository";
 
 export abstract class IBytesRepository {
@@ -20,9 +21,17 @@ export abstract class IBytesRepository {
         return this._instance;
     }
 
-    abstract getTotalBytesTransferred(): Promise<number>;
+    abstract saveBytesTransferred(): Promise<void>;
 
-    abstract addBytesTransferred(bytes: number): Promise<void>;
+    abstract getBytesTransferred(): number;
 
-    abstract clearTotalBytesTransferred(): Promise<void>;
+    abstract addBytesTransferred(bytes: number): void;
+
+    abstract clearBytesTransferred(): void;
+
+    abstract addListener(listener: Listener): void;
+
+    abstract removeListener(listener: Listener): void;
+
+    abstract notifyListeners(): void;
 }

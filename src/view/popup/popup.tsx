@@ -5,6 +5,7 @@ import { usePopup } from "./usePopup";
 import { SelectedCountries } from "../components/selected-countries/SelectedCountries";
 import { CalculationHistory } from "../components/calculation-history/CalculationHistory";
 import { formatBytesString } from "./utils/formatBytesString";
+import { IBytesRepository } from "../../data/bytes/IBytesRepository";
 
 export const Popup = () => {
     const {

@@ -10,7 +10,7 @@ export const refreshActiveTabAndRecordBytes = async (bypassCache: boolean) => {
                     },
                     () => {
                         chrome.runtime.sendMessage({
-                            command: "startStoringWebRequestPayloadSize",
+                            command: "startRecordingBytesTransferred",
                             tabId,
                         });
                     }
