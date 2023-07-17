@@ -23,7 +23,7 @@ module.exports = (env, argv) => {
 
     return {
         entry: {
-            popup: "./src//view/popup/popup.tsx",
+            popup: "./src/view/popup/popup.tsx",
             background: "./src/background/background.ts",
         },
         output: {
@@ -47,6 +47,21 @@ module.exports = (env, argv) => {
                             ],
                         },
                     },
+                },
+                {
+                    test: /\.css$/i,
+                    use: [
+                        "style-loader",
+                        "css-loader",
+                        {
+                            loader: "postcss-loader",
+                            options: {
+                                postcssOptions: {
+                                    plugins: [["postcss-preset-env"]],
+                                },
+                            },
+                        },
+                    ],
                 },
             ],
         },
