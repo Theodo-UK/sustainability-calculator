@@ -24,7 +24,7 @@ export const Popup = () => {
     } = usePopup();
 
     return (
-        <div className="bg-black">
+        <div>
             <h1 className="text-3xl font-bold underline">
                 Sustainability Calculator
             </h1>
