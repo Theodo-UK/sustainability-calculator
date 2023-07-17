@@ -15,15 +15,14 @@ export const SelectedCountries = ({
 }: SelectedCountriesType) => {
     return (
         <div>
-            <div className="flex-row">
+            <div className="flex">
                 <h3>My users are based in...</h3>
-                <div
-                    className="rounded-full bg-gray-600"
+                <a
                     data-tooltip-id="world-average-tip"
-                    data-tooltip-content="The figure is used by default where countries have not been specified for a % of users"
+                    data-tooltip-html="The figure is used by default<br />where countries have not been<br />specified for a % of users"
                 >
                     ?
-                </div>
+                </a>
                 <Tooltip id="world-average-tip" />
             </div>
             <ul>
