@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
 import { Tooltip } from "react-tooltip";
 
@@ -13,12 +13,23 @@ export const SelectedCountries = ({
     removeSelectedCountry,
     setCountryPercentage,
 }: SelectedCountriesType) => {
+    const [worldPercentage, setWorldPercentage] = React.useState("100");
+    useEffect(() => {
+        let totalPercentage = 0;
+        selectedCountries.forEach((percentage) => {
+            totalPercentage += percentage;
+        });
+        setWorldPercentage(((1 - totalPercentage) * 100).toFixed(2));
+    }, [selectedCountries]);
+
     return (
         <div>
+            <h3 className="text-base font-bold"> My users are based in...</h3>
             <div className="flex">
-                <h3 className="text-base font-bold">
-                    My users are based in...
-                </h3>
+                <a>
+                    Percentage dispatched on the rest of the world:{" "}
+                    {worldPercentage}%
+                </a>
                 <a
                     className="ml-2 rounded-full bg-gray-200 hover:bg-gray-300 w-6 h-6 flex items-center justify-center cursor-pointer"
                     data-tooltip-id="world-average-tip"

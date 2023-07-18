@@ -7,7 +7,7 @@ export class TestSelectedCountriesRepository
     private _selectedCountries: Map<CountryName, number> = new Map<
         CountryName,
         number
-    >([["World Average", 0]]);
+    >([]);
 
     async getSelectedCountriesAndPercentages(): Promise<
         Map<CountryName, number>

@@ -19,13 +19,13 @@ describe("usePopup", () => {
             bytes: 12345,
             emissions: 12345,
             specificEmissions: 12345,
-            selectedCountries: new Map([["World Average", 0]]),
+            selectedCountries: new Map([]),
         });
         mockCalculationRepository.storeCalculation({
             bytes: 54321,
             emissions: 54321,
             specificEmissions: 54321,
-            selectedCountries: new Map([["World Average", 0]]),
+            selectedCountries: new Map([]),
         });
 
         await act(async () => {
@@ -37,13 +37,13 @@ describe("usePopup", () => {
                 bytes: 54321,
                 emissions: 54321,
                 specificEmissions: 54321,
-                selectedCountries: new Map([["World Average", 0]]),
+                selectedCountries: new Map([]),
             },
             {
                 bytes: 12345,
                 emissions: 12345,
                 specificEmissions: 12345,
-                selectedCountries: new Map([["World Average", 0]]),
+                selectedCountries: new Map([]),
             },
         ]);
     });

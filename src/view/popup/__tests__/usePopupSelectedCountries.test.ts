@@ -8,9 +8,7 @@ import { mockChrome } from "../../../utils/test-objects/mockChrome";
 (global as any).chrome = mockChrome;
 
 describe("usePopup tests for selectedCountries", () => {
-    const mockCountries: Map<CountryName, number> = new Map([
-        ["World Average", 0],
-    ]);
+    const mockCountries: Map<CountryName, number> = new Map([]);
 
     beforeEach(() => {
         jest.clearAllMocks();

@@ -14,7 +14,7 @@ export class SelectedCountriesRepository
         try {
             const data = await this.remoteDataSource.get({
                 selectedCountriesAndPercentages: maptoJSON(
-                    new Map<CountryName, number>([["World Average", 0]])
+                    new Map<CountryName, number>([])
                 ),
             });
 
