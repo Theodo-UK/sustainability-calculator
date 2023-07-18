@@ -1,43 +1,31 @@
 import {
+    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
     COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
     CountryName,
 } from "../../../data/constants/CountryEmissions";
+
+const BYTES_PER_GB = 1073741824;
 
 export const calculateCarbon = (
     bytes: number,
     selectedCountries: Map<CountryName, number>
 ): number => {
     const _selectedCountries = new Map(selectedCountries);
+
     let totalPercentage = 0;
-
-    let noOfCountriesMissingPercentages = 0;
-
-    _selectedCountries.forEach((value) => {
-        totalPercentage += value;
-        if (value === 0) {
-            noOfCountriesMissingPercentages += 1;
-        }
-    });
-
-    const remainingPercentage = 1 - totalPercentage;
-
-    if (noOfCountriesMissingPercentages > 0) {
-        _selectedCountries.forEach((value, key) => {
-            if (value !== 0) {
-                return;
-            }
-            _selectedCountries.set(
-                key,
-                remainingPercentage / noOfCountriesMissingPercentages
-            );
-        });
-    }
     let carbon = 0;
     _selectedCountries.forEach((percentage, country) => {
+        totalPercentage += percentage;
         carbon +=
-            (bytes / 1073741824) *
+            (bytes / BYTES_PER_GB) *
             COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[country] *
             percentage;
     });
+
+    carbon +=
+        (bytes / BYTES_PER_GB) *
+        WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB *
+        (1 - totalPercentage);
+
     return carbon;
 };
