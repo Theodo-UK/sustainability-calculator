@@ -1,5 +1,6 @@
+export const WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB = 421;
+
 export const COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB: Record<string, number> = {
-    "World Average": 421,
     "United Kingdom": 212.3,
     Austria: 111.2,
     Belgium: 161.9,

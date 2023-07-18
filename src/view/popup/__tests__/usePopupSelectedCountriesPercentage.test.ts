@@ -1,6 +1,9 @@
 import { renderHook, act } from "@testing-library/react";
 
-import { COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB } from "../../../data/constants/CountryEmissions";
+import {
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
+    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
+} from "../../../data/constants/CountryEmissions";
 import { usePopup } from "../usePopup";
 import { mockChrome } from "../../../utils/test-objects/mockChrome";
 
@@ -24,7 +27,7 @@ describe("usePopup", () => {
             mockCountry2Percentage *
                 COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[mockCountry2] +
             (1 - mockCountry1Percentage - mockCountry2Percentage) *
-                COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["World Average"];
+                WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
 
         await act(async () => {
             await result.current.addSelectedCountry(mockCountry1);
