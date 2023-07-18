@@ -34,10 +34,13 @@ export abstract class ICalculationsRepository {
     abstract getAllCalculations(): Promise<CalculationDataType[]>;
 }
 
+export type UserType = "new user" | "returning user";
+
 export type CalculationDataType = {
     bytes: number;
     emissions: number;
     specificEmissions: number;
     selectedCountries: Map<CountryName, number>;
     unixTimeMs: number;
+    userType: UserType;
 };
