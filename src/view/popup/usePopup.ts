@@ -7,6 +7,7 @@ import { useMountEffect } from "./useOnceAfterFirstMount";
 import {
     CalculationDataType,
     ICalculationsRepository,
+    UserType,
 } from "../../data/calculations/ICalculationsRepository";
 import { IBytesRepository } from "../../data/bytes/IBytesRepository";
 import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
@@ -28,6 +29,7 @@ export const usePopup = () => {
     const [calculationHistory, setCalculationHistory] = useState<
         CalculationDataType[]
     >([]);
+    const [userType, setUserType] = useState<UserType>("new user");
 
     const refreshCalculationHistory = async () => {
         const calculationsData =
@@ -68,6 +70,7 @@ export const usePopup = () => {
     };
 
     const refreshAndGetSize = async (bypassCache: boolean) => {
+        setUserType(bypassCache ? "new user" : "returning user");
         try {
             sumPercentages();
             setAverageSpecificEmissions(
@@ -111,6 +114,7 @@ export const usePopup = () => {
                 specificEmissions: averageSpecificEmissions,
                 selectedCountries: selectedCountries,
                 unixTimeMs: Date.now(),
+                userType: userType,
             });
             calculationsRepository.setOngoingCalculation(false);
         } catch (e: unknown) {
