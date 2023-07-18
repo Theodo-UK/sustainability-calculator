@@ -13,13 +13,13 @@ export const SelectedCountries = ({
     removeSelectedCountry,
     setCountryPercentage,
 }: SelectedCountriesType) => {
-    const [worldPercentage, setWorldPercentage] = React.useState("100");
+    const [worldPercentage, setWorldPercentage] = React.useState(1);
     useEffect(() => {
         let totalPercentage = 0;
         selectedCountries.forEach((percentage) => {
             totalPercentage += percentage;
         });
-        setWorldPercentage(((1 - totalPercentage) * 100).toFixed(2));
+        setWorldPercentage(1 - totalPercentage);
     }, [selectedCountries]);
 
     return (
@@ -28,7 +28,7 @@ export const SelectedCountries = ({
             <div className="flex">
                 <a>
                     Percentage dispatched on the rest of the world:{" "}
-                    {worldPercentage}%
+                    {(worldPercentage * 100).toFixed(2)}%
                 </a>
                 <a
                     className="ml-2 rounded-full bg-gray-200 hover:bg-gray-300 w-6 h-6 flex items-center justify-center cursor-pointer"
