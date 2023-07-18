@@ -5,8 +5,10 @@ import { Button } from "../components/atomic/Button";
 import { usePopup } from "./usePopup";
 import { SelectedCountries } from "../components/selected-countries/SelectedCountries";
 import { CalculationHistory } from "../components/calculation-history/CalculationHistory";
-import { formatBytesString } from "./utils/formatBytesString";
-import { IBytesRepository } from "../../data/bytes/IBytesRepository";
+import {
+    formatEmissions,
+    formatBytes,
+} from "../../utils/helpers/formatNumbersToString";
 import "./../../input.css";
 
 export const Popup = () => {
@@ -39,17 +41,12 @@ export const Popup = () => {
             <Button onClick={stopRecording} colour="red">
                 Stop calculation
             </Button>
-            <p>Total Data Received: {formatBytesString(bytesTransferred)}</p>
+            <p>Total Data Received: {formatBytes(bytesTransferred)}</p>
             <p>
                 Specific Carbon Emissions:
-                {` ${averageSpecificEmissions.toFixed(
-                    0
-                )} grams of C02 per gigabyte`}
+                {` ${formatEmissions(averageSpecificEmissions)} per gigabyte`}
             </p>
-            <p>
-                Software Carbon Intensity:
-                {` ${emissions.toFixed(2)} grams of CO2`}
-            </p>
+            <p>Software Carbon Intensity: {formatEmissions(emissions)}</p>
             <SelectedCountries
                 selectedCountries={selectedCountries}
                 removeSelectedCountry={removeSelectedCountry}
