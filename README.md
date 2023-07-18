@@ -13,6 +13,8 @@
 2. Look for the Sustainability Calculator extension card
 3. Click on “Inspect views service worker”
 
+## Architecture
+![image](https://github.com/Theodo-UK/sustainability-calculator/assets/57725347/08e13bb7-7a71-48d5-81df-e64b3a07a2e6)
 
 ## Known Bugs
 ### Inaccurate recording of data transferred when on website with streaming data (e.g. Youtube with Live Chat)
