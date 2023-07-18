@@ -1,11 +1,8 @@
 import { IBytesRepository } from "../data/bytes/IBytesRepository";
 import {
-    webRequestOnBeforeRedirectListener,
-    webRequestOnBeforeRequestListener,
-    webRequestOnBeforeSendHeaders,
-    webRequestOnCompleteListener,
-    webRequestOnHeadersReceivedListener,
-    webRequestOnResponseStartedListener,
+    catchPostRequestBodySize,
+    catchRequestHeaderSize,
+    catchResponseSize,
 } from "./webRequestListeners";
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -18,33 +15,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.command === "startRecordingBytesTransferred") {
         IBytesRepository.instance.clearBytesTransferred();
 
-        chrome.webRequest.onBeforeRedirect.addListener(
-            webRequestOnBeforeRedirectListener,
-            { urls: ["<all_urls>"], tabId },
-            ["responseHeaders"]
-        );
-        chrome.webRequest.onHeadersReceived.addListener(
-            webRequestOnHeadersReceivedListener,
-            { urls: ["<all_urls>"], tabId },
-            ["responseHeaders"]
-        );
         chrome.webRequest.onBeforeRequest.addListener(
-            webRequestOnBeforeRequestListener,
+            catchPostRequestBodySize,
             { urls: ["<all_urls>"], tabId },
             ["requestBody"]
         );
         chrome.webRequest.onBeforeSendHeaders.addListener(
-            webRequestOnBeforeSendHeaders,
+            catchRequestHeaderSize,
             { urls: ["<all_urls>"], tabId },
             ["requestHeaders"]
         );
         chrome.webRequest.onCompleted.addListener(
-            webRequestOnCompleteListener,
-            { urls: ["<all_urls>"], tabId },
-            ["responseHeaders"]
-        );
-        chrome.webRequest.onResponseStarted.addListener(
-            webRequestOnResponseStartedListener,
+            catchResponseSize,
             { urls: ["<all_urls>"], tabId },
             ["responseHeaders"]
         );
@@ -52,23 +34,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 
     if (message.command === "stopRecordingBytesTransferred") {
-        chrome.webRequest.onCompleted.removeListener(
-            webRequestOnCompleteListener
-        );
-        chrome.webRequest.onBeforeRedirect.removeListener(
-            webRequestOnBeforeRedirectListener
-        );
-        chrome.webRequest.onHeadersReceived.removeListener(
-            webRequestOnHeadersReceivedListener
-        );
+        chrome.webRequest.onCompleted.removeListener(catchResponseSize);
         chrome.webRequest.onBeforeRequest.removeListener(
-            webRequestOnBeforeRequestListener
+            catchPostRequestBodySize
         );
         chrome.webRequest.onBeforeSendHeaders.removeListener(
-            webRequestOnBeforeSendHeaders
-        );
-        chrome.webRequest.onResponseStarted.removeListener(
-            webRequestOnResponseStartedListener
+            catchRequestHeaderSize
         );
         sendResponse(true);
     }

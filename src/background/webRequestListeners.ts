@@ -32,24 +32,7 @@ const addBytesTransferred = async (bytes: number) => {
     }
 };
 
-export const webRequestOnBeforeRedirectListener = (
-    details: chrome.webRequest.WebRedirectionResponseDetails
-) => {
-    const headerSize = getResponseHeaderSize(details);
-
-    const bodySize = getBodySizeFromContentLengthHeader(details);
-
-    addBytesTransferred(headerSize + bodySize);
-};
-export const webRequestOnHeadersReceivedListener = (
-    details: chrome.webRequest.WebResponseHeadersDetails
-) => {
-    const headerSize = getResponseHeaderSize(details);
-
-    const bodySize = getBodySizeFromContentLengthHeader(details);
-    addBytesTransferred(headerSize + bodySize);
-};
-export const webRequestOnResponseStartedListener = (
+export const catchResponseSize = (
     details: chrome.webRequest.WebResponseCacheDetails
 ) => {
     const headerSize = getResponseHeaderSize(details);
@@ -59,31 +42,21 @@ export const webRequestOnResponseStartedListener = (
     addBytesTransferred(headerSize + bodySize);
 };
 
-export const webRequestOnCompleteListener = (
-    details: chrome.webRequest.WebResponseCacheDetails
-) => {
-    const headerSize = getResponseHeaderSize(details);
-
-    const bodySize = getBodySizeFromContentLengthHeader(details);
-
-    addBytesTransferred(headerSize + bodySize);
-};
-
-export const webRequestOnBeforeRequestListener = (
+export const catchPostRequestBodySize = (
     details: chrome.webRequest.WebRequestBodyDetails
 ) => {
-    const bodySize = getBodySize(details);
+    if (details.method === "POST") {
+        const bodySize = getBodySize(details);
 
-    if (bodySize > 0) {
-        addBytesTransferred(bodySize);
+        if (bodySize > 0) {
+            addBytesTransferred(bodySize);
+        }
     }
 };
 
-export const webRequestOnBeforeSendHeaders = (
+export const catchRequestHeaderSize = (
     details: chrome.webRequest.WebRequestHeadersDetails
 ) => {
-    // When client makes a request,
-    // catch header size
     const headerSize = getRequestHeaderSize(details);
 
     if (headerSize > 0) {
