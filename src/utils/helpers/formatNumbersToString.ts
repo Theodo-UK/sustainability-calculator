@@ -1,4 +1,8 @@
-export const formatBytesString = (bytes: number): string => {
+export function formatEmissions(emissions: number) {
+    return emissions.toFixed(2) + " grams of CO2";
+}
+
+export const formatBytes = (bytes: number): string => {
     if (!+bytes) return "0 Bytes";
 
     const BASE = 1000;
@@ -21,3 +25,8 @@ export const formatBytesString = (bytes: number): string => {
 
     return `${bytes.toFixed(decimalPlaces)} ${units[i]}`;
 };
+
+export function unixTimeToDate(unixTimeMs: number) {
+    const date = new Date(unixTimeMs);
+    return date.toLocaleString("en-GB", { timeZone: "UTC" });
+}

@@ -1,7 +1,11 @@
 import React from "react";
 import { Button } from "../atomic/Button";
 import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
-import { unixTimeToDateString } from "../../../utils/helpers/unixTimeToDateString";
+import {
+    formatBytes,
+    formatEmissions,
+    unixTimeToDate,
+} from "../../../utils/helpers/formatNumbersToString";
 
 type CountryDropdownType = {
     refreshCalculationHistory: () => void;
@@ -20,14 +24,17 @@ export const CalculationHistory = ({
             <ul>
                 {calculationHistory.map((calculation, index) => (
                     <li key={index}>
-                        <p>Bytes: {calculation.bytes}</p>
-                        <p>Emissions: {calculation.emissions}</p>
+                        <p>Bytes: {formatBytes(calculation.bytes)}</p>
                         <p>
-                            Specific Emissions: {calculation.specificEmissions}
+                            Emissions: {formatEmissions(calculation.emissions)}
+                        </p>
+                        <p>
+                            Specific Emissions:{" "}
+                            {formatEmissions(calculation.specificEmissions)}
                         </p>
                         <p>
                             Date & Time:{" "}
-                            {unixTimeToDateString(calculation.unixTimeMs)}
+                            {unixTimeToDate(calculation.unixTimeMs)}
                         </p>
                         <p>User: {calculation.userType}</p>
                         <ul>
