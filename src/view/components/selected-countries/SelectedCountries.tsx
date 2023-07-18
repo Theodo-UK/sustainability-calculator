@@ -1,5 +1,6 @@
 import React from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
+import { Tooltip } from "react-tooltip";
 
 type SelectedCountriesType = {
     selectedCountries: Map<CountryName, number>;
@@ -14,15 +15,31 @@ export const SelectedCountries = ({
 }: SelectedCountriesType) => {
     return (
         <div>
-            <h3>Selected Countries</h3>
+            <div className="flex">
+                <h3 className="text-base font-bold">
+                    My users are based in...
+                </h3>
+                <a
+                    className="ml-2 rounded-full bg-gray-200 hover:bg-gray-300 w-6 h-6 flex items-center justify-center cursor-pointer"
+                    data-tooltip-id="world-average-tip"
+                    data-tooltip-html="The figure is used by default<br />where countries have not been<br />specified for a % of users"
+                >
+                    ?
+                </a>
+                <Tooltip id="world-average-tip" />
+            </div>
             <ul>
                 {Array.from(selectedCountries).map(([country, percentage]) => (
                     <li key={country}>
-                        <button onClick={() => removeSelectedCountry(country)}>
+                        <button
+                            className="bg-gray-200 hover:bg-gray-300 rounded-full w-6 h-6"
+                            onClick={() => removeSelectedCountry(country)}
+                        >
                             -
                         </button>
                         {country} (% users):
                         <input
+                            className="w-16 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 px-2 py-1 ml-2"
                             type="number"
                             defaultValue={percentage * 100}
                             onChange={(e) =>

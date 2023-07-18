@@ -1,16 +1,22 @@
 import React from "react";
+import { Button } from "../atomic/Button";
 import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
+import { unixTimeToDateString } from "../../../utils/helpers/unixTimeToDateString";
+
 type CountryDropdownType = {
     refreshCalculationHistory: () => void;
     calculationHistory: CalculationDataType[];
 };
+
 export const CalculationHistory = ({
     refreshCalculationHistory,
     calculationHistory,
 }: CountryDropdownType) => {
     return (
         <div>
-            <button onClick={refreshCalculationHistory}>Refresh History</button>
+            <Button onClick={refreshCalculationHistory} colour="green">
+                Refresh History
+            </Button>
             <ul>
                 {calculationHistory.map((calculation, index) => (
                     <li key={index}>
@@ -18,6 +24,10 @@ export const CalculationHistory = ({
                         <p>Emissions: {calculation.emissions}</p>
                         <p>
                             Specific Emissions: {calculation.specificEmissions}
+                        </p>
+                        <p>
+                            Date & Time:{" "}
+                            {unixTimeToDateString(calculation.unixTimeMs)}
                         </p>
                         <ul>
                             {Array.from(calculation.selectedCountries).map(

@@ -99,6 +99,7 @@ export const usePopup = () => {
                 emissions: emissions,
                 specificEmissions: averageSpecificEmissions,
                 selectedCountries: selectedCountries,
+                unixTimeMs: Date.now(),
             });
             calculationsRepository.setOngoingCalculation(false);
         } catch (e: unknown) {

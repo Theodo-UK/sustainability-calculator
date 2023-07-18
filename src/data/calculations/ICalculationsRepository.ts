@@ -39,4 +39,5 @@ export type CalculationDataType = {
     emissions: number;
     specificEmissions: number;
     selectedCountries: Map<CountryName, number>;
+    unixTimeMs: number;
 };
