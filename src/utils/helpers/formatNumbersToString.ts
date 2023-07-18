@@ -1,4 +1,4 @@
-export function formatEmissions(emissions: number) {
+export function formatEmissions(emissions: number): string {
     return emissions.toFixed(2) + " grams of CO2";
 }
 
@@ -26,7 +26,7 @@ export const formatBytes = (bytes: number): string => {
     return `${bytes.toFixed(decimalPlaces)} ${units[i]}`;
 };
 
-export function unixTimeToDate(unixTimeMs: number) {
+export function unixTimeToDateString(unixTimeMs: number): string {
     const date = new Date(unixTimeMs);
     return date.toLocaleString("en-GB", { timeZone: "UTC" });
 }
