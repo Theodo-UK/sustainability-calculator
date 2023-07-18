@@ -10,7 +10,7 @@ import {
     formatBytes,
 } from "../../utils/helpers/formatNumbersToString";
 import "./../../input.css";
-import { getEmissionsComparison } from "../../data/constants/RealLifeComparison";
+import { getEmissionsComparison } from "../../utils/helpers/getEmissionComparison";
 
 export const Popup = () => {
     const {
