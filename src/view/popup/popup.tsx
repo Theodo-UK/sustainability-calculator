@@ -1,11 +1,13 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { CountryDropdown } from "../components/country-dropdown/CountryDropdown";
+import { Button } from "../components/atomic/Button";
 import { usePopup } from "./usePopup";
 import { SelectedCountries } from "../components/selected-countries/SelectedCountries";
 import { CalculationHistory } from "../components/calculation-history/CalculationHistory";
 import { formatBytesString } from "./utils/formatBytesString";
 import { IBytesRepository } from "../../data/bytes/IBytesRepository";
+import "./../../input.css";
 
 export const Popup = () => {
     const {
@@ -24,17 +26,19 @@ export const Popup = () => {
     } = usePopup();
 
     return (
-        <div className="bg-black">
+        <div className="p-10 w-80">
             <h1 className="text-3xl font-bold underline">
                 Sustainability Calculator
             </h1>
-            <button onClick={() => refreshAndGetSize(false)}>
+            <Button onClick={() => refreshAndGetSize(false)}>
                 Calculate CO2 emissions as returning user
-            </button>
-            <button onClick={() => refreshAndGetSize(true)}>
+            </Button>
+            <Button onClick={() => refreshAndGetSize(true)}>
                 Calculate CO2 emissions as new user
-            </button>
-            <button onClick={() => stopRecording()}>Stop calculation</button>
+            </Button>
+            <Button onClick={stopRecording} colour="red">
+                Stop calculation
+            </Button>
             <p>Total Data Received: {formatBytesString(bytesTransferred)}</p>
             <p>
                 Specific Carbon Emissions:
