@@ -29,6 +29,7 @@ export const CalculationHistory = ({
                             Date & Time:{" "}
                             {unixTimeToDateString(calculation.unixTimeMs)}
                         </p>
+                        <p>User: {calculation.userType}</p>
                         <ul>
                             {Array.from(calculation.selectedCountries).map(
                                 ([countryName, percentage]) => (
