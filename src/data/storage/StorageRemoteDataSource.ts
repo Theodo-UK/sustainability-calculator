@@ -4,9 +4,9 @@ export class StorageRemoteDataSource {
     private storage = (() => {
         let mutex: Promise<void> | null = Promise.resolve();
         const API = chrome.storage.local;
-        const mutexExec = (method: any, data: any): any => {
+        const mutexExec = (method: () => any): any => {
             mutex = Promise.resolve(mutex)
-                .then(() => method(data))
+                .then(() => method())
                 .then((result) => {
                     mutex = null;
                     return result;
@@ -24,13 +24,37 @@ export class StorageRemoteDataSource {
         const syncClear = () =>
             new Promise((resolve) => API.clear(() => resolve(null)));
 
+        const getAndSet = (key: string, mutateValue: (value: any) => any) => {
+            return new Promise((resolve) => {
+                syncGet(key).then((currentValue: any) => {
+                    const newValue = mutateValue(currentValue);
+                    syncSet({ [key]: newValue }).then(() => resolve(null));
+                });
+            });
+        };
+
         return {
             read: (data: string | string[] | { [key: string]: any } | null) =>
-                mutexExec(syncGet, data),
-            write: (data: any) => mutexExec(syncSet, data),
-            clear: () => mutexExec(syncClear, null),
+                mutexExec(() => syncGet(data)),
+            write: (data: any) => mutexExec(() => syncSet(data)),
+            clear: () => mutexExec(() => syncClear()),
+            readAndWrite: (key: string, mutateValue: (value: any) => any) =>
+                mutexExec(() => getAndSet(key, mutateValue)),
         };
     })();
+
+    async getAndSet(
+        key: string,
+        mutateValue: (value: any) => any
+    ): Promise<void> {
+        try {
+            await this.storage.readAndWrite(key, mutateValue);
+        } catch (e) {
+            throw new Error(
+                `StorageRemoteDataSource failed to getAndSet: ${key}: ${e}`
+            );
+        }
+    }
 
     async get(
         data: string | string[] | { [key: string]: any } | null

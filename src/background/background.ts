@@ -1,35 +1,47 @@
+import { IBytesRepository } from "../data/bytes/IBytesRepository";
 import {
-    webRequestOnBeforeRequestListener,
-    webRequestOnBeforeSendHeaders,
-    webRequestOnCompleteListener,
+    catchPostRequestBodySize,
+    catchRequestHeaderSize,
+    catchResponseSize,
 } from "./webRequestListeners";
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message === "getBytesTransferred") {
+        sendResponse(IBytesRepository.instance.getBytesTransferred());
+    }
+
     const { tabId } = message;
 
-    if (message.command === "startStoringWebRequestPayloadSize") {
+    if (message.command === "startRecordingBytesTransferred") {
+        IBytesRepository.instance.clearBytesTransferred();
+
         chrome.webRequest.onBeforeRequest.addListener(
-            webRequestOnBeforeRequestListener,
+            catchPostRequestBodySize,
             { urls: ["<all_urls>"], tabId },
             ["requestBody"]
         );
         chrome.webRequest.onBeforeSendHeaders.addListener(
-            webRequestOnBeforeSendHeaders,
+            catchRequestHeaderSize,
             { urls: ["<all_urls>"], tabId },
             ["requestHeaders"]
         );
         chrome.webRequest.onCompleted.addListener(
-            webRequestOnCompleteListener,
+            catchResponseSize,
             { urls: ["<all_urls>"], tabId },
             ["responseHeaders"]
         );
+        sendResponse(true);
     }
 
-    if (message.command === "stopStoringWebRequestPayloadSize") {
-        chrome.webRequest.onCompleted.removeListener(
-            webRequestOnCompleteListener
+    if (message.command === "stopRecordingBytesTransferred") {
+        chrome.webRequest.onCompleted.removeListener(catchResponseSize);
+        chrome.webRequest.onBeforeRequest.removeListener(
+            catchPostRequestBodySize
         );
+        chrome.webRequest.onBeforeSendHeaders.removeListener(
+            catchRequestHeaderSize
+        );
+        sendResponse(true);
     }
-    sendResponse(true);
     return true;
 });

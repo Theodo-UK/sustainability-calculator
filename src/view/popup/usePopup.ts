@@ -8,15 +8,14 @@ import {
     CalculationDataType,
     ICalculationsRepository,
 } from "../../data/calculations/ICalculationsRepository";
-import { IBytesRepository } from "../../data/bytes/IBytesRepository";
 import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
+import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
 
 export const usePopup = () => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
         ISelectedCountriesRepository.instance;
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
-    const bytesRepository: IBytesRepository = IBytesRepository.instance;
 
     const [bytesTransferred, setBytesTransferred] = useState(0);
     const [emissions, setEmissions] = useState(0);
@@ -81,7 +80,7 @@ export const usePopup = () => {
         }
         try {
             await calculationsRepository.setOngoingCalculation(true);
-            await bytesRepository.clearTotalBytesTransferred();
+            backgroundStopRecordingBytes();
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
@@ -93,17 +92,7 @@ export const usePopup = () => {
     };
 
     const stopRecording = () => {
-        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-            if (tabs.length > 0) {
-                const tabId = tabs[0].id;
-                if (tabId) {
-                    chrome.runtime.sendMessage({
-                        command: "stopStoringWebRequestPayloadSize",
-                        tabId,
-                    });
-                }
-            }
-        });
+        backgroundStopRecordingBytes();
         try {
             calculationsRepository.storeCalculation({
                 bytes: bytesTransferred,
@@ -135,29 +124,29 @@ export const usePopup = () => {
     };
 
     useEffect(() => {
-        const totalBytesTransferredListener = (changes: {
-            [key: string]: chrome.storage.StorageChange;
-        }) => {
-            if (changes.bytesTransferred) {
-                setBytesTransferred(changes.bytesTransferred.newValue);
-                const _emissions = calculateCarbon(
-                    changes.bytesTransferred.newValue,
-                    selectedCountries
-                );
+        const bytesTransferredChangedListener = (
+            message: { command: { bytesTransferredChanged: number } },
+            sender: chrome.runtime.MessageSender,
+            sendResponse: (response?: boolean) => void
+        ) => {
+            if (message.command.bytesTransferredChanged) {
+                const _bytes = message.command.bytesTransferredChanged;
+                setBytesTransferred(_bytes);
+                const _emissions = calculateCarbon(_bytes, selectedCountries);
                 setEmissions(_emissions);
             }
+            sendResponse(true);
+            return true;
         };
 
-        chrome.storage.local.onChanged.addListener(
-            totalBytesTransferredListener
-        );
+        chrome.runtime.onMessage.addListener(bytesTransferredChangedListener);
 
         return () => {
-            chrome.storage.local.onChanged.removeListener(
-                totalBytesTransferredListener
+            chrome.runtime.onMessage.removeListener(
+                bytesTransferredChangedListener
             );
         };
-    }, [selectedCountries, averageSpecificEmissions, calculationsRepository]);
+    }, [selectedCountries]);
 
     useMountEffect(() => {
         const getLastCalculationAndSetState = async () => {
@@ -166,7 +155,10 @@ export const usePopup = () => {
             setSelectedCountries(_selectedCountries);
 
             if (await calculationsRepository.isOngoingCalculation()) {
-                const _bytes = await bytesRepository.getTotalBytesTransferred();
+                const _bytes = await chrome.runtime.sendMessage(
+                    "getBytesTransferred"
+                );
+
                 setBytesTransferred(_bytes);
                 setEmissions(calculateCarbon(_bytes, _selectedCountries));
                 setAverageSpecificEmissions(

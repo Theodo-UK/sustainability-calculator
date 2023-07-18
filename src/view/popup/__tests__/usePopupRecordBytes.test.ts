@@ -17,10 +17,14 @@ describe("usePopup", () => {
             await result.current.refreshAndGetSize(false);
         });
 
-        expect(chrome.tabs.query).toHaveBeenCalledTimes(1);
+        expect(chrome.tabs.query).toHaveBeenCalledTimes(2);
+        expect(chrome.runtime.sendMessage).toBeCalledWith({
+            command: "stopRecordingBytesTransferred",
+            tabId: mockTabId,
+        });
         expect(chrome.tabs.reload).toHaveBeenCalledTimes(1);
         expect(chrome.runtime.sendMessage).toBeCalledWith({
-            command: "startStoringWebRequestPayloadSize",
+            command: "startRecordingBytesTransferred",
             tabId: mockTabId,
         });
     });
@@ -32,7 +36,7 @@ describe("usePopup", () => {
         });
 
         expect(chrome.runtime.sendMessage).toBeCalledWith({
-            command: "stopStoringWebRequestPayloadSize",
+            command: "stopRecordingBytesTransferred",
             tabId: mockTabId,
         });
     });

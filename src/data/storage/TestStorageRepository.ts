@@ -28,6 +28,13 @@ export class TestStorageRepository implements IStorageRepository {
         }
     }
 
+    async getAndSet(
+        key: string,
+        mutateValue: (value: any) => any
+    ): Promise<void> {
+        throw Error("Not implemented");
+    }
+
     async clear(): Promise<void> {
         this._storageObject = {};
     }

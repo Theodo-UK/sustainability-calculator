@@ -1,52 +1,65 @@
 import { IBytesRepository } from "../data/bytes/IBytesRepository";
+import {
+    getBodySize,
+    getBodySizeFromContentLengthHeader,
+    getRequestHeaderSize,
+    getResponseHeaderSize,
+} from "./getWebRequestSizeHelpers";
 
-export const webRequestOnCompleteListener = (
-    details: chrome.webRequest.WebResponseCacheDetails
-) => {
-    // Catch all response header+body size
-    const headerSize =
-        details.responseHeaders?.reduce((acc, header) => {
-            const encoder = new TextEncoder();
-            const headerLength = encoder.encode(
-                header.name + ": " + (header.value ?? "")
-            ).length;
-            return acc + headerLength;
-        }, 0) ?? 0;
+const addBytesTransferred = async (bytes: number) => {
+    IBytesRepository.instance.addBytesTransferred(bytes);
 
-    const contentLengthHeader = details.responseHeaders?.find(
-        (header) => header.name.toLowerCase() === "content-length"
-    );
-
-    const bodySize =
-        contentLengthHeader?.value !== undefined
-            ? parseInt(contentLengthHeader.value, 10)
-            : 0;
-
-    IBytesRepository.instance.addBytesTransferred(headerSize + bodySize);
-};
-
-export const webRequestOnBeforeRequestListener = (
-    details: chrome.webRequest.WebRequestBodyDetails
-) => {
-    // Catch POST request body size
-    const bodySize = details.requestBody?.raw?.[0].bytes?.byteLength;
-    if (bodySize) {
-        IBytesRepository.instance.addBytesTransferred(bodySize);
+    try {
+        await chrome.runtime.sendMessage({
+            command: {
+                bytesTransferredChanged:
+                    IBytesRepository.instance.getBytesTransferred(),
+            },
+        });
+    } catch (e: unknown) {
+        if (e instanceof Error) {
+            if (
+                e.message ===
+                "Could not establish connection. Receiving end does not exist."
+            ) {
+                console.log(
+                    `Error Caught: ${e}\nIf popup is open and this error is seen in the console, debugging is required.`
+                );
+            }
+        } else {
+            throw e;
+        }
     }
 };
 
-export const webRequestOnBeforeSendHeaders = (
+export const catchResponseSize = (
+    details: chrome.webRequest.WebResponseCacheDetails
+) => {
+    const headerSize = getResponseHeaderSize(details);
+
+    const bodySize = getBodySizeFromContentLengthHeader(details);
+
+    addBytesTransferred(headerSize + bodySize);
+};
+
+export const catchPostRequestBodySize = (
+    details: chrome.webRequest.WebRequestBodyDetails
+) => {
+    if (details.method === "POST") {
+        const bodySize = getBodySize(details);
+
+        if (bodySize > 0) {
+            addBytesTransferred(bodySize);
+        }
+    }
+};
+
+export const catchRequestHeaderSize = (
     details: chrome.webRequest.WebRequestHeadersDetails
 ) => {
-    // Catch all requests header size
-    const headerSize = details.requestHeaders?.reduce((acc, header) => {
-        const encoder = new TextEncoder();
-        const headerLength = encoder.encode(
-            header.name + ": " + (header.value ?? "")
-        ).length;
-        return acc + headerLength;
-    }, 0);
-    if (headerSize !== undefined && headerSize > 0) {
-        IBytesRepository.instance.addBytesTransferred(headerSize);
+    const headerSize = getRequestHeaderSize(details);
+
+    if (headerSize > 0) {
+        addBytesTransferred(headerSize);
     }
 };

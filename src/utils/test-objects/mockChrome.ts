@@ -13,6 +13,7 @@ export const mockChrome = {
     runtime: {
         onMessage: {
             addListener: jest.fn(),
+            removeListener: jest.fn(),
         },
         sendMessage: jest.fn(),
     },
