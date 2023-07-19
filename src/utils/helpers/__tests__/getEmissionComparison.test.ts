@@ -8,13 +8,13 @@ describe("getEmissionsComparison", () => {
         it("should return 50% Google Search when emissions are 0.1", () => {
             expect(getEmissionsComparison(0.1)).toBe("50% Google Search");
         });
-        it("should return 100% Google Search when emissions are 0.2", () => {
-            expect(getEmissionsComparison(0.2)).toBe("100% Google Search");
+        it("should return 99% Google Search when emissions are 0.1999", () => {
+            expect(getEmissionsComparison(0.1999)).toBe("99% Google Search");
         });
     });
     describe("when emissions are between 0.2 and 21, should return an amount of Google Searches rounded to the nearest half integer", () => {
-        it("for 0.2001g of CO2", () => {
-            expect(getEmissionsComparison(0.2001)).toBe("1 Google Search");
+        it("for 0.2g of CO2", () => {
+            expect(getEmissionsComparison(0.2)).toBe("1 Google Search");
         });
         it("for 0.24999g of CO2", () => {
             expect(getEmissionsComparison(0.24999)).toBe("1 Google Search");
