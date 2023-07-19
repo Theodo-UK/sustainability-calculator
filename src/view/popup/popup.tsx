@@ -10,6 +10,7 @@ import {
     formatBytes,
 } from "../../utils/helpers/formatNumbersToString";
 import "./../../input.css";
+import { getEmissionsComparison } from "../../utils/helpers/getEmissionComparison";
 
 export const Popup = () => {
     const {
@@ -47,6 +48,10 @@ export const Popup = () => {
                 {` ${formatEmissions(averageSpecificEmissions)} per gigabyte`}
             </p>
             <p>Software Carbon Intensity: {formatEmissions(emissions)}</p>
+            <p>
+                CO2 emissions are equivalent to:{" "}
+                {getEmissionsComparison(emissions)}
+            </p>
             <SelectedCountries
                 selectedCountries={selectedCountries}
                 removeSelectedCountry={removeSelectedCountry}

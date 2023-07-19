@@ -42,12 +42,16 @@ describe("usePopup", () => {
                 emissions: 54321,
                 specificEmissions: 54321,
                 selectedCountries: new Map([]),
+                unixTimeMs: 54321,
+                userType: "new user",
             },
             {
                 bytes: 12345,
                 emissions: 12345,
                 specificEmissions: 12345,
                 selectedCountries: new Map([]),
+                unixTimeMs: 12345,
+                userType: "new user",
             },
         ]);
     });

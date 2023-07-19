@@ -4,7 +4,7 @@ import { CalculationDataType } from "../../../data/calculations/ICalculationsRep
 import {
     formatBytes,
     formatEmissions,
-    unixTimeToDate,
+    unixTimeToDateString,
 } from "../../../utils/helpers/formatNumbersToString";
 
 type CountryDropdownType = {
@@ -34,7 +34,7 @@ export const CalculationHistory = ({
                         </p>
                         <p>
                             Date & Time:{" "}
-                            {unixTimeToDate(calculation.unixTimeMs)}
+                            {unixTimeToDateString(calculation.unixTimeMs)}
                         </p>
                         <p>User: {calculation.userType}</p>
                         <ul>
