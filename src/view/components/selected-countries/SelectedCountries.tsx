@@ -14,6 +14,9 @@ export const SelectedCountries = ({
     setCountryPercentage,
 }: SelectedCountriesType) => {
     const [worldPercentage, setWorldPercentage] = React.useState(1);
+    const [isPercentageError, setIsPercentageError] = React.useState(false);
+    const percentageError = "Percentages must stay between 0% and 100%";
+
     useEffect(() => {
         let totalPercentage = 0;
         selectedCountries.forEach((percentage) => {
@@ -21,6 +24,15 @@ export const SelectedCountries = ({
         });
         setWorldPercentage(1 - totalPercentage);
     }, [selectedCountries]);
+
+    useEffect(() => {
+        let countryHasError = false;
+        selectedCountries.forEach((percentage) => {
+            if (percentage > 1 || percentage < 0) countryHasError = true;
+        });
+        const worldHasError = worldPercentage > 1 || worldPercentage < 0;
+        setIsPercentageError(countryHasError || worldHasError);
+    }, [selectedCountries, worldPercentage]);
 
     return (
         <div>
@@ -63,6 +75,9 @@ export const SelectedCountries = ({
                     </li>
                 ))}
             </ul>
+            <p className="text-red-500">
+                {isPercentageError ? percentageError : null}
+            </p>
         </div>
     );
 };
