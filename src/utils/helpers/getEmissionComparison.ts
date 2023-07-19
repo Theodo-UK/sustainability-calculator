@@ -15,7 +15,7 @@ export const getEmissionsComparison = (emissions: number): string => {
     if (emissions > REAL_LIFE_EXAMPLES["Coffee Cup"]) {
         return formatComparison(emissions, "Coffee Cup");
     }
-    if (emissions >= REAL_LIFE_EXAMPLES["Google Search"]) {
+    if (emissions >= 0.995 * REAL_LIFE_EXAMPLES["Google Search"]) {
         return formatComparison(emissions, "Google Search");
     }
 
