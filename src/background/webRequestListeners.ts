@@ -6,7 +6,7 @@ import {
     getResponseHeaderSize,
 } from "./getWebRequestSizeHelpers";
 
-const addBytesTransferred = async (bytes: number) => {
+export const addBytesTransferred = async (bytes: number) => {
     IBytesRepository.instance.addBytesTransferred(bytes);
 
     try {

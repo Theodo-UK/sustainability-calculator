@@ -9,7 +9,8 @@
   "permissions": [
     "webRequest",
     "tabs",
-    "storage"
+    "storage",
+    "debugger"
   ],
   "host_permissions": [
     "*://*/*/"
