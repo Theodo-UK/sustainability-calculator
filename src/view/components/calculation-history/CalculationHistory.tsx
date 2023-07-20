@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "../atomic/Button";
 import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
 import {
     formatBytes,
@@ -8,19 +7,14 @@ import {
 } from "../../../utils/helpers/formatNumbersToString";
 
 type CountryDropdownType = {
-    refreshCalculationHistory: () => void;
     calculationHistory: CalculationDataType[];
 };
 
 export const CalculationHistory = ({
-    refreshCalculationHistory,
     calculationHistory,
 }: CountryDropdownType) => {
     return (
         <div>
-            <Button onClick={refreshCalculationHistory} colour="green">
-                Refresh History
-            </Button>
             <ul>
                 {calculationHistory.map((calculation, index) => (
                     <li key={index}>
