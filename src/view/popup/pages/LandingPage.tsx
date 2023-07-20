@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../../components/atomic/Button";
+import { CircularButton } from "../../../view/components/atomic/CircularButton";
 
 export const LandingPage = ({
     onRecordButtonPress,
@@ -7,11 +7,17 @@ export const LandingPage = ({
     onRecordButtonPress: () => void;
 }) => {
     return (
-        <div className="p-10 w-80">
-            <h1 className="text-3xl font-bold underline">
+        <div className="p-10 pb-16 w-96 flex flex-col justify-stretch gap-12">
+            <h1 className="text-2xl font-bold text-center">
                 Sustainability Calculator
             </h1>
-            <Button onClick={onRecordButtonPress}>Start recording</Button>
+            <CircularButton
+                text="Start Recording"
+                onClick={onRecordButtonPress}
+                colour="light-green"
+            >
+                +
+            </CircularButton>
         </div>
     );
 };
