@@ -34,9 +34,6 @@ export const ResultsPage = ({
     refreshCalculationHistory,
     error,
 }: ResultsPageProps) => {
-    React.useEffect(() => {
-        refreshCalculationHistory();
-    }, [refreshCalculationHistory]);
     return (
         <div className="p-10 w-80">
             <h1 className="text-3xl font-bold underline">

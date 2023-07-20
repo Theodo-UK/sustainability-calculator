@@ -45,9 +45,9 @@ export const Popup = () => {
                 />
             ) : page === "recording" ? (
                 <RecordingPage
-                    onStopButtonPress={() => {
+                    onStopButtonPress={async () => {
+                        await stopRecording();
                         goToPage("results");
-                        stopRecording();
                     }}
                     bytesTransferred={bytesTransferred}
                     averageSpecificEmissions={averageSpecificEmissions}
