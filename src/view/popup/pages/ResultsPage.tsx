@@ -37,7 +37,7 @@ export const ResultsPage = ({
             <h1 className="text-2xl font-bold text-center">
                 Sustainability Calculator
             </h1>
-            <div className="text-center border-2">
+            <div className="p-4 border-2 rounded-2xl">
                 <SelectedCountries
                     selectedCountries={selectedCountries}
                     removeSelectedCountry={removeSelectedCountry}
@@ -60,7 +60,9 @@ export const ResultsPage = ({
             <Button onClick={onRestartButtonPress} colour="light-green">
                 Restart recording
             </Button>
-            <CalculationHistory calculationHistory={recordings} />
+            <div className="p-4 border-2 rounded-2xl">
+                <CalculationHistory calculationHistory={recordings} />
+            </div>
             {error && <p>{error}</p>}
         </>
     );
