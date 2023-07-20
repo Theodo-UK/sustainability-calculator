@@ -7,6 +7,7 @@ import { RecordingPage } from "./pages/RecordingPage";
 import { ResultsPage } from "./pages/ResultsPage";
 import { ErrorPage } from "./pages/ErrorPage";
 import { IStorageRepository } from "../../data/storage/IStorageRepository";
+import { useMountEffect } from "./useOnceAfterFirstMount";
 
 type Page = "landing" | "recording" | "results";
 
@@ -33,6 +34,18 @@ export const Popup = () => {
         setPage(page);
         remoteRepository.set({ currentPage: page });
     };
+
+    useMountEffect(() => {
+        remoteRepository
+            .get({ currentPage: "landing" })
+            .then((data) => data.currentPage as Page)
+            .then(async (storedPage) => {
+                if (storedPage === "results") {
+                    await refreshCalculationHistory();
+                }
+                setPage(storedPage);
+            });
+    });
 
     return (
         <>
