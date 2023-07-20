@@ -9,6 +9,7 @@ module.exports = {
                 nyanza: "#E8FCCF",
                 "rose-quartz": "#A89B9D",
                 "raisin-black": "#2D232E",
+                burgundy: "#93032E",
             },
         },
     },

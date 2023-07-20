@@ -9,7 +9,7 @@ export const CircularButton = ({
     text: string;
     onClick: () => void;
     children: React.ReactNode;
-    colour?: "light-green" | "red-500";
+    colour?: "light-green" | "burgundy";
 }) => {
     const buttonClass = `w-16 h-16 focus:shadow-outline focus:outline-none font-bold p-4 rounded-2xl `;
     const greenClass =
