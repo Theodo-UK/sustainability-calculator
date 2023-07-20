@@ -11,7 +11,7 @@ export const CircularButton = ({
     children: React.ReactNode;
     colour?: "light-green" | "burgundy";
 }) => {
-    const buttonClass = `w-16 h-16 focus:shadow-outline focus:outline-none font-bold p-4 rounded-2xl `;
+    const buttonClass = `w-16 h-16 focus:shadow-outline focus:outline-none duration-200 font-bold text-2xl p-4 rounded-2xl `;
     const greenClass =
         buttonClass +
         `bg-light-green text-myrtle-green hover:bg-myrtle-green hover:text-nyanza`;
@@ -19,14 +19,14 @@ export const CircularButton = ({
         buttonClass +
         `bg-red-500 text-raisin-black hover:bg-rose-quartz hover:text-black`;
     return (
-        <div className="flex flex-col justify-center items-center gap-4">
+        <div className="flex flex-col justify-center items-center gap-3">
             <button
                 className={colour === "light-green" ? greenClass : redClass}
                 onClick={onClick}
             >
                 {children}
             </button>
-            <div className="font-bold text-lg">{text}</div>
+            <h2 className="font-medium text-lg">{text}</h2>
         </div>
     );
 };
