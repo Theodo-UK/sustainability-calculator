@@ -1,11 +1,11 @@
 import React from "react";
-import { Button } from "../../components/atomic/Button";
+import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
 import {
     formatBytes,
     formatEmissions,
 } from "../../../utils/helpers/formatNumbersToString";
 import { getEmissionsComparison } from "../../../utils/helpers/getEmissionComparison";
-import { CalculationDataType } from "data/calculations/ICalculationsRepository";
+import { Button } from "../../components/atomic/Button";
 import { CalculationHistory } from "../../components/calculation-history/CalculationHistory";
 import { CountryDropdown } from "../../components/country-dropdown/CountryDropdown";
 import { SelectedCountries } from "../../components/selected-countries/SelectedCountries";
@@ -20,7 +20,6 @@ type ResultsPageProps = {
         country: string,
         percentage: number
     ) => Promise<void>;
-    refreshCalculationHistory: () => Promise<void>;
     error: string | undefined;
 };
 
@@ -31,43 +30,38 @@ export const ResultsPage = ({
     addSelectedCountry,
     removeSelectedCountry,
     setCountryPercentage,
-    refreshCalculationHistory,
     error,
 }: ResultsPageProps) => {
     return (
-        <div className="p-10 w-80">
-            <h1 className="text-3xl font-bold underline">
+        <>
+            <h1 className="text-2xl font-bold text-center">
                 Sustainability Calculator
             </h1>
-            <p>Total Data Received: {formatBytes(recordings[0].bytes)}</p>
-            <p>
-                Specific Carbon Emissions:
-                {` ${formatEmissions(
-                    recordings[0].specificEmissions
-                )} per gigabyte`}
-            </p>
-            <p>
-                Software Carbon Intensity:{" "}
-                {formatEmissions(recordings[0].emissions)}
-            </p>
-            <p>
-                CO2 emissions are equivalent to:{" "}
-                {getEmissionsComparison(recordings[0].emissions)}
-            </p>
-            <Button onClick={onRestartButtonPress} colour="red">
+            <div className="text-center border-2">
+                <SelectedCountries
+                    selectedCountries={selectedCountries}
+                    removeSelectedCountry={removeSelectedCountry}
+                    setCountryPercentage={setCountryPercentage}
+                />
+                <CountryDropdown addSelectedCountry={addSelectedCountry} />
+            </div>
+            <div className=" h-32 grid grid-cols-2 text-base bg-nyanza rounded-2xl shadow font-medium">
+                <div className="text-center flex flex-wrap content-evenly justify-center">
+                    {formatBytes(recordings[0].bytes)}
+                    <br />
+                    {formatEmissions(recordings[0].specificEmissions)} gCO2/GB
+                    <br />
+                    {formatEmissions(recordings[0].emissions)} g of CO2
+                </div>
+                <div className="my-4 border-l-2 border-l-myrtle-green flex flex-wrap content-center justify-center">
+                    {getEmissionsComparison(recordings[0].emissions)}
+                </div>
+            </div>
+            <Button onClick={onRestartButtonPress} colour="light-green">
                 Restart recording
             </Button>
-            <SelectedCountries
-                selectedCountries={selectedCountries}
-                removeSelectedCountry={removeSelectedCountry}
-                setCountryPercentage={setCountryPercentage}
-            />
-            <CountryDropdown addSelectedCountry={addSelectedCountry} />
-            <CalculationHistory
-                calculationHistory={recordings}
-                refreshCalculationHistory={refreshCalculationHistory}
-            />
+            <CalculationHistory calculationHistory={recordings} />
             {error && <p>{error}</p>}
-        </div>
+        </>
     );
 };

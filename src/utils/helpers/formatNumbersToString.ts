@@ -1,5 +1,5 @@
 export function formatEmissions(emissions: number): string {
-    return emissions.toFixed(2) + " grams of CO2";
+    return emissions.toFixed(2);
 }
 
 export const formatBytes = (bytes: number): string => {

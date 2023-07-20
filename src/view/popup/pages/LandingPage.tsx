@@ -1,5 +1,5 @@
 import React from "react";
-import { CircularButton } from "../../../view/components/atomic/CircularButton";
+import { Button } from "../../../view/components/atomic/Button";
 import { ITooltip } from "../../../view/components/atomic/ITooltip";
 
 export const LandingPage = ({
@@ -21,13 +21,14 @@ export const LandingPage = ({
             <div className="h-24 text-base bg-nyanza flex flex-column flex-wrap content-evenly justify-center rounded-2xl shadow font-medium">
                 <p>Click below to get started</p>
             </div>
-            <CircularButton
+            <Button
                 text="Start Recording"
                 onClick={onRecordButtonPress}
                 colour="light-green"
+                type="icon"
             >
                 +
-            </CircularButton>
+            </Button>
         </>
     );
 };
