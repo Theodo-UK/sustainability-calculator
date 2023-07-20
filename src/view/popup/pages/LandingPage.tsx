@@ -15,7 +15,7 @@ export const LandingPage = ({
                     id="landing-page"
                 />
             </div>
-            <div className="p- pb-20 w-96 flex flex-col justify-stretch gap-12">
+            <div className="p-10 pb-20 w-96 flex flex-col justify-stretch gap-12">
                 <h1 className="text-2xl font-bold text-center">
                     Sustainability Calculator
                 </h1>
