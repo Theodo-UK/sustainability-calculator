@@ -25,23 +25,21 @@ export const RecordingPage = ({
                     id="recording-page"
                 />
             </div>
-            <div className="p-10 pb-20 w-96 flex flex-col justify-stretch gap-6">
-                <h1 className="text-2xl font-bold text-center">
-                    Recording in progress
-                </h1>
-                <div className="h-24 text-base bg-nyanza flex flex-column flex-wrap content-evenly justify-center text-center rounded-2xl shadow font-medium">
-                    {formatBytes(bytesTransferred)}
-                    <br />
-                    {formatEmissions(emissions)}
-                </div>
-                <CircularButton
-                    text="Stop Recording"
-                    onClick={onStopButtonPress}
-                    colour="burgundy"
-                >
-                    -
-                </CircularButton>
+            <h1 className="text-2xl font-bold text-center">
+                Recording in progress
+            </h1>
+            <div className="h-24 text-base bg-nyanza flex flex-column flex-wrap content-evenly justify-center text-center rounded-2xl shadow font-medium">
+                {formatBytes(bytesTransferred)}
+                <br />
+                {formatEmissions(emissions)}
             </div>
+            <CircularButton
+                text="Stop Recording"
+                onClick={onStopButtonPress}
+                colour="burgundy"
+            >
+                -
+            </CircularButton>
         </>
     );
 };
