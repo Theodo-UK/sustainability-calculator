@@ -4,7 +4,7 @@ import { Button } from "../../components/atomic/Button";
 export const LandingPage = ({
     onRecordButtonPress,
 }: {
-    onRecordButtonPress: () => Promise<void>;
+    onRecordButtonPress: () => void;
 }) => {
     return (
         <div className="p-10 w-80">
