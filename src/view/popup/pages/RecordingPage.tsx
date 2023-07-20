@@ -29,9 +29,10 @@ export const RecordingPage = ({
                 <h1 className="text-2xl font-bold text-center">
                     Recording in progress
                 </h1>
-                <div className="py-2 px-4 gap-2 text-base bg-nyanza text-center rounded-2xl shadow font-medium">
-                    <p>{formatBytes(bytesTransferred)}</p>
-                    <p>{formatEmissions(emissions)}</p>
+                <div className="h-24 text-base bg-nyanza flex flex-column flex-wrap content-evenly justify-center text-center rounded-2xl shadow font-medium">
+                    {formatBytes(bytesTransferred)}
+                    <br />
+                    {formatEmissions(emissions)}
                 </div>
                 <CircularButton
                     text="Stop Recording"

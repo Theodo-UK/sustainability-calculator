@@ -11,7 +11,7 @@ export const CircularButton = ({
     children: React.ReactNode;
     colour?: "light-green" | "burgundy";
 }) => {
-    const buttonClass = `w-16 h-16 focus:shadow-outline focus:outline-none duration-200 font-bold text-2xl p-4 rounded-2xl `;
+    const buttonClass = `p-4 w-16 h-16 shadow-lg active:shadow-none focus:shadow-outline focus:outline-none duration-200 font-bold text-2xl rounded-2xl `;
     const greenClass =
         buttonClass +
         `bg-light-green text-myrtle-green hover:bg-myrtle-green hover:text-nyanza`;
