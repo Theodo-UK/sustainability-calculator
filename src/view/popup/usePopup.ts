@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
-import { CountryName } from "../../data/constants/CountryEmissions";
-import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
-import { calculateCarbon } from "./utils/calculateCarbon";
-import { ISelectedCountriesRepository } from "../../data/selected-countries/ISelectedCountriesRepository";
-import { useMountEffect } from "./useOnceAfterFirstMount";
 import {
     CalculationDataType,
     ICalculationsRepository,
     UserType,
 } from "../../data/calculations/ICalculationsRepository";
-import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
+import { CountryName } from "../../data/constants/CountryEmissions";
+import { ISelectedCountriesRepository } from "../../data/selected-countries/ISelectedCountriesRepository";
+import { useMountEffect } from "./useOnceAfterFirstMount";
 import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
+import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
+import { calculateCarbon } from "./utils/calculateCarbon";
+import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
 
 export const usePopup = () => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
@@ -195,7 +195,6 @@ export const usePopup = () => {
         addSelectedCountry,
         removeSelectedCountry,
         setCountryPercentage,
-        averageSpecificEmissions,
         refreshAndGetSize,
         stopRecording,
         calculationHistory,

@@ -19,7 +19,6 @@ export const Popup = () => {
         addSelectedCountry,
         removeSelectedCountry,
         setCountryPercentage,
-        averageSpecificEmissions,
         refreshAndGetSize,
         stopRecording,
         refreshCalculationHistory,
@@ -48,7 +47,7 @@ export const Popup = () => {
     });
 
     return (
-        <>
+        <div className="p-10 pb-20 w-96 flex flex-col justify-stretch gap-6">
             {page === "landing" ? (
                 <LandingPage
                     onRecordButtonPress={async () => {
@@ -63,7 +62,6 @@ export const Popup = () => {
                         goToPage("results");
                     }}
                     bytesTransferred={bytesTransferred}
-                    averageSpecificEmissions={averageSpecificEmissions}
                     emissions={emissions}
                 />
             ) : page === "results" ? (
@@ -83,7 +81,7 @@ export const Popup = () => {
             ) : (
                 <ErrorPage />
             )}
-        </>
+        </div>
     );
 };
 
