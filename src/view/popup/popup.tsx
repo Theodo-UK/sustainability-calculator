@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { usePopup } from "./usePopup";
+import { IStorageRepository } from "../../data/storage/IStorageRepository";
 import "./../../input.css";
+import { ErrorPage } from "./pages/ErrorPage";
 import { LandingPage } from "./pages/LandingPage";
 import { RecordingPage } from "./pages/RecordingPage";
 import { ResultsPage } from "./pages/ResultsPage";
-import { ErrorPage } from "./pages/ErrorPage";
-import { IStorageRepository } from "../../data/storage/IStorageRepository";
 import { useMountEffect } from "./useOnceAfterFirstMount";
+import { usePopup } from "./usePopup";
 
 type Page = "landing" | "recording" | "results";
 
