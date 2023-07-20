@@ -1,0 +1,8 @@
+{
+  "editor.defaultFormatter": "vscode.typescript-language-features",
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.organizeImports": true,
+    "source.unusedImports": true
+  },
+}
