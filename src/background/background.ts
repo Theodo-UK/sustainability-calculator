@@ -1,5 +1,6 @@
 import { IBytesRepository } from "../data/bytes/IBytesRepository";
-import { addBytesTransferred } from "./webRequestListeners";
+import { NetworkRequestManager } from "./network_request_manager/NetworkRequestManager";
+import { formatBytesString } from "../view/popup/utils/formatBytesString";
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message === "getBytesTransferred") {
@@ -37,104 +38,106 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.debugger.onEvent.addListener(function (source, method, params) {
     switch (method) {
         case "Network.responseReceived": {
-            // const { response } = params as {
-            //     response?: {
-            //         encodedDataLength?: number;
-            //     };
-            // };
-            // // console.log("Network.responseReceived:", response);
-            // if (response?.encodedDataLength) {
-            //     addBytesTransferred(response.encodedDataLength);
-            // }
+            const { requestId, response } = params as {
+                requestId?: string;
+                response?: {
+                    encodedDataLength?: number;
+                };
+            };
+            if (
+                requestId === undefined ||
+                response === undefined ||
+                response.encodedDataLength === undefined
+            ) {
+                throw new Error(
+                    `requestId or encodedDataLength is undefined: \nrequestId: ${requestId} \nencodedDataLength: ${response?.encodedDataLength}`
+                );
+            }
+            NetworkRequestManager.setRequestTransferSize(
+                requestId,
+                response.encodedDataLength
+            );
+
             break;
         }
         case "Network.dataReceived": {
-            // const { encodedDataLength } = params as {
-            //     encodedDataLength?: number;
-            // };
-            // // console.log("Network.dataReceived:", encodedDataLength);
-            // if (encodedDataLength) {
-            //     addBytesTransferred(encodedDataLength);
-            // }
+            const { requestId, encodedDataLength } = params as {
+                requestId?: string;
+                encodedDataLength?: number;
+            };
+            if (requestId === undefined || encodedDataLength === undefined) {
+                throw new Error(
+                    `requestId or encodedDataLength is undefined: \nrequestId: ${requestId} \nencodedDataLength: ${encodedDataLength}`
+                );
+            }
+            NetworkRequestManager.increaseRequestTransferSize(
+                requestId,
+                encodedDataLength
+            );
+
             break;
         }
         case "Network.loadingFinished": {
-            // console.log("Network.loadingFinished:", source, params);
-            const { encodedDataLength } = params as {
+            const { requestId, encodedDataLength } = params as {
+                requestId?: string;
                 encodedDataLength?: number;
             };
-            // console.log("Network.loadingFinished:", encodedDataLength);
-            if (encodedDataLength) {
-                addBytesTransferred(encodedDataLength);
+            if (requestId === undefined || encodedDataLength === undefined) {
+                throw new Error(
+                    `requestId or encodedDataLength is undefined: \nrequestId: ${requestId} \nencodedDataLength: ${encodedDataLength}`
+                );
             }
+            NetworkRequestManager.setRequestTransferSize(
+                requestId,
+                encodedDataLength
+            );
+
             break;
         }
         case "Network.loadingFailed": {
-            // console.log("Network.loadingFailed:", params);
-            // const { encodedDataLength } = params as {
-            //     encodedDataLength?: number;
-            // };
-            // console.log("Network.loadingFailed:", encodedDataLength);
-            // if (encodedDataLength) {
-            //     addBytesTransferred(encodedDataLength);
-            // }
-            break;
-        }
+            const { requestId } = params as {
+                requestId?: string;
+            };
+            if (requestId === undefined) {
+                throw new Error("requestId is undefined");
+            }
+            NetworkRequestManager.setRequestTransferSize(requestId, -1);
 
-        case "Network.signedExchangeReceived": {
-            // const { encodedDataLength } = params as {
-            //     encodedDataLength?: number;
-            // };
-            // // console.log("Network.signedExchangeReceived:", encodedDataLength);
-            // if (encodedDataLength) {
-            //     addBytesTransferred(encodedDataLength);
-            // }
             break;
         }
 
         case "Network.webSocketClosed": {
-            // console.log("Network.webSocketClosed:", params);
-            // const { encodedDataLength } = params as {
-            //     encodedDataLength?: number;
-            // };
-            // console.log("Network.webSocketClosed:", encodedDataLength);
-            // if (encodedDataLength) {
-            //     addBytesTransferred(encodedDataLength);
-            // }
+            const { requestId } = params as {
+                requestId?: string;
+            };
+            if (requestId === undefined) {
+                throw new Error("requestId is undefined");
+            }
+            NetworkRequestManager.setRequestTransferSize(requestId, -1);
+
             break;
         }
         case "Network.webTransportClosed": {
-            // console.log("Network.webTransportClosed:", params);
-            // const { encodedDataLength } = params as {
-            //     encodedDataLength?: number;
-            // };
-            // console.log("Network.webTransportClosed:", encodedDataLength);
-            // if (encodedDataLength) {
-            //     addBytesTransferred(encodedDataLength);
-            // }
+            const { requestId } = params as {
+                requestId?: string;
+            };
+            if (requestId === undefined) {
+                throw new Error("requestId is undefined");
+            }
+            NetworkRequestManager.setRequestTransferSize(requestId, -1);
+
             break;
         }
         case "Network.requestWillBeSent": {
-            // console.log("Network.requestWillBeSent:", params);
-            // const { request } = params as {
-            //     request?: {
-            //         url?: string;
-            //     };
-            // };
-            // if (request?.url) {
-            //     console.log(
-            //         "Network.requestWillBeSent: redirect detected",
-            //         params,
-            //         request.url
-            //     );
-            // }
-            // const { encodedDataLength } = params as {
-            //     encodedDataLength?: number;
-            // };
-            // console.log("Network.requestWillBeSent:", encodedDataLength);
-            // if (encodedDataLength) {
-            //     addBytesTransferred(encodedDataLength);
-            // }
+            const { requestId } = params as {
+                requestId?: string;
+            };
+            if (requestId === undefined) {
+                throw new Error("requestId is undefined");
+            }
+
+            NetworkRequestManager.addRequest(requestId);
+
             break;
         }
         default:
