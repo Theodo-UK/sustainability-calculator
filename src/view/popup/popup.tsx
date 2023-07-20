@@ -1,16 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { createRoot } from "react-dom/client";
-import { CountryDropdown } from "../components/country-dropdown/CountryDropdown";
-import { Button } from "../components/atomic/Button";
 import { usePopup } from "./usePopup";
-import { SelectedCountries } from "../components/selected-countries/SelectedCountries";
-import { CalculationHistory } from "../components/calculation-history/CalculationHistory";
-import {
-    formatEmissions,
-    formatBytes,
-} from "../../utils/helpers/formatNumbersToString";
 import "./../../input.css";
-import { getEmissionsComparison } from "../../utils/helpers/getEmissionComparison";
+import { LandingPage } from "./pages/LandingPage";
+import { RecordingPage } from "./pages/RecordingPage";
+import { ResultsPage } from "./pages/ResultsPage";
+import { ErrorPage } from "./pages/ErrorPage";
+import { IStorageRepository } from "../../data/storage/IStorageRepository";
+
+type Page = "landing" | "recording" | "results";
 
 export const Popup = () => {
     const {
@@ -28,42 +26,51 @@ export const Popup = () => {
         error,
     } = usePopup();
 
+    const [page, setPage] = useState<Page>("landing");
+    const remoteRepository = IStorageRepository.instance;
+
+    const goToPage = (page: Page) => {
+        setPage(page);
+        remoteRepository.set({ currentPage: page });
+    };
+
     return (
-        <div className="p-10 w-80">
-            <h1 className="text-3xl font-bold underline">
-                Sustainability Calculator
-            </h1>
-            <Button onClick={() => refreshAndGetSize(false)}>
-                Calculate CO2 emissions as returning user
-            </Button>
-            <Button onClick={() => refreshAndGetSize(true)}>
-                Calculate CO2 emissions as new user
-            </Button>
-            <Button onClick={stopRecording} colour="red">
-                Stop calculation
-            </Button>
-            <p>Total Data Received: {formatBytes(bytesTransferred)}</p>
-            <p>
-                Specific Carbon Emissions:
-                {` ${formatEmissions(averageSpecificEmissions)} per gigabyte`}
-            </p>
-            <p>Software Carbon Intensity: {formatEmissions(emissions)}</p>
-            <p>
-                CO2 emissions are equivalent to:{" "}
-                {getEmissionsComparison(emissions)}
-            </p>
-            <SelectedCountries
-                selectedCountries={selectedCountries}
-                removeSelectedCountry={removeSelectedCountry}
-                setCountryPercentage={setCountryPercentage}
-            />
-            <CountryDropdown addSelectedCountry={addSelectedCountry} />
-            <CalculationHistory
-                calculationHistory={calculationHistory}
-                refreshCalculationHistory={refreshCalculationHistory}
-            />
-            {error && <p>{error}</p>}
-        </div>
+        <>
+            {page === "landing" ? (
+                <LandingPage
+                    onRecordButtonPress={async () => {
+                        goToPage("recording");
+                        await refreshAndGetSize(true);
+                    }}
+                />
+            ) : page === "recording" ? (
+                <RecordingPage
+                    onStopButtonPress={async () => {
+                        await stopRecording();
+                        goToPage("results");
+                    }}
+                    bytesTransferred={bytesTransferred}
+                    averageSpecificEmissions={averageSpecificEmissions}
+                    emissions={emissions}
+                />
+            ) : page === "results" ? (
+                <ResultsPage
+                    onRestartButtonPress={async () => {
+                        goToPage("recording");
+                        await refreshAndGetSize(false);
+                    }}
+                    recordings={calculationHistory}
+                    selectedCountries={selectedCountries}
+                    addSelectedCountry={addSelectedCountry}
+                    removeSelectedCountry={removeSelectedCountry}
+                    setCountryPercentage={setCountryPercentage}
+                    refreshCalculationHistory={refreshCalculationHistory}
+                    error={error}
+                />
+            ) : (
+                <ErrorPage />
+            )}
+        </>
     );
 };
 

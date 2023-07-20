@@ -94,10 +94,10 @@ export const usePopup = () => {
         refreshActiveTabAndRecordBytes(bypassCache);
     };
 
-    const stopRecording = () => {
+    const stopRecording = async (): Promise<void> => {
         backgroundStopRecordingBytes();
         try {
-            calculationsRepository.storeCalculation({
+            await calculationsRepository.storeCalculation({
                 bytes: bytesTransferred,
                 emissions: emissions,
                 specificEmissions: averageSpecificEmissions,
@@ -105,7 +105,8 @@ export const usePopup = () => {
                 unixTimeMs: Date.now(),
                 userType: userType,
             });
-            calculationsRepository.setOngoingCalculation(false);
+            await calculationsRepository.setOngoingCalculation(false);
+            await refreshCalculationHistory();
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
