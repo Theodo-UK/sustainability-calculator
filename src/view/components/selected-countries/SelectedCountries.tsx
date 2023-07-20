@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
-import { Tooltip } from "react-tooltip";
+import { ITooltip } from "../atomic/ITooltip";
 
 type SelectedCountriesType = {
     selectedCountries: Map<CountryName, number>;
@@ -42,14 +42,10 @@ export const SelectedCountries = ({
                     Percentage dispatched on the rest of the world:{" "}
                     {(worldPercentage * 100).toFixed(2)}%
                 </a>
-                <a
-                    className="ml-2 rounded-full bg-gray-200 hover:bg-gray-300 w-6 h-6 flex items-center justify-center cursor-pointer"
-                    data-tooltip-id="world-average-tip"
-                    data-tooltip-html="The figure is used by default<br />where countries have not been<br />specified for a % of users"
-                >
-                    ?
-                </a>
-                <Tooltip id="world-average-tip" />
+                <ITooltip
+                    text="The figure is used by default<br />where countries have not been<br />specified for a % of users"
+                    id="world-percentage"
+                />
             </div>
             <ul>
                 {Array.from(selectedCountries).map(([country, percentage]) => (
