@@ -3,6 +3,11 @@ module.exports = {
     "browser": true,
     "node": true
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -10,6 +15,7 @@ module.exports = {
     "plugin:react-hooks/recommended",
   ],
   plugins: [
+    "react",
     "prettier",
   ],
   overrides: [
