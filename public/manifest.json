@@ -7,7 +7,6 @@
     "default_popup": "popup.html"
   },
   "permissions": [
-    "webRequest",
     "tabs",
     "storage",
     "debugger"
