@@ -16,7 +16,7 @@ export const addBytesTransferred = async (bytes: number) => {
                 e.message ===
                 "Could not establish connection. Receiving end does not exist."
             ) {
-                console.log(
+                console.warn(
                     `Error Caught: ${e}\nIf popup is open and this error is seen in the console, debugging is required.`
                 );
             }
