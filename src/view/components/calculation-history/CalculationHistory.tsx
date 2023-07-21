@@ -3,7 +3,7 @@ import { CalculationDataType } from "../../../data/calculations/ICalculationsRep
 import {
     formatBytes,
     formatEmissions,
-    unixTimeToDateString,
+    msToDateTimeStrings,
 } from "../../../utils/helpers/formatNumbersToString";
 import { Button } from "../atomic/Button";
 
@@ -33,9 +33,9 @@ export const CalculationHistory = ({
                         Calculation History
                     </h2>
                     {calculationHistory.map((calculation, index) => {
-                        const [day, time] = unixTimeToDateString(
+                        const [day, time] = msToDateTimeStrings(
                             calculation.unixTimeMs
-                        ).split(", ");
+                        );
                         return (
                             <li
                                 key={index}
