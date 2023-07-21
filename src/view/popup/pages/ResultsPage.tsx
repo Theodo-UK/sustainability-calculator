@@ -1,11 +1,15 @@
 import React from "react";
-import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
+import {
+    CalculationDataType,
+    UserType,
+} from "../../../data/calculations/ICalculationsRepository";
 import {
     formatBytes,
     formatEmissions,
 } from "../../../utils/helpers/formatNumbersToString";
 import { getEmissionsComparison } from "../../../utils/helpers/getEmissionComparison";
 import { Button } from "../../components/atomic/Button";
+import { SwitchAtom } from "../../components/atomic/SwitchAtom";
 import { CalculationHistory } from "../../components/calculation-history/CalculationHistory";
 import { CountryDropdown } from "../../components/country-dropdown/CountryDropdown";
 import { SelectedCountries } from "../../components/selected-countries/SelectedCountries";
@@ -20,6 +24,8 @@ type ResultsPageProps = {
         country: string,
         percentage: number
     ) => Promise<void>;
+    userType: UserType;
+    setUserType: (userType: UserType) => void;
     error: string | undefined;
 };
 
@@ -30,8 +36,11 @@ export const ResultsPage = ({
     addSelectedCountry,
     removeSelectedCountry,
     setCountryPercentage,
+    userType,
+    setUserType,
     error,
 }: ResultsPageProps) => {
+    const isReturningUser = userType === "returning user";
     return (
         <>
             <h1 className="text-2xl font-bold text-center">
@@ -61,6 +70,18 @@ export const ResultsPage = ({
             <Button onClick={onRestartButtonPress} colour="light-green">
                 Restart recording
             </Button>
+            <div className="h-6 text-base flex justify-between items-center">
+                <p>Returning user?</p>
+                <div className="flex flex-row gap-2 items-center">
+                    <p>{isReturningUser ? "Yes" : "No"}</p>
+                    <SwitchAtom
+                        checked={isReturningUser}
+                        onChange={(checked) =>
+                            setUserType(checked ? "returning user" : "new user")
+                        }
+                    />
+                </div>
+            </div>
             <div className="p-4 border-2 rounded-2xl">
                 <CalculationHistory calculationHistory={recordings} />
             </div>
