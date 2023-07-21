@@ -31,17 +31,14 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
         try {
             await chrome.debugger.detach({ tabId: tabId });
         } catch (e: unknown) {
-            if (e instanceof Error) {
-                if (
-                    e.message ===
-                    `Debugger is not attached to the tab with id: ${tabId}.`
-                ) {
-                    console.warn(
-                        `Tried to detach debugger from tab (tabId: ${tabId}) when there was none attached. `
-                    );
-                    return;
-                }
-                throw e;
+            if (
+                (e as Error).message ===
+                `Debugger is not attached to the tab with id: ${tabId}.`
+            ) {
+                console.warn(
+                    `Tried to detach debugger from tab (tabId: ${tabId}) when there was none attached. `
+                );
+                return;
             }
             throw e;
         }

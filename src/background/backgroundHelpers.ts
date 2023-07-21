@@ -11,15 +11,13 @@ export const addBytesTransferred = async (bytes: number) => {
             },
         });
     } catch (e: unknown) {
-        if (e instanceof Error) {
-            if (
-                e.message ===
-                "Could not establish connection. Receiving end does not exist."
-            ) {
-                console.warn(
-                    `Error Caught: ${e}\nIf popup is open and this error is seen in the console, debugging is required.`
-                );
-            }
+        if (
+            (e as Error).message ===
+            "Could not establish connection. Receiving end does not exist."
+        ) {
+            console.warn(
+                `Error Caught: ${e}\nIf popup is open and this error is seen in the console, debugging is required.`
+            );
         } else {
             throw e;
         }
