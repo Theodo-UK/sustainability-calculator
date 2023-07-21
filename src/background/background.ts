@@ -47,18 +47,21 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     return true;
 });
 
-chrome.debugger.onEvent.addListener(function (source, method, params) {
-    switch (method) {
-        case "Network.loadingFinished": {
-            const { encodedDataLength } = params as {
-                encodedDataLength?: number;
-            };
-            if (encodedDataLength) {
-                addBytesTransferred(encodedDataLength);
+type NetworkParamsType = {
+    encodedDataLength?: number;
+};
+
+chrome.debugger.onEvent.addListener(
+    (source, method: string, params: NetworkParamsType | undefined) => {
+        switch (method) {
+            case "Network.loadingFinished": {
+                if (params?.encodedDataLength && params.encodedDataLength > 0) {
+                    addBytesTransferred(params.encodedDataLength);
+                }
+                break;
             }
-            break;
+            default:
+                break;
         }
-        default:
-            break;
     }
-});
+);
