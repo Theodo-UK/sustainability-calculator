@@ -26,7 +26,9 @@ export const formatBytes = (bytes: number): string => {
     return `${bytes.toFixed(decimalPlaces)} ${units[i]}`;
 };
 
-export function unixTimeToDateString(unixTimeMs: number): string {
+export function msToDateTimeStrings(unixTimeMs: number): [string, string] {
     const date = new Date(unixTimeMs);
-    return date.toLocaleString("en-GB", { timeZone: "UTC" });
+    const day = date.toLocaleDateString("en-GB", { timeZone: "UTC" });
+    const time = date.toLocaleTimeString("en-GB", { timeZone: "UTC" });
+    return [day, time];
 }
