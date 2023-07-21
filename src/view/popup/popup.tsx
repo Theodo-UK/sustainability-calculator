@@ -75,7 +75,6 @@ export const Popup = () => {
                     addSelectedCountry={addSelectedCountry}
                     removeSelectedCountry={removeSelectedCountry}
                     setCountryPercentage={setCountryPercentage}
-                    refreshCalculationHistory={refreshCalculationHistory}
                     error={error}
                 />
             ) : (

@@ -4,7 +4,7 @@ import {
     formatEmissions,
 } from "../../../utils/helpers/formatNumbersToString";
 import { ITooltip } from "../../../view/components/atomic/ITooltip";
-import { CircularButton } from "../../components/atomic/CircularButton";
+import { Button } from "../../components/atomic/Button";
 
 type RecordingPageProps = {
     onStopButtonPress: () => void;
@@ -28,18 +28,19 @@ export const RecordingPage = ({
             <h1 className="text-2xl font-bold text-center">
                 Recording in progress
             </h1>
-            <div className="h-24 text-base bg-nyanza flex flex-column flex-wrap content-evenly justify-center text-center rounded-2xl shadow font-medium">
+            <p className="h-24 text-base bg-nyanza flex flex-column flex-wrap content-evenly justify-center text-center rounded-2xl shadow font-medium">
                 {formatBytes(bytesTransferred)}
                 <br />
-                {formatEmissions(emissions)}
-            </div>
-            <CircularButton
+                {`${formatEmissions(emissions)} grams of CO2`}
+            </p>
+            <Button
                 text="Stop Recording"
                 onClick={onStopButtonPress}
                 colour="burgundy"
+                type="icon"
             >
                 -
-            </CircularButton>
+            </Button>
         </>
     );
 };
