@@ -8,7 +8,7 @@ export const LandingPage = ({
     onRecordButtonPress: () => void;
 }) => {
     return (
-        <>
+        <div className="pb-20">
             <div className="absolute top-1 right-1">
                 <ITooltip
                     text="Starting this recording will calculate<br/>the carbon emissions of users on this webpage"
@@ -29,6 +29,6 @@ export const LandingPage = ({
             >
                 +
             </Button>
-        </>
+        </div>
     );
 };

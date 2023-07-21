@@ -49,7 +49,7 @@ export const Popup = () => {
     });
 
     return (
-        <div className="p-10 pb-20 w-96 flex flex-col justify-stretch gap-6">
+        <div className="p-10 w-96 flex flex-col justify-stretch gap-6">
             {page === "landing" ? (
                 <LandingPage
                     onRecordButtonPress={async () => {

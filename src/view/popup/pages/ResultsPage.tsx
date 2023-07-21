@@ -82,9 +82,7 @@ export const ResultsPage = ({
                     />
                 </div>
             </div>
-            <div className="p-4 border-2 rounded-2xl">
-                <CalculationHistory calculationHistory={recordings} />
-            </div>
+            <CalculationHistory calculationHistory={recordings} />
             {error && <p>{error}</p>}
         </>
     );
