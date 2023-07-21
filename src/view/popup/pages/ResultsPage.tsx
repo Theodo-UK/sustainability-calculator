@@ -46,13 +46,14 @@ export const ResultsPage = ({
                 <CountryDropdown addSelectedCountry={addSelectedCountry} />
             </div>
             <div className=" h-32 grid grid-cols-2 text-base bg-nyanza rounded-2xl shadow font-medium">
-                <div className="text-center flex flex-wrap content-evenly justify-center">
+                <p className="text-center flex flex-wrap content-center justify-center">
                     {formatBytes(recordings[0].bytes)}
                     <br />
-                    {formatEmissions(recordings[0].specificEmissions)} gCO2/GB
+                    {`${formatEmissions(recordings[0].specificEmissions)}
+                        gCO2/GB`}
                     <br />
-                    {formatEmissions(recordings[0].emissions)} g of CO2
-                </div>
+                    {`${formatEmissions(recordings[0].emissions)} g of CO2`}
+                </p>
                 <div className="my-4 border-l-2 border-l-myrtle-green flex flex-wrap content-center justify-center">
                     {getEmissionsComparison(recordings[0].emissions)}
                 </div>

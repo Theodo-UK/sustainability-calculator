@@ -28,11 +28,11 @@ export const RecordingPage = ({
             <h1 className="text-2xl font-bold text-center">
                 Recording in progress
             </h1>
-            <div className="h-24 text-base bg-nyanza flex flex-column flex-wrap content-evenly justify-center text-center rounded-2xl shadow font-medium">
+            <p className="h-24 text-base bg-nyanza flex flex-column flex-wrap content-evenly justify-center text-center rounded-2xl shadow font-medium">
                 {formatBytes(bytesTransferred)}
                 <br />
-                {formatEmissions(emissions) + " grams of CO2"}
-            </div>
+                {`${formatEmissions(emissions)} grams of CO2`}
+            </p>
             <Button
                 text="Stop Recording"
                 onClick={onStopButtonPress}
