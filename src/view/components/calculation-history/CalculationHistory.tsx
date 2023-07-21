@@ -15,13 +15,15 @@ export const CalculationHistory = ({
     calculationHistory,
 }: CountryDropdownType) => {
     const [isListClosed, setIsListClosed] = React.useState(true);
+    const handleViewHistoryButtonPress = () => setIsListClosed(false);
+
     return (
         <>
             {isListClosed ? (
                 <Button
                     colour="light-green"
                     type="text"
-                    onClick={() => setIsListClosed(false)}
+                    onClick={handleViewHistoryButtonPress}
                 >
                     View History
                 </Button>
