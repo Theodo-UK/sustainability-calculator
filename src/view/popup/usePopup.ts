@@ -68,8 +68,7 @@ export const usePopup = () => {
         return percentage;
     };
 
-    const refreshAndGetSize = async (bypassCache: boolean) => {
-        setUserType(bypassCache ? "new user" : "returning user");
+    const refreshAndGetSize = async () => {
         try {
             sumPercentages();
             setAverageSpecificEmissions(
@@ -90,7 +89,7 @@ export const usePopup = () => {
             return;
         }
         setError(undefined);
-        refreshActiveTabAndRecordBytes(bypassCache);
+        refreshActiveTabAndRecordBytes(userType === "new user");
     };
 
     const stopRecording = async (): Promise<void> => {
@@ -198,6 +197,8 @@ export const usePopup = () => {
         stopRecording,
         calculationHistory,
         refreshCalculationHistory,
+        userType,
+        setUserType,
         error,
     };
 };
