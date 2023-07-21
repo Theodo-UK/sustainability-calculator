@@ -83,7 +83,6 @@ export const usePopup = () => {
         }
         try {
             await calculationsRepository.setOngoingCalculation(true);
-            backgroundStopRecordingBytes();
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
