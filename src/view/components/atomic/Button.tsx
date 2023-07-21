@@ -4,13 +4,13 @@ export const Button = ({
     text,
     onClick,
     children,
-    colour = "light-green",
+    colour,
     type = "text",
 }: {
     text?: string;
     onClick: () => void;
     children: React.ReactNode;
-    colour?: "light-green" | "burgundy";
+    colour: "light-green" | "burgundy";
     type?: "text" | "icon";
 }) => {
     const buttonClass =
