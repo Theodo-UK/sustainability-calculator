@@ -61,9 +61,7 @@ export const ResultsPage = ({
             <Button onClick={onRestartButtonPress} colour="light-green">
                 Restart recording
             </Button>
-            <div className="p-4 border-2 rounded-2xl">
-                <CalculationHistory calculationHistory={recordings} />
-            </div>
+            <CalculationHistory calculationHistory={recordings} />
             {error && <p>{error}</p>}
         </>
     );
