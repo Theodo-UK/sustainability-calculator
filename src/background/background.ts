@@ -37,10 +37,13 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
                     `Debugger is not attached to the tab with id: ${tabId}.`
                 ) {
                     console.warn(
-                        `Tried to detach debugger from tab (tabId: ${tabId}) when there was none attached. This is expected when a calculation starts, but should not be expected when a calculation is stopped.`
+                        `Tried to detach debugger from tab (tabId: ${tabId}) when there was none attached. `
                     );
+                    return;
                 }
+                throw e;
             }
+            throw e;
         }
         sendResponse(true);
     }
