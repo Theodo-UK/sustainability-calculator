@@ -4,7 +4,7 @@ import React from "react";
 import { CountryDropdown } from "../countries/CountryDropdown";
 
 describe("CountryDropdown", () => {
-    it("Dropdown button should show add a country", () => {
+    it("should show add a country", () => {
         const addSelectedCountry = jest.fn();
         const selectCountries = new Map();
         const { getByPlaceholderText } = render(
