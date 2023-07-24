@@ -13,6 +13,7 @@ import { CalculationHistory } from "../../components/calculation-history/Calcula
 import { CountryDropdown } from "../../components/country-dropdown/CountryDropdown";
 import { EmissionsComparison } from "../../components/emissions-comparison/EmissionsComparison";
 import { SelectedCountries } from "../../components/selected-countries/SelectedCountries";
+import { SelectedCountriesDisclosure } from "../../components/countries/SelectedCountriesDisclosure";
 
 type ResultsPageProps = {
     onRestartButtonPress: () => void;
@@ -46,14 +47,12 @@ export const ResultsPage = ({
             <h1 className="text-2xl font-bold text-center">
                 Sustainability Calculator
             </h1>
-            <div className="p-4 border-2 rounded-2xl">
-                <SelectedCountries
-                    selectedCountries={selectedCountries}
-                    removeSelectedCountry={removeSelectedCountry}
-                    setCountryPercentage={setCountryPercentage}
-                />
-                <CountryDropdown addSelectedCountry={addSelectedCountry} />
-            </div>
+            <SelectedCountriesDisclosure
+                selectedCountries={selectedCountries}
+                addSelectedCountry={addSelectedCountry}
+                removeSelectedCountry={removeSelectedCountry}
+                setCountryPercentage={setCountryPercentage}
+            />
             <div className=" h-32 grid grid-cols-2 text-base bg-nyanza rounded-2xl shadow font-medium">
                 <p className="text-center flex flex-wrap content-center justify-center">
                     {formatBytes(recordings[0].bytes)}
