@@ -1,7 +1,7 @@
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 
-import { usePopup } from "../usePopup";
 import { mockChrome, mockTabId } from "../../../utils/test-objects/mockChrome";
+import { usePopup } from "../usePopup";
 
 (global as any).chrome = mockChrome;
 
@@ -14,14 +14,11 @@ describe("usePopup", () => {
         const { result } = renderHook(() => usePopup());
 
         await act(async () => {
-            await result.current.refreshAndGetSize(false);
+            await result.current.refreshAndGetSize();
         });
 
-        expect(chrome.tabs.query).toHaveBeenCalledTimes(2);
-        expect(chrome.runtime.sendMessage).toBeCalledWith({
-            command: "stopRecordingBytesTransferred",
-            tabId: mockTabId,
-        });
+        expect(chrome.tabs.query).toHaveBeenCalledTimes(1);
+
         expect(chrome.tabs.reload).toHaveBeenCalledTimes(1);
         expect(chrome.runtime.sendMessage).toBeCalledWith({
             command: "startRecordingBytesTransferred",

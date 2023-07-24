@@ -7,10 +7,12 @@ import {
     formatBytes,
     formatEmissions,
 } from "../../../utils/helpers/formatNumbersToString";
-import { getEmissionsComparison } from "../../../utils/helpers/getEmissionComparison";
 import { Button } from "../../components/atomic/Button";
 import { SwitchAtom } from "../../components/atomic/SwitchAtom";
 import { CalculationHistory } from "../../components/calculation-history/CalculationHistory";
+import { CountryDropdown } from "../../components/country-dropdown/CountryDropdown";
+import { EmissionsComparison } from "../../components/emissions-comparison/EmissionsComparison";
+import { SelectedCountries } from "../../components/selected-countries/SelectedCountries";
 import { SelectedCountriesDisclosure } from "../../components/countries/SelectedCountriesDisclosure";
 
 type ResultsPageProps = {
@@ -60,9 +62,7 @@ export const ResultsPage = ({
                     <br />
                     {`${formatEmissions(recordings[0].emissions)} g of CO2`}
                 </p>
-                <div className="my-4 border-l-2 border-l-myrtle-green flex flex-wrap content-center justify-center">
-                    {getEmissionsComparison(recordings[0].emissions)}
-                </div>
+                <EmissionsComparison calculation={recordings[0]} />
             </div>
             <Button onClick={onRestartButtonPress} colour="light-green">
                 Restart recording
