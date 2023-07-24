@@ -3,8 +3,8 @@ import {
     formatBytes,
     formatEmissions,
 } from "../../../utils/helpers/formatNumbersToString";
-import { ITooltip } from "../../../view/components/atomic/ITooltip";
 import { Button } from "../../components/atomic/Button";
+import { PageTooltip } from "../../components/atomic/PageTooltip";
 
 type RecordingPageProps = {
     onStopButtonPress: () => void;
@@ -18,9 +18,9 @@ export const RecordingPage = ({
     emissions,
 }: RecordingPageProps) => {
     return (
-        <div className="pb-20">
+        <>
             <div className="absolute top-1 right-1">
-                <ITooltip
+                <PageTooltip
                     text="Stopping this recording will store<br />the data in your calculations history"
                     id="recording-page"
                 />
@@ -41,6 +41,7 @@ export const RecordingPage = ({
             >
                 -
             </Button>
-        </div>
+            <div className="h-10" />
+        </>
     );
 };

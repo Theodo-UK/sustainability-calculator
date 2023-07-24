@@ -1,7 +1,7 @@
 import React from "react";
 import { Tooltip } from "react-tooltip";
 
-export const ITooltip = ({ text, id }: { text: string; id: string }) => {
+export const PageTooltip = ({ text, id }: { text: string; id: string }) => {
     return (
         <div>
             <a

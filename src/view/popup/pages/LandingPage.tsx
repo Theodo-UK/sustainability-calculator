@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../../../view/components/atomic/Button";
-import { ITooltip } from "../../../view/components/atomic/ITooltip";
+import { PageTooltip } from "../../components/atomic/PageTooltip";
 
 export const LandingPage = ({
     onRecordButtonPress,
@@ -8,9 +8,9 @@ export const LandingPage = ({
     onRecordButtonPress: () => void;
 }) => {
     return (
-        <div className="pb-20">
+        <>
             <div className="absolute top-1 right-1">
-                <ITooltip
+                <PageTooltip
                     text="Starting this recording will calculate<br/>the carbon emissions of users on this webpage"
                     id="landing-page"
                 />
@@ -29,6 +29,7 @@ export const LandingPage = ({
             >
                 +
             </Button>
-        </div>
+            <div className="h-10" />
+        </>
     );
 };
