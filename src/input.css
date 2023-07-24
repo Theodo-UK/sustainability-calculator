@@ -8,3 +8,8 @@
         @apply text-raisin-black;
     }
 }
+@layer components {
+    .country-tile-button {
+      @apply absolute right-2 bg-gray-200 hover:bg-white hover:shadow-inner rounded-lg w-6 h-6 my-auto flex items-center justify-center;
+    }
+  }

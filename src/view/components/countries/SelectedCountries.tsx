@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
-import { ITooltip } from "../atomic/ITooltip";
+import { TileTooltip } from "../atomic/TileTooltip";
 
 type SelectedCountriesType = {
     selectedCountries: Map<CountryName, number>;
@@ -35,13 +35,18 @@ export const SelectedCountries = ({
     }, [selectedCountries, worldPercentage]);
 
     return (
-        <div className="w-full">
-            <div className="relative flex items-center text-sm w-full gap-4 p-2 my-2 bg-rose-quartz bg-opacity-20 rounded-lg">
-                <a className="ml-4">
-                    {(worldPercentage * 100).toFixed(2)}% of users following
-                    world average
-                </a>
-                <ITooltip
+        <div className="w-full relative">
+            <div className="relative flex items-center text-sm w-full gap-1 p-2 my-2 bg-rose-quartz bg-opacity-20 rounded-lg">
+                <div className="flex items-start max-w-[14rem]">
+                    <input
+                        className="w-12 text-gray-800 bg-gray-100 border border-gray-200 rounded-md shadow-sm pl-1 mr-1"
+                        type="string"
+                        value={(worldPercentage * 100).toFixed(2)}
+                        disabled
+                    />
+                    <a>% of users following world average</a>
+                </div>
+                <TileTooltip
                     text="The figure is used by default<br />where countries have not been<br />specified for a % of users"
                     id="world-percentage"
                 />
@@ -49,10 +54,10 @@ export const SelectedCountries = ({
             <ul>
                 {Array.from(selectedCountries).map(([country, percentage]) => (
                     <li key={country}>
-                        <div className="relative flex items-center text-sm w-full gap-4 p-2 my-2 bg-rose-quartz bg-opacity-20 rounded-lg">
-                            <div className="flex items-center max-w-[14rem]">
+                        <div className="relative flex items-center text-sm w-full p-2 my-2 bg-rose-quartz bg-opacity-20 rounded-lg">
+                            <div className="flex items-start max-w-[14rem]">
                                 <input
-                                    className="w-12 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 pl-1 mr-1"
+                                    className="w-12 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 pl-1 mr-1"
                                     type="number"
                                     defaultValue={percentage * 100}
                                     onChange={(e) =>
@@ -65,7 +70,7 @@ export const SelectedCountries = ({
                                 <a>% in {country}</a>
                             </div>
                             <button
-                                className="absolute right-2 text-base bg-gray-200 hover:bg-white hover:shadow-inner rounded-lg w-6 h-6 my-auto"
+                                className="country-tile-button "
                                 onClick={() => removeSelectedCountry(country)}
                             >
                                 -

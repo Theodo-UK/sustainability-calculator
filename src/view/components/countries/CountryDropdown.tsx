@@ -1,5 +1,5 @@
 import { Combobox, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
+import React from "react";
 import {
     COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
     CountryName,
@@ -34,16 +34,15 @@ export const CountryDropdown = ({
         <div className="relative w-full">
             <Combobox value={""} onChange={addSelectedCountry}>
                 <Combobox.Input
-                    className="w-full px-3 py-2 text-black bg-rose-quartz bg-opacity-20 rounded-md shadow-sm focus:border focus:outline-none focus:ring-myrtle-green focus:border-myrtle-green sm:text-sm"
+                    className="w-full px-3 py-2 text-black bg-rose-quartz bg-opacity-20 rounded-md shadow-sm border border-gray-100 focus:outline-none focus:ring-myrtle-green focus:border-myrtle-green sm:text-sm"
                     placeholder="Add a country"
                     onChange={(event) => setQuery(event.target.value)}
                 />
-                <Combobox.Button className="absolute inset-y-0 right-2 text-base bg-gray-200 hover:bg-white hover:shadow-inner rounded-lg w-6 h-6 my-auto">
+                <Combobox.Button className="inset-y-0 country-tile-button">
                     +
                 </Combobox.Button>
                 <Transition
-                    as={Fragment}
-                    leave="transition ease-in duration-100"
+                    leave="transition ease-in duration-200"
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                     afterLeave={() => setQuery("")}
@@ -57,13 +56,7 @@ export const CountryDropdown = ({
                             displayedCountries.map((country) => (
                                 <Combobox.Option
                                     key={country}
-                                    className={({ active }) =>
-                                        `relative cursor-default select-none py-2 px-4 ${
-                                            active
-                                                ? "bg-nyanza text-myrtle-green"
-                                                : "text-gray-900"
-                                        }`
-                                    }
+                                    className="relative cursor-default select-none py-2 px-4 ui-active:bg-nyanza ui-active:text-myrtle-green ui-not-active:text-gray-900"
                                     value={country}
                                 >
                                     {country}
