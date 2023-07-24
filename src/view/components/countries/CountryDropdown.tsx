@@ -34,11 +34,11 @@ export const CountryDropdown = ({
         <div className="relative w-full">
             <Combobox value={""} onChange={addSelectedCountry}>
                 <Combobox.Input
-                    className="w-full px-3 py-2 text-gray-800 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-myrtle-green focus:border-myrtle-green sm:text-sm"
+                    className="w-full px-3 py-2 text-black bg-rose-quartz bg-opacity-20 rounded-md shadow-sm focus:border focus:outline-none focus:ring-myrtle-green focus:border-myrtle-green sm:text-sm"
                     placeholder="Add a country"
                     onChange={(event) => setQuery(event.target.value)}
                 />
-                <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-3 pl-2 text-base">
+                <Combobox.Button className="absolute inset-y-0 right-2 text-base bg-gray-200 hover:bg-white hover:shadow-inner rounded-lg w-6 h-6 my-auto">
                     +
                 </Combobox.Button>
                 <Transition
@@ -60,7 +60,7 @@ export const CountryDropdown = ({
                                     className={({ active }) =>
                                         `relative cursor-default select-none py-2 px-4 ${
                                             active
-                                                ? "bg-amber-100 text-amber-900"
+                                                ? "bg-nyanza text-myrtle-green"
                                                 : "text-gray-900"
                                         }`
                                     }

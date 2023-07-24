@@ -36,10 +36,10 @@ export const SelectedCountries = ({
 
     return (
         <div className="w-full">
-            <div className="flex">
-                <a>
-                    Percentage dispatched on the rest of the world:{" "}
-                    {(worldPercentage * 100).toFixed(2)}%
+            <div className="relative flex items-center text-sm w-full gap-4 p-2 my-2 bg-rose-quartz bg-opacity-20 rounded-lg">
+                <a className="ml-4">
+                    {(worldPercentage * 100).toFixed(2)}% of users following
+                    world average
                 </a>
                 <ITooltip
                     text="The figure is used by default<br />where countries have not been<br />specified for a % of users"
@@ -49,24 +49,28 @@ export const SelectedCountries = ({
             <ul>
                 {Array.from(selectedCountries).map(([country, percentage]) => (
                     <li key={country}>
-                        <button
-                            className="bg-gray-200 hover:bg-gray-300 rounded-full w-6 h-6"
-                            onClick={() => removeSelectedCountry(country)}
-                        >
-                            -
-                        </button>
-                        {country} (% users):
-                        <input
-                            className="w-16 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 px-2 py-1 ml-2"
-                            type="number"
-                            defaultValue={percentage * 100}
-                            onChange={(e) =>
-                                setCountryPercentage(
-                                    country,
-                                    Number(e.target.value) / 100
-                                )
-                            }
-                        />
+                        <div className="relative flex items-center text-sm w-full gap-4 p-2 my-2 bg-rose-quartz bg-opacity-20 rounded-lg">
+                            <div className="flex items-center max-w-[14rem]">
+                                <input
+                                    className="w-12 bg-gray-50 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 pl-1 mr-1"
+                                    type="number"
+                                    defaultValue={percentage * 100}
+                                    onChange={(e) =>
+                                        setCountryPercentage(
+                                            country,
+                                            Number(e.target.value) / 100
+                                        )
+                                    }
+                                />
+                                <a>% in {country}</a>
+                            </div>
+                            <button
+                                className="absolute right-2 text-base bg-gray-200 hover:bg-white hover:shadow-inner rounded-lg w-6 h-6 my-auto"
+                                onClick={() => removeSelectedCountry(country)}
+                            >
+                                -
+                            </button>
+                        </div>
                     </li>
                 ))}
             </ul>
