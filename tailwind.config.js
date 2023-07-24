@@ -13,7 +13,7 @@ module.exports = {
             },
         },
     },
-    plugins: [],
+    plugins: [require("@headlessui/tailwindcss")],
     safelist: [
         {
             pattern: /bg-(red|green|blue|gray)-(400|500)/,
