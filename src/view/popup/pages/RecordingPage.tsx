@@ -18,7 +18,7 @@ export const RecordingPage = ({
     emissions,
 }: RecordingPageProps) => {
     return (
-        <div className="pb-20">
+        <>
             <div className="absolute top-1 right-1">
                 <PageTooltip
                     text="Stopping this recording will store<br />the data in your calculations history"
@@ -41,6 +41,7 @@ export const RecordingPage = ({
             >
                 -
             </Button>
-        </div>
+            <div className="h-10" />
+        </>
     );
 };
