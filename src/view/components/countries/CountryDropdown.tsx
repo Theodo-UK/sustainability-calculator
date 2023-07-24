@@ -26,7 +26,6 @@ export const CountryDropdown = ({
             : filteredCountries.filter((country) =>
                   country
                       .toLowerCase()
-                      .replace(/\s+/g, "")
                       .includes(query.toLowerCase().replace(/\s+/g, ""))
               );
 
