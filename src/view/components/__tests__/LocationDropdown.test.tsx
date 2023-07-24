@@ -1,15 +1,19 @@
-import React from "react";
-import { render } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { CountryDropdown } from "../country-dropdown/CountryDropdown";
+import { render } from "@testing-library/react";
+import React from "react";
+import { CountryDropdown } from "../countries/CountryDropdown";
 
 describe("CountryDropdown", () => {
     it("Dropdown button should show add a country", () => {
         const addSelectedCountry = jest.fn();
-        const { getByText } = render(
-            <CountryDropdown addSelectedCountry={addSelectedCountry} />
+        const selectCountries = new Map();
+        const { getByPlaceholderText } = render(
+            <CountryDropdown
+                selectedCountries={selectCountries}
+                addSelectedCountry={addSelectedCountry}
+            />
         );
 
-        expect(getByText("Add a country")).toBeInTheDocument();
+        expect(getByPlaceholderText("Add a country")).toBeInTheDocument();
     });
 });

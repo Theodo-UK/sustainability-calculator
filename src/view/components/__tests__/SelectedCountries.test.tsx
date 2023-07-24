@@ -1,8 +1,7 @@
-import React from "react";
-import { render, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { SelectedCountries } from "../selected-countries/SelectedCountries";
-import { CountryName } from "data/constants/CountryEmissions";
+import { fireEvent, render } from "@testing-library/react";
+import React from "react";
+import { SelectedCountries } from "../countries/SelectedCountries";
 
 describe("SelectedCountries", () => {
     let removeSelectedCountry: jest.Mock<(arg0: string) => void>;
@@ -11,21 +10,6 @@ describe("SelectedCountries", () => {
         jest.clearAllMocks();
         removeSelectedCountry = jest.fn();
         setCountryPercentage = jest.fn();
-    });
-
-    it("should display a title", () => {
-        const selectedCountries = jest.mocked<Map<CountryName, number>>(
-            new Map()
-        );
-        const { getByText } = render(
-            <SelectedCountries
-                selectedCountries={selectedCountries}
-                removeSelectedCountry={removeSelectedCountry}
-                setCountryPercentage={setCountryPercentage}
-            />
-        );
-
-        expect(getByText("My users are based in...")).toBeInTheDocument();
     });
     it("should see a caption mentionning a country when one has been selected", () => {
         const selectedCountries = new Map([["United Kingdom", 0.2]]);
