@@ -35,8 +35,7 @@ export const SelectedCountries = ({
     }, [selectedCountries, worldPercentage]);
 
     return (
-        <div>
-            <h3 className="text-base font-bold"> My users are based in...</h3>
+        <div className="w-full">
             <div className="flex">
                 <a>
                     Percentage dispatched on the rest of the world:{" "}
