@@ -19,14 +19,15 @@ export const SelectedCountries = ({
     const [isPercentageError, setIsPercentageError] = React.useState(false);
 
     useEffect(() => {
-        const totalPercentage = Object.values(selectedCountries).reduce(
-            (total, percentage) => total + percentage
+        const totalPercentage = Array.from(selectedCountries.values()).reduce(
+            (total, entry) => total + entry,
+            0
         );
         setWorldPercentage(1 - totalPercentage);
     }, [selectedCountries]);
 
     useEffect(() => {
-        const hasPercentageError = Object.values(selectedCountries).some(
+        const hasPercentageError = Array.from(selectedCountries.values()).some(
             (percentage) => percentage > 1 || percentage < 0
         );
         const worldHasError = worldPercentage > 1 || worldPercentage < 0;
