@@ -21,7 +21,7 @@ describe("SelectedCountries", () => {
             />
         );
 
-        expect(getByText("United Kingdom (% users):")).toBeInTheDocument();
+        expect(getByText("% in United Kingdom")).toBeInTheDocument();
     });
     it("should update the percentage of users in a country when calling setCountryPercentage", () => {
         const initPercentage = 0.2;
