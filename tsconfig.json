@@ -8,9 +8,10 @@
     "resolveJsonModule": true,
     "paths": {
       "@src": ["./src"],
+      "@assets/*": ["assets/*"],
       "*": ["./*"]
     }
   },
-  "include": ["./src/", "popup.tsx"],
+  "include": ["./src/", "popup.tsx", "./custom.d.ts"],
   "exclude": ["node_modules", "babel.config.js", "jest.config.js", "dist"]
 }
