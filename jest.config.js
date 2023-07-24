@@ -25,5 +25,6 @@ module.exports = {
     transform: {
         "^.+\\.(ts|tsx)?$": "ts-jest",
         "^.+\\.(js|jsx)$": "babel-jest",
+        "^.+\\.svg$": "jest-transformer-svg",
     },
 };

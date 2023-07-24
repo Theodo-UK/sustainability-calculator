@@ -6,6 +6,7 @@ import CoffeeCupPath from "../../../assets/coffee-cup.svg";
 import GoogleSearchPath from "../../../assets/google-search.svg";
 import PlasticBottlePath from "../../../assets/plastic-bottle.svg";
 import { RealLifeExample } from "../../../data/constants/RealLifeComparison";
+
 export const EmissionsComparison = ({
     calculation,
 }: {
@@ -24,6 +25,7 @@ export const EmissionsComparison = ({
                     src={`${imageMap[comparison.graphic]}`}
                     alt="My Icon"
                     className="w-8 h-8 mx-auto"
+                    data-testid={comparison.graphic}
                 />
                 <p className="text-center flex flex-wrap content-center justify-center">
                     {comparison.description}
