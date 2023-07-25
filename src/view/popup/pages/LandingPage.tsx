@@ -1,4 +1,5 @@
 import React from "react";
+import { FaPlay } from "react-icons/fa";
 import { Button } from "../../../view/components/atomic/Button";
 import { PageTooltip } from "../../components/atomic/PageTooltip";
 
@@ -27,7 +28,7 @@ export const LandingPage = ({
                 colour="light-green"
                 type="icon"
             >
-                +
+                <FaPlay />
             </Button>
             <div className="h-10" />
         </>
