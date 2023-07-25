@@ -9,9 +9,11 @@ import {
     formatEmissions,
 } from "../../../utils/helpers/formatNumbersToString";
 import { Button } from "../../components/atomic/Button";
+import { StyledDisclosure } from "../../components/atomic/StyledDisclosure";
 import { SwitchAtom } from "../../components/atomic/SwitchAtom";
 import { CalculationHistory } from "../../components/calculation-history/CalculationHistory";
-import { SelectedCountriesDisclosure } from "../../components/countries/SelectedCountriesDisclosure";
+import { CountryDropdown } from "../../components/countries/CountryDropdown";
+import { SelectedCountries } from "../../components/countries/SelectedCountries";
 import { EmissionsComparison } from "../../components/emissions-comparison/EmissionsComparison";
 
 type ResultsPageProps = {
@@ -46,12 +48,19 @@ export const ResultsPage = ({
             <h1 className="text-2xl font-bold text-center">
                 Sustainability Calculator
             </h1>
-            <SelectedCountriesDisclosure
-                selectedCountries={selectedCountries}
-                addSelectedCountry={addSelectedCountry}
-                removeSelectedCountry={removeSelectedCountry}
-                setCountryPercentage={setCountryPercentage}
-            />
+            <StyledDisclosure
+                title={`My users are based in... (${selectedCountries.size} selected)`}
+            >
+                <SelectedCountries
+                    selectedCountries={selectedCountries}
+                    removeSelectedCountry={removeSelectedCountry}
+                    setCountryPercentage={setCountryPercentage}
+                />
+                <CountryDropdown
+                    addSelectedCountry={addSelectedCountry}
+                    selectedCountries={selectedCountries}
+                />
+            </StyledDisclosure>
             <div className=" h-32 grid grid-cols-2 text-base bg-nyanza rounded-2xl shadow font-medium">
                 <p className="text-center flex flex-wrap content-center justify-center">
                     {formatBytes(recordings[0].bytes)}
