@@ -16,6 +16,11 @@
 ## Architecture
 ![image](https://github.com/Theodo-UK/sustainability-calculator/assets/57725347/08e13bb7-7a71-48d5-81df-e64b3a07a2e6)
 
+- Repositories are singletons
+  - ensures a [Single Source of Truth](https://developer.android.com/topic/architecture/data-layer#source-of-truth)
+  - prevents concurrency by using StorageRepository (has an underlying mutex function)
+
+
 ## Known Bugs
 ### Inaccurate recording of data transferred on some websites
 ```
