@@ -9,7 +9,7 @@ import { ISelectedCountriesRepository } from "../../data/selected-countries/ISel
 import { useMountEffect } from "./useOnceAfterFirstMount";
 import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
 import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
-import { calculateCarbon } from "./utils/calculateCarbon";
+import { calculateEmissionsFromBytes } from "./utils/calculateCarbon";
 import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
 
 export const usePopup = () => {
@@ -135,7 +135,10 @@ export const usePopup = () => {
             if (message.command.bytesTransferredChanged) {
                 const _bytes = message.command.bytesTransferredChanged;
                 setBytesTransferred(_bytes);
-                const _emissions = calculateCarbon(_bytes, selectedCountries);
+                const _emissions = calculateEmissionsFromBytes(
+                    _bytes,
+                    selectedCountries
+                );
                 setEmissions(_emissions);
             }
             sendResponse(true);
@@ -163,7 +166,9 @@ export const usePopup = () => {
                 );
 
                 setBytesTransferred(_bytes);
-                setEmissions(calculateCarbon(_bytes, _selectedCountries));
+                setEmissions(
+                    calculateEmissionsFromBytes(_bytes, _selectedCountries)
+                );
                 setAverageSpecificEmissions(
                     calculateAverageSpecificEmissionsHelper(_selectedCountries)
                 );
