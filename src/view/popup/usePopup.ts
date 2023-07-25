@@ -5,25 +5,36 @@ import {
     UserType,
 } from "../../data/calculations/ICalculationsRepository";
 import { CountryName } from "../../data/constants/CountryEmissions";
+import { DeviceName } from "../../data/constants/DeviceEmissions";
 import { ISelectedCountriesRepository } from "../../data/selected-countries/ISelectedCountriesRepository";
+import { ISelectedDevicesRepository } from "../../data/selected-devices/ISelectedDevicesRepository";
+import { IStorageRepository } from "../../data/storage/IStorageRepository";
 import { useMountEffect } from "./useOnceAfterFirstMount";
 import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
-import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
-import { calculateEmissionsFromBytes } from "./utils/calculateCarbon";
+import {
+    calculateEmissionsFromBytes,
+    calculateEmissionsFromFlowTime,
+} from "./utils/calculateCarbon";
 import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
-
 export const usePopup = () => {
+    console.log(IStorageRepository.instance.get(null));
     const selectedCountriesRepository: ISelectedCountriesRepository =
         ISelectedCountriesRepository.instance;
+    const selectedDevicesRepository: ISelectedDevicesRepository =
+        ISelectedDevicesRepository.instance;
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
 
     const [bytesTransferred, setBytesTransferred] = useState(0);
+    const [startTime, setStartTime] = useState<number>(Date.now());
+    const [flowTime, setFlowTime] = useState(0);
     const [emissions, setEmissions] = useState(0);
     const [selectedCountries, setSelectedCountries] = useState<
         Map<CountryName, number>
     >(new Map<CountryName, number>());
-    const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
+    const [selectedDevices, setSelectedDevices] = useState<
+        Map<DeviceName, number>
+    >(new Map<CountryName, number>());
     const [error, setError] = useState<string>();
     const [calculationHistory, setCalculationHistory] = useState<
         CalculationDataType[]
@@ -49,14 +60,26 @@ export const usePopup = () => {
         setSelectedCountries(newMap);
     };
 
-    const sumPercentages = () => {
-        const percentage = Array.from(selectedCountries.values()).reduce(
-            (accumulator, country) => {
-                return accumulator + country;
+    const setDevicePercentage = async (
+        device: DeviceName,
+        percentage: number
+    ) => {
+        await selectedDevicesRepository.setSelectedDevicePercentage(
+            device,
+            percentage
+        );
+        const newMap =
+            await selectedDevicesRepository.getSelectedDevicesAndPercentages();
+        setSelectedDevices(newMap);
+    };
+
+    const sumPercentages = (selectedElements: Map<string, number>) => {
+        const percentage = Array.from(selectedElements.values()).reduce(
+            (accumulator, element) => {
+                return accumulator + element;
             },
             0
         );
-
         if (percentage > 1) {
             throw new Error(
                 `Error: The sum of the percentages is greater than 100%. Current sum: ${
@@ -64,16 +87,13 @@ export const usePopup = () => {
                 }%`
             );
         }
-
         return percentage;
     };
 
     const refreshAndGetSize = async () => {
         try {
-            sumPercentages();
-            setAverageSpecificEmissions(
-                calculateAverageSpecificEmissionsHelper(selectedCountries)
-            );
+            sumPercentages(selectedCountries);
+            sumPercentages(selectedDevices);
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
@@ -82,6 +102,8 @@ export const usePopup = () => {
         }
         try {
             await calculationsRepository.setOngoingCalculation(true);
+            setStartTime(Date.now());
+            setFlowTime(startTime - Date.now());
         } catch (e: unknown) {
             if (e instanceof Error) {
                 setError(e.message);
@@ -94,12 +116,13 @@ export const usePopup = () => {
 
     const stopRecording = async (): Promise<void> => {
         backgroundStopRecordingBytes();
+        setFlowTime(startTime - Date.now());
         try {
             await calculationsRepository.storeCalculation({
                 bytes: bytesTransferred,
-                emissions: emissions,
-                specificEmissions: averageSpecificEmissions,
+                flowTime: flowTime,
                 selectedCountries: selectedCountries,
+                selectedDevices: selectedDevices,
                 unixTimeMs: Date.now(),
                 userType: userType,
             });
@@ -126,6 +149,20 @@ export const usePopup = () => {
         setSelectedCountries(newMap);
     };
 
+    const addSelectedDevice = async (device: DeviceName) => {
+        await selectedDevicesRepository.addSelectedDevice(device);
+        const newMap =
+            await selectedDevicesRepository.getSelectedDevicesAndPercentages();
+        setSelectedDevices(newMap);
+    };
+
+    const removeSelectedDevice = async (device: DeviceName) => {
+        await selectedDevicesRepository.removeSelectedDevice(device);
+        const newMap =
+            await selectedDevicesRepository.getSelectedDevicesAndPercentages();
+        setSelectedDevices(newMap);
+    };
+
     useEffect(() => {
         const bytesTransferredChangedListener = (
             message: { command: { bytesTransferredChanged: number } },
@@ -135,10 +172,9 @@ export const usePopup = () => {
             if (message.command.bytesTransferredChanged) {
                 const _bytes = message.command.bytesTransferredChanged;
                 setBytesTransferred(_bytes);
-                const _emissions = calculateEmissionsFromBytes(
-                    _bytes,
-                    selectedCountries
-                );
+                const _emissions =
+                    calculateEmissionsFromBytes(_bytes, selectedCountries) +
+                    calculateEmissionsFromFlowTime(_bytes, selectedDevices);
                 setEmissions(_emissions);
             }
             sendResponse(true);
@@ -152,13 +188,16 @@ export const usePopup = () => {
                 bytesTransferredChangedListener
             );
         };
-    }, [selectedCountries]);
+    }, [selectedCountries, selectedDevices]);
 
     useMountEffect(() => {
         const getLastCalculationAndSetState = async () => {
             const _selectedCountries =
                 await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+            const _selectedDevices =
+                await selectedDevicesRepository.getSelectedDevicesAndPercentages();
             setSelectedCountries(_selectedCountries);
+            setSelectedDevices(_selectedDevices);
 
             if (await calculationsRepository.isOngoingCalculation()) {
                 const _bytes = await chrome.runtime.sendMessage(
@@ -169,9 +208,6 @@ export const usePopup = () => {
                 setEmissions(
                     calculateEmissionsFromBytes(_bytes, _selectedCountries)
                 );
-                setAverageSpecificEmissions(
-                    calculateAverageSpecificEmissionsHelper(_selectedCountries)
-                );
                 return;
             }
 
@@ -179,14 +215,12 @@ export const usePopup = () => {
                 await calculationsRepository.getLastCalculation();
             if (!(calculationData === null)) {
                 setBytesTransferred(calculationData.bytes);
-                setEmissions(calculationData.emissions);
-                setAverageSpecificEmissions(calculationData.specificEmissions);
                 return;
             }
 
             setBytesTransferred(0);
+            setFlowTime(0);
             setEmissions(0);
-            setAverageSpecificEmissions(0);
         };
         getLastCalculationAndSetState();
     });
@@ -198,6 +232,10 @@ export const usePopup = () => {
         addSelectedCountry,
         removeSelectedCountry,
         setCountryPercentage,
+        selectedDevices,
+        addSelectedDevice,
+        removeSelectedDevice,
+        setDevicePercentage,
         refreshAndGetSize,
         stopRecording,
         calculationHistory,

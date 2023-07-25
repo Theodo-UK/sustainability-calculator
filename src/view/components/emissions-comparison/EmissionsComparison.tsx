@@ -6,6 +6,7 @@ import CoffeeCupPath from "../../../assets/coffee-cup.svg";
 import GoogleSearchPath from "../../../assets/google-search.svg";
 import PlasticBottlePath from "../../../assets/plastic-bottle.svg";
 import { RealLifeExample } from "../../../data/constants/RealLifeComparison";
+import { calculateEmissionsFromBytes } from "../../popup/utils/calculateCarbon";
 
 export const EmissionsComparison = ({
     calculation,
@@ -17,7 +18,13 @@ export const EmissionsComparison = ({
         "Coffee Cup": CoffeeCupPath,
         "Plastic Water Bottle": PlasticBottlePath,
     };
-    const comparison = getEmissionsComparison(calculation.emissions);
+    console.log("selectedCountries to compare:", calculation.selectedCountries);
+    const comparison = getEmissionsComparison(
+        calculateEmissionsFromBytes(
+            calculation.bytes,
+            calculation.selectedCountries
+        )
+    );
     return (
         <>
             <div className="my-4 border-l-2 border-l-myrtle-green flex flex-col items-center justify-center">

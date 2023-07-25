@@ -11,10 +11,10 @@ describe("EmissionsComparison", () => {
         const { getByText, getByTestId } = render(
             <EmissionsComparison
                 calculation={{
-                    bytes: 0,
-                    emissions: 0.199,
-                    specificEmissions: 0,
+                    bytes: 600000,
+                    flowTime: 0,
                     selectedCountries: new Map<CountryName, number>(),
+                    selectedDevices: new Map(),
                     unixTimeMs: 0,
                     userType: "new user",
                 }}

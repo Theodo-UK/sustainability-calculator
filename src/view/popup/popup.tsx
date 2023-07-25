@@ -19,6 +19,10 @@ export const Popup = () => {
         addSelectedCountry,
         removeSelectedCountry,
         setCountryPercentage,
+        selectedDevices,
+        addSelectedDevice,
+        removeSelectedDevice,
+        setDevicePercentage,
         refreshAndGetSize,
         stopRecording,
         refreshCalculationHistory,
@@ -77,6 +81,10 @@ export const Popup = () => {
                     addSelectedCountry={addSelectedCountry}
                     removeSelectedCountry={removeSelectedCountry}
                     setCountryPercentage={setCountryPercentage}
+                    selectedDevices={selectedDevices}
+                    addSelectedDevice={addSelectedDevice}
+                    removeSelectedDevice={removeSelectedDevice}
+                    setDevicePercentage={setDevicePercentage}
                     userType={userType}
                     setUserType={setUserType}
                     error={error}

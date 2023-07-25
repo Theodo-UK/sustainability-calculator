@@ -1,4 +1,5 @@
 import { CountryName } from "../constants/CountryEmissions";
+import { DeviceName } from "../constants/DeviceEmissions";
 import { CalculationsRepository } from "./CalculationsRepository";
 import { TestCalculationsRepository } from "./TestCalculationsRepository";
 
@@ -38,9 +39,9 @@ export type UserType = "new user" | "returning user";
 
 export type CalculationDataType = {
     bytes: number;
-    emissions: number;
-    specificEmissions: number;
+    flowTime: number;
     selectedCountries: Map<CountryName, number>;
+    selectedDevices: Map<DeviceName, number>;
     unixTimeMs: number;
     userType: UserType;
 };

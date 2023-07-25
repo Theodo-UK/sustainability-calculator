@@ -33,6 +33,7 @@ export const CountriesDisclosure = ({
                 addSelectedElement={addSelectedCountry}
                 selectedElements={selectedCountries}
                 fullList={Object.keys(COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB)}
+                placeholder={"Add a country"}
             />
         </StyledDisclosure>
     );

@@ -1,6 +1,6 @@
 import { CountryName } from "../constants/CountryEmissions";
-import { JSONtoMap, maptoJSON } from "../utils";
 import { IStorageRepository } from "../storage/IStorageRepository";
+import { JSONtoMap, maptoJSON } from "../utils";
 import { ISelectedCountriesRepository } from "./ISelectedCountriesRepository";
 
 export class SelectedCountriesRepository
@@ -13,16 +13,16 @@ export class SelectedCountriesRepository
     > {
         try {
             const data = await this.remoteDataSource.get({
-                selectedCountriesAndPercentages: maptoJSON(
+                getSelectedCountriesAndPercentages: maptoJSON(
                     new Map<CountryName, number>([])
                 ),
             });
 
             return JSONtoMap(
-                data["selectedCountriesAndPercentages"] as string
+                data["selectedCountriesAndPercentages"] as CountryName
             ) as Map<CountryName, number>;
         } catch (e: unknown) {
-            throw Error(e as string);
+            throw Error(e as CountryName);
         }
     }
 
@@ -38,7 +38,7 @@ export class SelectedCountriesRepository
                 selectedCountriesAndPercentages: maptoJSON(newMap),
             });
         } catch (e: unknown) {
-            throw Error(e as string);
+            throw Error(e as CountryName);
         }
     }
 
@@ -54,7 +54,7 @@ export class SelectedCountriesRepository
                 selectedCountriesAndPercentages: maptoJSON(newMap),
             });
         } catch (e: unknown) {
-            throw Error(e as string);
+            throw Error(e as CountryName);
         }
     }
 
@@ -69,7 +69,7 @@ export class SelectedCountriesRepository
                 newMap.set(countryName, percentage);
             } else {
                 throw Error(
-                    `SelectedCountriesRemoteDataSource.setSelectedCountryPercentage: countryName ${countryName} not found`
+                    `SelectedCountriesRemoteDataSource.setSelectedCountryPercentage: CountryName ${countryName} not found`
                 );
             }
 
@@ -77,7 +77,7 @@ export class SelectedCountriesRepository
                 selectedCountriesAndPercentages: maptoJSON(newMap),
             });
         } catch (e: unknown) {
-            throw Error(e as string);
+            throw Error(e as CountryName);
         }
     }
 }

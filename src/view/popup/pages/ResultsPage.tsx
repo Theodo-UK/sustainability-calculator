@@ -4,6 +4,8 @@ import {
     CalculationDataType,
     UserType,
 } from "../../../data/calculations/ICalculationsRepository";
+import { CountryName } from "../../../data/constants/CountryEmissions";
+import { DeviceName } from "../../../data/constants/DeviceEmissions";
 import {
     formatBytes,
     formatEmissions,
@@ -14,15 +16,27 @@ import { CalculationHistory } from "../../components/calculation-history/Calcula
 import { CountriesDisclosure } from "../../components/countries-disclosure/CountriesDisclosure";
 import { DevicesDisclosure } from "../../components/devices-disclosure/DevicesDisclosure";
 import { EmissionsComparison } from "../../components/emissions-comparison/EmissionsComparison";
+import {
+    calculateBytesAverageSpecificEmissions,
+    calculateFlowTimeAverageSpecificEmissions,
+} from "../utils/calculateAverageSpecificEmissions";
+import { calculateEmissionsFromBytes } from "../utils/calculateCarbon";
 
 type ResultsPageProps = {
     onRestartButtonPress: () => void;
     recordings: CalculationDataType[];
     selectedCountries: Map<string, number>;
     addSelectedCountry: (country: string) => Promise<void>;
-    removeSelectedCountry: (country: string) => Promise<void>;
+    removeSelectedCountry: (country: CountryName) => Promise<void>;
     setCountryPercentage: (
-        country: string,
+        country: CountryName,
+        percentage: number
+    ) => Promise<void>;
+    selectedDevices: Map<DeviceName, number>;
+    addSelectedDevice: (device: DeviceName) => Promise<void>;
+    removeSelectedDevice: (device: DeviceName) => Promise<void>;
+    setDevicePercentage: (
+        device: DeviceName,
         percentage: number
     ) => Promise<void>;
     userType: UserType;
@@ -37,11 +51,23 @@ export const ResultsPage = ({
     addSelectedCountry,
     removeSelectedCountry,
     setCountryPercentage,
+    selectedDevices,
+    addSelectedDevice,
+    removeSelectedDevice,
+    setDevicePercentage,
     userType,
     setUserType,
     error,
 }: ResultsPageProps) => {
     const isReturningUser = userType === "returning user";
+    const bytesAverageSpecificEmissions =
+        calculateBytesAverageSpecificEmissions(selectedCountries);
+    const flowTimeAverageSpecificEmissions =
+        calculateFlowTimeAverageSpecificEmissions(selectedDevices);
+    const emissions = calculateEmissionsFromBytes(
+        recordings[0].bytes,
+        selectedCountries
+    );
     return (
         <>
             <h1 className="text-2xl font-bold text-center">
@@ -54,19 +80,22 @@ export const ResultsPage = ({
                 setCountryPercentage={setCountryPercentage}
             />
             <DevicesDisclosure
-                selectedDevices={selectedCountries}
-                addSelectedDevice={addSelectedCountry}
-                removeSelectedDevice={removeSelectedCountry}
-                setDevicePercentage={setCountryPercentage}
+                selectedDevices={selectedDevices}
+                addSelectedDevice={addSelectedDevice}
+                removeSelectedDevice={removeSelectedDevice}
+                setDevicePercentage={setDevicePercentage}
             />
             <div className=" h-32 grid grid-cols-2 text-base bg-nyanza rounded-2xl shadow font-medium">
                 <p className="text-center flex flex-wrap content-center justify-center">
                     {formatBytes(recordings[0].bytes)}
                     <br />
-                    {`${formatEmissions(recordings[0].specificEmissions)}
+                    {`${formatEmissions(bytesAverageSpecificEmissions)}
                         gCO2/GB`}
                     <br />
-                    {`${formatEmissions(recordings[0].emissions)} g of CO2`}
+                    {`${formatEmissions(flowTimeAverageSpecificEmissions)}
+                        gCO2/hr`}
+                    <br />
+                    {`${formatEmissions(emissions)} g of CO2`}
                 </p>
                 <EmissionsComparison calculation={recordings[0]} />
             </div>

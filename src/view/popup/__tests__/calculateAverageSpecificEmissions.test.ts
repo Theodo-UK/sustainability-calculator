@@ -3,7 +3,7 @@ import {
     CountryName,
     WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
 } from "../../../data/constants/CountryEmissions";
-import { calculateAverageSpecificEmissionsHelper } from "../utils/calculateAverageSpecificEmissions";
+import { calculateBytesAverageSpecificEmissions } from "../utils/calculateAverageSpecificEmissions";
 
 describe("calculateAverageSpecificEmissionsHelper", () => {
     it("calculates the average specific emissions correctly", () => {
@@ -16,7 +16,7 @@ describe("calculateAverageSpecificEmissionsHelper", () => {
             50 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["United States"] +
             30 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["China"] +
             20 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["India"];
-        expect(calculateAverageSpecificEmissionsHelper(selectedCountries)).toBe(
+        expect(calculateBytesAverageSpecificEmissions(selectedCountries)).toBe(
             expectedAverageSpecificEmissions
         );
     });
@@ -30,7 +30,7 @@ describe("calculateAverageSpecificEmissionsHelper", () => {
             50 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["United States"] +
             30 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["China"] +
             (1 - 50 - 30) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
-        expect(calculateAverageSpecificEmissionsHelper(selectedCountries)).toBe(
+        expect(calculateBytesAverageSpecificEmissions(selectedCountries)).toBe(
             expectedAverageSpecificEmissions
         );
     });
