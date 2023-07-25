@@ -1,38 +1,37 @@
 import React, { useEffect } from "react";
-import { CountryName } from "../../../data/constants/CountryEmissions";
-import { TileTooltip } from "../atomic/TileTooltip";
+import { TileTooltip } from "./TileTooltip";
 
-type SelectedCountriesType = {
-    selectedCountries: Map<CountryName, number>;
-    removeSelectedCountry: (country: CountryName) => void;
-    setCountryPercentage: (country: CountryName, percentage: number) => void;
+type SelectedElementsProps = {
+    elementMap: Map<string, number>;
+    removeElement: (element: string) => void;
+    setElementPercentage: (element: string, percentage: number) => void;
 };
 
 const PERCENTAGE_ERROR_MESSAGE = "Percentages must stay between 0% and 100%";
 
-export const SelectedCountries = ({
-    selectedCountries,
-    removeSelectedCountry,
-    setCountryPercentage,
-}: SelectedCountriesType) => {
+export const TileList = ({
+    elementMap,
+    removeElement,
+    setElementPercentage,
+}: SelectedElementsProps) => {
     const [worldPercentage, setWorldPercentage] = React.useState(1);
     const [isPercentageError, setIsPercentageError] = React.useState(false);
 
     useEffect(() => {
-        const totalPercentage = Array.from(selectedCountries.values()).reduce(
+        const totalPercentage = Array.from(elementMap.values()).reduce(
             (total, entry) => total + entry,
             0
         );
         setWorldPercentage(1 - totalPercentage);
-    }, [selectedCountries]);
+    }, [elementMap]);
 
     useEffect(() => {
-        const hasPercentageError = Array.from(selectedCountries.values()).some(
+        const hasPercentageError = Array.from(elementMap.values()).some(
             (percentage) => percentage > 1 || percentage < 0
         );
         const worldHasError = worldPercentage > 1 || worldPercentage < 0;
         setIsPercentageError(hasPercentageError || worldHasError);
-    }, [selectedCountries, worldPercentage]);
+    }, [elementMap, worldPercentage]);
 
     return (
         <div className="w-full relative">
@@ -47,13 +46,13 @@ export const SelectedCountries = ({
                     <a>% of users following world average</a>
                 </div>
                 <TileTooltip
-                    text="The figure is used by default<br />where countries have not been<br />specified for a % of users"
+                    text="The figure is used by default<br />where values have not been<br />specified for a % of users"
                     id="world-percentage"
                 />
             </div>
             <ul>
-                {Array.from(selectedCountries).map(([country, percentage]) => (
-                    <li key={country}>
+                {Array.from(elementMap).map(([element, percentage]) => (
+                    <li key={element}>
                         <div className="relative flex items-center text-sm w-full p-2 my-2 bg-rose-quartz bg-opacity-20 rounded-lg">
                             <div className="flex items-start max-w-[14rem]">
                                 <input
@@ -61,17 +60,17 @@ export const SelectedCountries = ({
                                     type="number"
                                     defaultValue={percentage * 100}
                                     onChange={(e) =>
-                                        setCountryPercentage(
-                                            country,
+                                        setElementPercentage(
+                                            element,
                                             Number(e.target.value) / 100
                                         )
                                     }
                                 />
-                                <a>% in {country}</a>
+                                <a>% {element}</a>
                             </div>
                             <button
                                 className="country-tile-button "
-                                onClick={() => removeSelectedCountry(country)}
+                                onClick={() => removeElement(element)}
                             >
                                 -
                             </button>
