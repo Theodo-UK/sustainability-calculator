@@ -1,4 +1,5 @@
 import React from "react";
+import { FaClipboard } from "react-icons/fa";
 import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
 import {
     formatBytes,
@@ -25,7 +26,10 @@ export const CalculationHistory = ({
                     type="text"
                     onClick={handleViewHistoryButtonPress}
                 >
-                    View History
+                    <div className="flex flex-row gap-2 items-center">
+                        <FaClipboard />
+                        <p>View History</p>
+                    </div>
                 </Button>
             ) : (
                 <ul className="overflow-y-scroll h-96 rounded-2xl shadow bg-nyanza p-4">

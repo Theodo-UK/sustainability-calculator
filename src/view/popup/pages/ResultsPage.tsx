@@ -1,4 +1,5 @@
 import React from "react";
+import { FaSyncAlt } from "react-icons/fa";
 import {
     CalculationDataType,
     UserType,
@@ -10,10 +11,8 @@ import {
 import { Button } from "../../components/atomic/Button";
 import { SwitchAtom } from "../../components/atomic/SwitchAtom";
 import { CalculationHistory } from "../../components/calculation-history/CalculationHistory";
-import { CountryDropdown } from "../../components/country-dropdown/CountryDropdown";
-import { EmissionsComparison } from "../../components/emissions-comparison/EmissionsComparison";
-import { SelectedCountries } from "../../components/selected-countries/SelectedCountries";
 import { SelectedCountriesDisclosure } from "../../components/countries/SelectedCountriesDisclosure";
+import { EmissionsComparison } from "../../components/emissions-comparison/EmissionsComparison";
 
 type ResultsPageProps = {
     onRestartButtonPress: () => void;
@@ -65,7 +64,10 @@ export const ResultsPage = ({
                 <EmissionsComparison calculation={recordings[0]} />
             </div>
             <Button onClick={onRestartButtonPress} colour="light-green">
-                Restart recording
+                <div className="flex flex-row gap-2 items-center">
+                    <FaSyncAlt />
+                    <p>Restart recording</p>
+                </div>
             </Button>
             <div className="h-6 text-base flex justify-between items-center">
                 <p>Returning user?</p>
