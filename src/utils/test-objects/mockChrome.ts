@@ -1,13 +1,13 @@
 export const mockTabId = 123;
 export const mockChrome = {
     tabs: {
-        query: jest.fn().mockImplementation((options, callback) => {
+        query: jest.fn().mockImplementation(async (options) => {
             const tabs = [{ id: mockTabId }];
-            callback(tabs);
+            return tabs;
         }),
 
-        reload: jest.fn().mockImplementation((tabId, options, callback) => {
-            callback();
+        reload: jest.fn().mockImplementation(async (tabId, options) => {
+            return;
         }),
     },
     runtime: {
