@@ -1,6 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 
 import { mockChrome, mockTabId } from "../../../utils/test-objects/mockChrome";
+import { mockProviderWrapper } from "../../../utils/test-objects/mockProviderWrapper";
 import { usePopup } from "../usePopup";
 
 (global as any).chrome = mockChrome;
@@ -11,7 +12,9 @@ describe("usePopup", () => {
     });
 
     it("refreshAndGetSize should refresh the tab and send a message to runtime to start recording", async () => {
-        const { result } = renderHook(() => usePopup());
+        const { result } = renderHook(() => usePopup(), {
+            wrapper: mockProviderWrapper,
+        });
 
         await act(async () => {
             await result.current.refreshAndGetSize();
@@ -26,7 +29,9 @@ describe("usePopup", () => {
         });
     });
     it("stopRecording send a message to runtime to stop recording", async () => {
-        const { result } = renderHook(() => usePopup());
+        const { result } = renderHook(() => usePopup(), {
+            wrapper: mockProviderWrapper,
+        });
 
         await act(async () => {
             await result.current.stopRecording();
