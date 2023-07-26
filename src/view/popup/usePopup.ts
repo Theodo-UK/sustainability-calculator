@@ -88,13 +88,14 @@ export const usePopup = () => {
             }
             return false;
         }
-        setError(undefined);
         try {
             await refreshActiveTabAndRecordBytes(userType === "new user");
         } catch (e: unknown) {
             setError((e as Error).message);
             return false;
         }
+        setError(undefined);
+
         return true;
     };
 
