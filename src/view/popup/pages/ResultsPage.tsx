@@ -1,7 +1,7 @@
 import React from "react";
 import { FaSyncAlt } from "react-icons/fa";
 import {
-    CalculationDataType,
+    CalculationData,
     UserType,
 } from "../../../data/calculations/ICalculationsRepository";
 import {
@@ -16,7 +16,7 @@ import { EmissionsComparison } from "../../components/emissions-comparison/Emiss
 
 type ResultsPageProps = {
     onRestartButtonPress: () => void;
-    recordings: CalculationDataType[];
+    recordings: CalculationData[];
     selectedCountries: Map<string, number>;
     addSelectedCountry: (country: string) => Promise<void>;
     removeSelectedCountry: (country: string) => Promise<void>;

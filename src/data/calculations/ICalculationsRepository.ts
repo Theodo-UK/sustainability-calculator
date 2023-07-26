@@ -26,25 +26,14 @@ export abstract class ICalculationsRepository {
 
     abstract setOngoingCalculation(ongoing: boolean): Promise<void>;
 
-    abstract storeCalculation(
-        calculationData: CalculationDataType
-    ): Promise<void>;
+    abstract storeCalculation(calculationData: CalculationData): Promise<void>;
 
-    abstract getLastCalculation(): Promise<CalculationDataType | null>;
+    abstract getLastCalculation(): Promise<CalculationData | null>;
 
-    abstract getAllCalculations(): Promise<CalculationDataType[]>;
+    abstract getAllCalculations(): Promise<CalculationData[]>;
 }
 
 export type UserType = "new user" | "returning user";
-
-export type CalculationDataType = {
-    bytes: number;
-    emissions: number;
-    specificEmissions: number;
-    selectedCountries: Map<CountryName, number>;
-    unixTimeMs: number;
-    userType: UserType;
-};
 
 export class CalculationData {
     constructor(

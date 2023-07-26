@@ -1,14 +1,14 @@
 import {
-    CalculationDataType,
+    CalculationData,
     ICalculationsRepository,
 } from "./ICalculationsRepository";
 
 export class TestCalculationsRepository implements ICalculationsRepository {
-    private _allCalculations: CalculationDataType[] = [];
+    private _allCalculations: CalculationData[] = [];
     private _ongoingCalculation = false;
 
     async storeCalculation(
-        calculationData: CalculationDataType
+        calculationData: CalculationData
     ): Promise<void> {
         const tempArray = [calculationData, ...this._allCalculations];
         this._allCalculations = tempArray;
@@ -22,11 +22,11 @@ export class TestCalculationsRepository implements ICalculationsRepository {
         this._ongoingCalculation = ongoing;
     }
 
-    async getAllCalculations(): Promise<CalculationDataType[]> {
+    async getAllCalculations(): Promise<CalculationData[]> {
         return this._allCalculations;
     }
 
-    async getLastCalculation(): Promise<CalculationDataType | null> {
+    async getLastCalculation(): Promise<CalculationData | null> {
         if (this._allCalculations.length > 0) {
             return this._allCalculations[0];
         }

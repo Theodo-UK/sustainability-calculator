@@ -1,6 +1,6 @@
 import React from "react";
 import { FaClipboard } from "react-icons/fa";
-import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
+import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
 import {
     formatBytes,
     formatEmissions,
@@ -9,7 +9,7 @@ import {
 import { Button } from "../atomic/Button";
 
 type CountryDropdownType = {
-    calculationHistory: CalculationDataType[];
+    calculationHistory: CalculationData[];
 };
 
 export const CalculationHistory = ({
