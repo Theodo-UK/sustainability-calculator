@@ -1,3 +1,7 @@
+import {
+    JSONtoCalculationDataArray,
+    calculationDataArrayToJSON,
+} from "../../utils/helpers/jsonHelpers";
 import { IStorageRepository } from "../storage/IStorageRepository";
 import {
     CalculationData,
@@ -23,7 +27,7 @@ export class CalculationsRepository implements ICalculationsRepository {
         const oldCalculations = await this.getAllCalculations();
         const newCalculations = [calculationData, ...oldCalculations];
         await this.remoteDataSource.set({
-            allCalculations: JSON.stringify(newCalculations),
+            allCalculations: calculationDataArrayToJSON(newCalculations),
         });
     }
 
@@ -31,10 +35,7 @@ export class CalculationsRepository implements ICalculationsRepository {
         const data = await this.remoteDataSource.get({
             allCalculations: JSON.stringify([]),
         });
-
-        return JSON.parse(
-            data["allCalculations"] as string
-        ) as CalculationData[];
+        return JSONtoCalculationDataArray(data["allCalculations"] as string);
     }
 
     async _getOngoingCalculation(): Promise<CalculationData | null> {
