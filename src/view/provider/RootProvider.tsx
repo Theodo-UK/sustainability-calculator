@@ -2,7 +2,7 @@ import React, { createContext } from "react";
 import {
     SelectedCountriesContextType,
     useSelectedCountriesContext,
-} from "../popup/initSelectedCountriesContext";
+} from "./useSelectedCountriesContext";
 interface RootProviderProps {
     children: React.ReactNode;
 }

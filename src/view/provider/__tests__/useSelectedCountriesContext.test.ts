@@ -1,11 +1,10 @@
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 
 import { CountryName } from "../../../data/constants/CountryEmissions";
 import { areMapsDeepEqual } from "../../../utils/helpers/areMapsDeepEqual";
-import { usePopup } from "../usePopup";
-import { mockChrome } from "../../../utils/test-objects/mockChrome";
+import { useSelectedCountriesContext } from "../useSelectedCountriesContext";
 
-(global as any).chrome = mockChrome;
+// (global as any).chrome = mockChrome;
 
 describe("usePopup tests for selectedCountries", () => {
     const mockCountries: Map<CountryName, number> = new Map([]);
@@ -15,7 +14,7 @@ describe("usePopup tests for selectedCountries", () => {
     });
 
     it("addSelectedCountry should update selectedCountries", async () => {
-        const { result } = renderHook(() => usePopup());
+        const { result } = renderHook(() => useSelectedCountriesContext());
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
 
@@ -33,7 +32,7 @@ describe("usePopup tests for selectedCountries", () => {
     });
 
     it("removeSelectedCountries should update selectedCountries", async () => {
-        const { result } = renderHook(() => usePopup());
+        const { result } = renderHook(() => useSelectedCountriesContext());
 
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
