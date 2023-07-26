@@ -62,4 +62,15 @@ describe("usePopup tests for selectedCountries", () => {
             areMapsDeepEqual(result.current.selectedCountries, mockCountries)
         ).toBe(true);
     });
+
+    it("validatePercentages should throw an error if the sum of percentages is greater than 100%", () => {
+        const { result } = renderHook(() => useSelectedCountriesContext());
+
+        result.current.selectedCountries.set("Australia", 0.5);
+        result.current.selectedCountries.set("United Kingdom", 0.6);
+
+        expect(() => result.current.validatePercentages()).toThrowError(
+            "Error: The sum of the percentages is greater than 100%. Current sum: 110%"
+        );
+    });
 });

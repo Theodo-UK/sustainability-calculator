@@ -56,13 +56,11 @@ export const useSelectedCountriesContext = (): SelectedCountriesContextType => {
 
         if (percentage > 1) {
             throw new Error(
-                `Error: The sum of the percentages is greater than 100%. Current sum: ${
+                `Error: The sum of the percentages is greater than 100%. Current sum: ${(
                     percentage * 100
-                }%`
+                ).toFixed(0)}%`
             );
         }
-
-        return percentage;
     };
 
     useMountEffect(() => {
