@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { IStorageRepository } from "../../data/storage/IStorageRepository";
 import { ErrorPage } from "../popup/pages/ErrorPage";
 import { LandingPage } from "../popup/pages/LandingPage";
@@ -6,15 +6,13 @@ import { RecordingPage } from "../popup/pages/RecordingPage";
 import { ResultsPage } from "../popup/pages/ResultsPage";
 import { useMountEffect } from "../popup/useOnceAfterFirstMount";
 import { usePopup } from "../popup/usePopup";
-import { SelectedCountriesContext } from "../provider/selected-countries/SelectedCountriesProvider";
+import { useRootContext } from "../provider/useRootContext";
 
 type Page = "landing" | "recording" | "results";
 
 export const Router = () => {
-    const selectedCountriesContext = useContext(SelectedCountriesContext);
-    if (selectedCountriesContext === null) {
-        throw Error("SelectedCountriesContext is null");
-    }
+    const { selectedCountriesContext } = useRootContext();
+
     const {
         bytesTransferred,
         emissions,

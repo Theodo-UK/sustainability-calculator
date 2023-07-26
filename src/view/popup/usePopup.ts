@@ -1,20 +1,17 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
     CalculationData,
     ICalculationsRepository,
     UserType,
 } from "../../data/calculations/ICalculationsRepository";
-import { SelectedCountriesContext } from "../provider/selected-countries/SelectedCountriesProvider";
+import { useRootContext } from "../provider/useRootContext";
 import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
 import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "./utils/calculateCarbon";
 import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
 
 export const usePopup = () => {
-    const selectedCountriesContext = useContext(SelectedCountriesContext);
-    if (selectedCountriesContext === null) {
-        throw Error("SelectedCountriesContext is null");
-    }
+    const { selectedCountriesContext } = useRootContext();
 
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
