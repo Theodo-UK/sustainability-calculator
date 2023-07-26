@@ -1,7 +1,7 @@
 import { IBytesRepository } from "../data/bytes/IBytesRepository";
 import { addBytesTransferred } from "./backgroundHelpers";
 
-chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message === "getBytesTransferred") {
         sendResponse(IBytesRepository.instance.getBytesTransferred());
     }
@@ -28,21 +28,23 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     }
 
     if (message.command === "stopRecordingBytesTransferred") {
-        try {
-            await chrome.debugger.detach({ tabId: tabId });
-        } catch (e: unknown) {
-            if (
-                (e as Error).message ===
-                `Debugger is not attached to the tab with id: ${tabId}.`
-            ) {
-                console.warn(
-                    `Tried to detach debugger from tab (tabId: ${tabId}) when there was none attached. `
-                );
-                return;
-            }
-            throw e;
-        }
-        sendResponse(true);
+        chrome.debugger
+            .detach({ tabId: tabId })
+            .then(() => {
+                sendResponse(true);
+            })
+            .catch((e: unknown) => {
+                if (
+                    (e as Error).message ===
+                    `Debugger is not attached to the tab with id: ${tabId}.`
+                ) {
+                    console.warn(
+                        `Tried to detach debugger from tab (tabId: ${tabId}) when there was none attached. `
+                    );
+                    return;
+                }
+                throw e;
+            });
     }
     return true;
 });
