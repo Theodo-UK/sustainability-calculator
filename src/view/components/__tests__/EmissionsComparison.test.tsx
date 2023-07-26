@@ -3,6 +3,7 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 
+import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
 import { CountryName } from "../../../data/constants/CountryEmissions";
 import { EmissionsComparison } from "../emissions-comparison/EmissionsComparison";
 
@@ -10,14 +11,16 @@ describe("EmissionsComparison", () => {
     it("renders the correct image and description", () => {
         const { getByText, getByTestId } = render(
             <EmissionsComparison
-                calculation={{
-                    bytes: 0,
-                    emissions: 0.199,
-                    specificEmissions: 0,
-                    selectedCountries: new Map<CountryName, number>(),
-                    unixTimeMs: 0,
-                    userType: "new user",
-                }}
+                calculation={
+                    new CalculationData(
+                        0,
+                        0.199,
+                        0,
+                        new Map<CountryName, number>(),
+                        0,
+                        "new user"
+                    )
+                }
             />
         );
 

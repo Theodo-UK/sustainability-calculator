@@ -1,8 +1,11 @@
-import { renderHook, act } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 
-import { usePopup } from "../usePopup";
-import { ICalculationsRepository } from "../../../data/calculations/ICalculationsRepository";
+import {
+    CalculationData,
+    ICalculationsRepository,
+} from "../../../data/calculations/ICalculationsRepository";
 import { mockChrome } from "../../../utils/test-objects/mockChrome";
+import { usePopup } from "../usePopup";
 
 (global as any).chrome = mockChrome;
 
@@ -15,44 +18,48 @@ describe("usePopup", () => {
         const { result } = renderHook(() => usePopup());
 
         const mockCalculationRepository = ICalculationsRepository.instance;
-        mockCalculationRepository.storeCalculation({
-            bytes: 12345,
-            emissions: 12345,
-            specificEmissions: 12345,
-            selectedCountries: new Map([]),
-            unixTimeMs: 12345,
-            userType: "new user",
-        });
-        mockCalculationRepository.storeCalculation({
-            bytes: 54321,
-            emissions: 54321,
-            specificEmissions: 54321,
-            selectedCountries: new Map([]),
-            unixTimeMs: 54321,
-            userType: "new user",
-        });
+        mockCalculationRepository.storeCalculation(
+            new CalculationData(
+                12345,
+                12345,
+                12345,
+                new Map([]),
+                12345,
+                "new user"
+            )
+        );
+        mockCalculationRepository.storeCalculation(
+            new CalculationData(
+                54321,
+                54321,
+                54321,
+                new Map([]),
+                54321,
+                "new user"
+            )
+        );
 
         await act(async () => {
             await result.current.refreshCalculationHistory();
         });
 
         expect(result.current.calculationHistory).toStrictEqual([
-            {
-                bytes: 54321,
-                emissions: 54321,
-                specificEmissions: 54321,
-                selectedCountries: new Map([]),
-                unixTimeMs: 54321,
-                userType: "new user",
-            },
-            {
-                bytes: 12345,
-                emissions: 12345,
-                specificEmissions: 12345,
-                selectedCountries: new Map([]),
-                unixTimeMs: 12345,
-                userType: "new user",
-            },
+            new CalculationData(
+                54321,
+                54321,
+                54321,
+                new Map([]),
+                54321,
+                "new user"
+            ),
+            new CalculationData(
+                12345,
+                12345,
+                12345,
+                new Map([]),
+                12345,
+                "new user"
+            ),
         ]);
     });
 });
