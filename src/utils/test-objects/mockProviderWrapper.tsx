@@ -1,6 +1,8 @@
 import React from "react";
-import { SelectedCountriesContext } from "../../view/provider/RootProvider";
-import { SelectedCountriesContextType } from "../../view/provider/useSelectedCountriesContext";
+import {
+    SelectedCountriesContext,
+    SelectedCountriesContextType,
+} from "../../view/provider/selected-countries/SelectedCountriesProvider";
 
 export const mockProviderWrapper = ({
     children,

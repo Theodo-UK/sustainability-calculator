@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { CountryName } from "../../data/constants/CountryEmissions";
-import { ISelectedCountriesRepository } from "../../data/selected-countries/ISelectedCountriesRepository";
-import { useMountEffect } from "../popup/useOnceAfterFirstMount";
+import { CountryName } from "../../../data/constants/CountryEmissions";
+import { ISelectedCountriesRepository } from "../../../data/selected-countries/ISelectedCountriesRepository";
+import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 
 export type SelectedCountriesContextType = {
     selectedCountries: Map<CountryName, number>;

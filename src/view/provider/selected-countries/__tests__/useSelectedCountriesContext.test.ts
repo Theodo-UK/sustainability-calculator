@@ -1,10 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
-
-import { CountryName } from "../../../data/constants/CountryEmissions";
-import { areMapsDeepEqual } from "../../../utils/helpers/areMapsDeepEqual";
+import { CountryName } from "../../../../data/constants/CountryEmissions";
+import { areMapsDeepEqual } from "../../../../utils/helpers/areMapsDeepEqual";
 import { useSelectedCountriesContext } from "../useSelectedCountriesContext";
-
-// (global as any).chrome = mockChrome;
 
 describe("usePopup tests for selectedCountries", () => {
     const mockCountries: Map<CountryName, number> = new Map([]);

@@ -4,7 +4,7 @@ import {
     ICalculationsRepository,
     UserType,
 } from "../../data/calculations/ICalculationsRepository";
-import { SelectedCountriesContext } from "../provider/RootProvider";
+import { SelectedCountriesContext } from "../provider/selected-countries/SelectedCountriesProvider";
 import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
 import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "./utils/calculateCarbon";

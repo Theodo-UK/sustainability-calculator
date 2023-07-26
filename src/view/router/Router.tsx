@@ -6,7 +6,8 @@ import { RecordingPage } from "../popup/pages/RecordingPage";
 import { ResultsPage } from "../popup/pages/ResultsPage";
 import { useMountEffect } from "../popup/useOnceAfterFirstMount";
 import { usePopup } from "../popup/usePopup";
-import { SelectedCountriesContext } from "../provider/RootProvider";
+import { SelectedCountriesContext } from "../provider/selected-countries/SelectedCountriesProvider";
+
 type Page = "landing" | "recording" | "results";
 
 export const Router = () => {
