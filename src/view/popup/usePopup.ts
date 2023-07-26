@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
     CalculationData,
     ICalculationsRepository,
     UserType,
 } from "../../data/calculations/ICalculationsRepository";
-import { SelectedCountriesContextType } from "./initSelectedCountriesContext";
+import { SelectedCountriesContext } from "../provider/RootProvider";
 import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
 import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "./utils/calculateCarbon";
 import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
 
-export const usePopup = (
-    selectedCountriesContext: SelectedCountriesContextType
-) => {
+export const usePopup = () => {
+    const selectedCountriesContext = useContext(SelectedCountriesContext);
+    if (selectedCountriesContext === null) {
+        throw Error("SelectedCountriesContext is null");
+    }
+
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
 
@@ -61,13 +64,12 @@ export const usePopup = (
     const stopRecording = async (): Promise<void> => {
         backgroundStopRecordingBytes();
         try {
-
             await calculationsRepository.storeCalculation(
                 new CalculationData(
                     bytesTransferred,
                     emissions,
                     averageSpecificEmissions,
-                    selectedCountries,
+                    selectedCountriesContext.selectedCountries,
                     Date.now(),
                     userType
                 )
