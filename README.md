@@ -40,3 +40,4 @@ Trello -13% error
 
 ## Note
 - background has a different environment from popup, scope is not shared
+- When improperly formatted data has been written to storage, the extension will not work properly. To fix this, remove the extension and reinstall it
