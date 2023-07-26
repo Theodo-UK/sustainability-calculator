@@ -1,5 +1,6 @@
 import React from "react";
-import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
+import { FaClipboard } from "react-icons/fa";
+import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
 import {
     formatBytes,
     formatEmissions,
@@ -8,7 +9,7 @@ import {
 import { Button } from "../atomic/Button";
 
 type CountryDropdownType = {
-    calculationHistory: CalculationDataType[];
+    calculationHistory: CalculationData[];
 };
 
 export const CalculationHistory = ({
@@ -25,7 +26,10 @@ export const CalculationHistory = ({
                     type="text"
                     onClick={handleViewHistoryButtonPress}
                 >
-                    View History
+                    <div className="flex flex-row gap-2 items-center">
+                        <FaClipboard />
+                        <p>View History</p>
+                    </div>
                 </Button>
             ) : (
                 <ul className="overflow-y-scroll h-96 rounded-2xl shadow bg-nyanza p-4">

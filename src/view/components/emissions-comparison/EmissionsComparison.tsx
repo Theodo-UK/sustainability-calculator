@@ -1,5 +1,5 @@
 import React from "react";
-import { CalculationDataType } from "../../../data/calculations/ICalculationsRepository";
+import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
 import { getEmissionsComparison } from "../../../utils/helpers/getEmissionComparison";
 
 import CoffeeCupPath from "../../../assets/coffee-cup.svg";
@@ -10,7 +10,7 @@ import { RealLifeExample } from "../../../data/constants/RealLifeComparison";
 export const EmissionsComparison = ({
     calculation,
 }: {
-    calculation: CalculationDataType;
+    calculation: CalculationData;
 }) => {
     const imageMap: Record<RealLifeExample, string> = {
         "Google Search": GoogleSearchPath,

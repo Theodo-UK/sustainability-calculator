@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-    CalculationDataType,
+    CalculationData,
     ICalculationsRepository,
     UserType,
 } from "../../data/calculations/ICalculationsRepository";
@@ -22,7 +22,7 @@ export const usePopup = (
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [error, setError] = useState<string>();
     const [calculationHistory, setCalculationHistory] = useState<
-        CalculationDataType[]
+        CalculationData[]
     >([]);
     const [userType, setUserType] = useState<UserType>("new user");
 
@@ -61,14 +61,17 @@ export const usePopup = (
     const stopRecording = async (): Promise<void> => {
         backgroundStopRecordingBytes();
         try {
-            await calculationsRepository.storeCalculation({
-                bytes: bytesTransferred,
-                emissions: emissions,
-                specificEmissions: averageSpecificEmissions,
-                selectedCountries: selectedCountriesContext.selectedCountries,
-                unixTimeMs: Date.now(),
-                userType: userType,
-            });
+
+            await calculationsRepository.storeCalculation(
+                new CalculationData(
+                    bytesTransferred,
+                    emissions,
+                    averageSpecificEmissions,
+                    selectedCountries,
+                    Date.now(),
+                    userType
+                )
+            );
             await calculationsRepository.setOngoingCalculation(false);
             await refreshCalculationHistory();
         } catch (e: unknown) {

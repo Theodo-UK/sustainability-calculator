@@ -1,4 +1,5 @@
 import React from "react";
+import { FaPause } from "react-icons/fa";
 import {
     formatBytes,
     formatEmissions,
@@ -39,7 +40,7 @@ export const RecordingPage = ({
                 colour="burgundy"
                 type="icon"
             >
-                -
+                <FaPause />
             </Button>
             <div className="h-10" />
         </>
