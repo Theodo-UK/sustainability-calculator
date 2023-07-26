@@ -11,20 +11,33 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.command === "startRecordingBytesTransferred") {
         IBytesRepository.instance.clearBytesTransferred();
 
-        chrome.debugger.attach({ tabId: tabId }, "1.2", () => {
-            chrome.debugger.sendCommand(
-                { tabId: tabId },
-                "Network.enable",
-                {},
-                () => {
-                    if (chrome.runtime.lastError) {
-                        console.error(chrome.runtime.lastError);
-                    }
-                }
-            );
+        chrome.tabs.get(tabId).then((tab) => {
+            if (tab.url && tab.url.startsWith("chrome://")) {
+                sendResponse({
+                    success: false,
+                    message:
+                        "Cannot calculate emissions for a chrome:// URL, e.g. manage extensions page. Please try again on a valid webpage.",
+                });
+            } else {
+                chrome.debugger.attach({ tabId: tabId }, "1.2").then(() => {
+                    chrome.debugger.sendCommand(
+                        { tabId: tabId },
+                        "Network.enable",
+                        {},
+                        () => {
+                            if (chrome.runtime.lastError) {
+                                console.error(chrome.runtime.lastError);
+                            }
+                            sendResponse({
+                                success: true,
+                                message:
+                                    "Successfully started recording bytes transferred.",
+                            });
+                        }
+                    );
+                });
+            }
         });
-
-        sendResponse(true);
     }
 
     if (message.command === "stopRecordingBytesTransferred") {
