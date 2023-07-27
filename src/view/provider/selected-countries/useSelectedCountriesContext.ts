@@ -22,16 +22,16 @@ export const useSelectedCountriesContext = (): SelectedCountriesContextType => {
     >(new Map<CountryName, number>());
     const addSelectedCountry = async (country: CountryName) => {
         await selectedCountriesRepository.addSelectedCountry(country);
-        const newMap =
+        const newSelectedCountries =
             await selectedCountriesRepository.getSelectedCountriesAndPercentages();
-        setSelectedCountries(newMap);
+        setSelectedCountries(newSelectedCountries);
     };
 
     const removeSelectedCountry = async (country: CountryName) => {
         await selectedCountriesRepository.removeSelectedCountry(country);
-        const newMap =
+        const newSelectedCountries =
             await selectedCountriesRepository.getSelectedCountriesAndPercentages();
-        setSelectedCountries(newMap);
+        setSelectedCountries(newSelectedCountries);
     };
 
     const setCountryPercentage = async (
@@ -42,9 +42,9 @@ export const useSelectedCountriesContext = (): SelectedCountriesContextType => {
             country,
             percentage
         );
-        const newMap =
+        const newSelectedCountries =
             await selectedCountriesRepository.getSelectedCountriesAndPercentages();
-        setSelectedCountries(newMap);
+        setSelectedCountries(newSelectedCountries);
     };
     const validatePercentages = () => {
         const percentage = Array.from(selectedCountries.values()).reduce(
