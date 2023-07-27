@@ -13,6 +13,7 @@ import { SwitchAtom } from "../../components/atomic/SwitchAtom";
 import { CalculationHistory } from "../../components/calculation-history/CalculationHistory";
 import { SelectedCountriesDisclosure } from "../../components/countries/SelectedCountriesDisclosure";
 import { EmissionsComparison } from "../../components/emissions-comparison/EmissionsComparison";
+import { SelectedDevicesDisclosure } from "../../components/selected-devices/disclosure/SelectedDevicesDisclosure";
 
 type ResultsPageProps = {
     onRestartButtonPress: () => void;
@@ -52,6 +53,7 @@ export const ResultsPage = ({
                 removeSelectedCountry={removeSelectedCountry}
                 setCountryPercentage={setCountryPercentage}
             />
+            <SelectedDevicesDisclosure />
             <div className=" h-32 grid grid-cols-2 text-base bg-nyanza rounded-2xl shadow font-medium">
                 <p className="text-center flex flex-wrap content-center justify-center">
                     {formatBytes(recordings[0].bytes)}
