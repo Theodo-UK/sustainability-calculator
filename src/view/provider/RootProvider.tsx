@@ -4,8 +4,6 @@ interface RootProviderProps {
     children: React.ReactNode;
 }
 
-export const RootProvider = (props: RootProviderProps) => {
-    return (
-        <SelectedCountriesProvider>{props.children}</SelectedCountriesProvider>
-    );
+export const RootProvider = ({ children }: RootProviderProps) => {
+    return <SelectedCountriesProvider>{children}</SelectedCountriesProvider>;
 };

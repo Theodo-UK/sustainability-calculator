@@ -12,7 +12,7 @@ describe("usePopup", () => {
     });
 
     it("refreshAndGetSize should refresh the tab and send a message to runtime to start recording", async () => {
-        const { result } = renderHook(() => usePopup(), {
+        const { result } = renderHook(usePopup, {
             wrapper: mockProviderWrapper,
         });
 
@@ -29,7 +29,7 @@ describe("usePopup", () => {
         });
     });
     it("stopRecording send a message to runtime to stop recording", async () => {
-        const { result } = renderHook(() => usePopup(), {
+        const { result } = renderHook(usePopup, {
             wrapper: mockProviderWrapper,
         });
 

@@ -11,7 +11,7 @@ describe("usePopup tests for selectedCountries", () => {
     });
 
     it("addSelectedCountry should update selectedCountries", async () => {
-        const { result } = renderHook(() => useSelectedCountriesContext());
+        const { result } = renderHook(useSelectedCountriesContext);
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
 
@@ -29,7 +29,7 @@ describe("usePopup tests for selectedCountries", () => {
     });
 
     it("removeSelectedCountries should update selectedCountries", async () => {
-        const { result } = renderHook(() => useSelectedCountriesContext());
+        const { result } = renderHook(useSelectedCountriesContext);
 
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
@@ -61,7 +61,7 @@ describe("usePopup tests for selectedCountries", () => {
     });
 
     it("validatePercentages should throw an error if the sum of percentages is greater than 100%", () => {
-        const { result } = renderHook(() => useSelectedCountriesContext());
+        const { result } = renderHook(useSelectedCountriesContext);
 
         result.current.selectedCountries.set("Australia", 0.5);
         result.current.selectedCountries.set("United Kingdom", 0.6);

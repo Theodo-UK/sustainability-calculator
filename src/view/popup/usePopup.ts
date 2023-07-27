@@ -11,7 +11,9 @@ import { calculateCarbon } from "./utils/calculateCarbon";
 import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
 
 export const usePopup = () => {
-    const { selectedCountriesContext } = useRootContext();
+    const {
+        selectedCountriesContext: { selectedCountries, validatePercentages },
+    } = useRootContext();
 
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
@@ -34,11 +36,9 @@ export const usePopup = () => {
 
     const refreshAndGetSize = async () => {
         try {
-            selectedCountriesContext.validatePercentages();
+            validatePercentages();
             setAverageSpecificEmissions(
-                calculateAverageSpecificEmissionsHelper(
-                    selectedCountriesContext.selectedCountries
-                )
+                calculateAverageSpecificEmissionsHelper(selectedCountries)
             );
         } catch (e: unknown) {
             if (e instanceof Error) {
@@ -66,7 +66,7 @@ export const usePopup = () => {
                     bytesTransferred,
                     emissions,
                     averageSpecificEmissions,
-                    selectedCountriesContext.selectedCountries,
+                    selectedCountries,
                     Date.now(),
                     userType
                 )
@@ -89,10 +89,7 @@ export const usePopup = () => {
             if (message.command.bytesTransferredChanged) {
                 const _bytes = message.command.bytesTransferredChanged;
                 setBytesTransferred(_bytes);
-                const _emissions = calculateCarbon(
-                    _bytes,
-                    selectedCountriesContext.selectedCountries
-                );
+                const _emissions = calculateCarbon(_bytes, selectedCountries);
                 setEmissions(_emissions);
             }
             sendResponse(true);
@@ -106,7 +103,7 @@ export const usePopup = () => {
                 bytesTransferredChangedListener
             );
         };
-    }, [selectedCountriesContext.selectedCountries]);
+    }, [selectedCountries]);
 
     useEffect(() => {
         const getLastCalculationAndSetState = async () => {
@@ -116,16 +113,9 @@ export const usePopup = () => {
                 );
 
                 setBytesTransferred(_bytes);
-                setEmissions(
-                    calculateCarbon(
-                        _bytes,
-                        selectedCountriesContext.selectedCountries
-                    )
-                );
+                setEmissions(calculateCarbon(_bytes, selectedCountries));
                 setAverageSpecificEmissions(
-                    calculateAverageSpecificEmissionsHelper(
-                        selectedCountriesContext.selectedCountries
-                    )
+                    calculateAverageSpecificEmissionsHelper(selectedCountries)
                 );
                 return;
             }
@@ -144,7 +134,7 @@ export const usePopup = () => {
             setAverageSpecificEmissions(0);
         };
         getLastCalculationAndSetState();
-    }, [calculationsRepository, selectedCountriesContext.selectedCountries]);
+    }, [calculationsRepository, selectedCountries]);
 
     return {
         emissions,

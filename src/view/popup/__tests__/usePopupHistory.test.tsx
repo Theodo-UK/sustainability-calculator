@@ -15,7 +15,7 @@ describe("usePopup", () => {
         jest.clearAllMocks();
     });
     it("refreshCalculationHistory should show all calculations", async () => {
-        const { result } = renderHook(() => usePopup(), {
+        const { result } = renderHook(usePopup, {
             wrapper: mockProviderWrapper,
         });
 

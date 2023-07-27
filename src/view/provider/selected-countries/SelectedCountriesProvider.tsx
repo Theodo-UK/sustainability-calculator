@@ -19,12 +19,12 @@ export type SelectedCountriesContextType = {
 export const SelectedCountriesContext =
     createContext<SelectedCountriesContextType | null>(null);
 
-export const SelectedCountriesProvider = (props: Props) => {
+export const SelectedCountriesProvider = ({ children }: Props) => {
     const selectedCountriesContext = useSelectedCountriesContext();
 
     return (
         <SelectedCountriesContext.Provider value={selectedCountriesContext}>
-            {props.children}{" "}
+            {children}
         </SelectedCountriesContext.Provider>
     );
 };
