@@ -1,5 +1,6 @@
 import { IBytesRepository } from "../data/bytes/IBytesRepository";
 
+export const debuggingProtocolVersion = "1.2";
 export const addBytesTransferred = async (bytes: number) => {
     IBytesRepository.instance.addBytesTransferred(bytes);
 
@@ -44,24 +45,26 @@ export const startRecordingBytesTransferred = async (
             });
             return;
         } else {
-            chrome.debugger.attach({ tabId }, "1.2").then(() => {
-                chrome.debugger.sendCommand(
-                    { tabId },
-                    "Network.enable",
-                    {},
-                    () => {
-                        if (chrome.runtime.lastError) {
-                            console.error(chrome.runtime.lastError);
+            chrome.debugger
+                .attach({ tabId }, debuggingProtocolVersion)
+                .then(() => {
+                    chrome.debugger.sendCommand(
+                        { tabId },
+                        "Network.enable",
+                        {},
+                        () => {
+                            if (chrome.runtime.lastError) {
+                                console.error(chrome.runtime.lastError);
+                            }
+                            sendResponse({
+                                success: true,
+                                message:
+                                    "Successfully started recording bytes transferred.",
+                            });
+                            return;
                         }
-                        sendResponse({
-                            success: true,
-                            message:
-                                "Successfully started recording bytes transferred.",
-                        });
-                        return;
-                    }
-                );
-            });
+                    );
+                });
         }
     });
 };
