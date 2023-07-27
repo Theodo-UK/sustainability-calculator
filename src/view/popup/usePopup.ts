@@ -87,10 +87,14 @@ export const usePopup = () => {
             sendResponse: (response?: boolean) => void
         ) => {
             if (message.command.bytesTransferredChanged) {
-                const _bytes = message.command.bytesTransferredChanged;
-                setBytesTransferred(_bytes);
-                const _emissions = calculateCarbon(_bytes, selectedCountries);
-                setEmissions(_emissions);
+                const bytesTransferred =
+                    message.command.bytesTransferredChanged;
+                setBytesTransferred(bytesTransferred);
+                const emissions = calculateCarbon(
+                    bytesTransferred,
+                    selectedCountries
+                );
+                setEmissions(emissions);
             }
             sendResponse(true);
             return true;
@@ -108,12 +112,14 @@ export const usePopup = () => {
     useEffect(() => {
         const getLastCalculationAndSetState = async () => {
             if (await calculationsRepository.isOngoingCalculation()) {
-                const _bytes = await chrome.runtime.sendMessage(
+                const bytesTransferred = await chrome.runtime.sendMessage(
                     "getBytesTransferred"
                 );
 
-                setBytesTransferred(_bytes);
-                setEmissions(calculateCarbon(_bytes, selectedCountries));
+                setBytesTransferred(bytesTransferred);
+                setEmissions(
+                    calculateCarbon(bytesTransferred, selectedCountries)
+                );
                 setAverageSpecificEmissions(
                     calculateAverageSpecificEmissionsHelper(selectedCountries)
                 );
