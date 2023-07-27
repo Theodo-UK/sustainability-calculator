@@ -44,16 +44,22 @@ export const Router = () => {
                 setPage(storedPage);
             });
     });
-    return (
-        <div className="p-10 w-96 flex flex-col justify-stretch gap-6">
-            {page === "landing" ? (
+
+    let pageComponent;
+
+    switch (page) {
+        case "landing":
+            pageComponent = (
                 <LandingPage
                     onRecordButtonPress={async () => {
                         goToPage("recording");
                         await refreshAndGetSize();
                     }}
                 />
-            ) : page === "recording" ? (
+            );
+            break;
+        case "recording":
+            pageComponent = (
                 <RecordingPage
                     onStopButtonPress={async () => {
                         await stopRecording();
@@ -62,7 +68,10 @@ export const Router = () => {
                     bytesTransferred={bytesTransferred}
                     emissions={emissions}
                 />
-            ) : page === "results" ? (
+            );
+            break;
+        case "results":
+            pageComponent = (
                 <ResultsPage
                     onRestartButtonPress={async () => {
                         goToPage("recording");
@@ -85,9 +94,14 @@ export const Router = () => {
                     setUserType={setUserType}
                     error={error}
                 />
-            ) : (
-                <ErrorPage />
-            )}
+            );
+            break;
+        default:
+            pageComponent = <ErrorPage />;
+    }
+    return (
+        <div className="p-10 w-96 flex flex-col justify-stretch gap-6">
+            {pageComponent}
         </div>
     );
 };
