@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IStorageRepository } from "../../data/storage/IStorageRepository";
+import { IPageRepository, Page } from "../../data/page/IPageRepository";
 import { ErrorPage } from "../popup/pages/ErrorPage";
 import { LandingPage } from "../popup/pages/LandingPage";
 import { RecordingPage } from "../popup/pages/RecordingPage";
@@ -7,8 +7,6 @@ import { ResultsPage } from "../popup/pages/ResultsPage";
 import { useMountEffect } from "../popup/useOnceAfterFirstMount";
 import { usePopup } from "../popup/usePopup";
 import { useRootContext } from "../provider/useRootContext";
-
-type Page = "landing" | "recording" | "results";
 
 export const Router = () => {
     const { selectedCountriesContext } = useRootContext();
@@ -26,23 +24,20 @@ export const Router = () => {
     } = usePopup();
 
     const [page, setPage] = useState<Page>("landing");
-    const remoteRepository = IStorageRepository.instance;
+    const pageRepository = IPageRepository.instance;
 
     const goToPage = (page: Page) => {
         setPage(page);
-        remoteRepository.set({ currentPage: page });
+        pageRepository.setCurrentPage(page);
     };
 
     useMountEffect(() => {
-        remoteRepository
-            .get({ currentPage: "landing" })
-            .then((data) => data.currentPage as Page)
-            .then(async (storedPage) => {
-                if (storedPage === "results") {
-                    await refreshCalculationHistory();
-                }
-                setPage(storedPage);
-            });
+        pageRepository.getCurrentPage().then(async (page) => {
+            if (page === "results") {
+                await refreshCalculationHistory();
+            }
+            setPage(page);
+        });
     });
 
     let pageComponent;
