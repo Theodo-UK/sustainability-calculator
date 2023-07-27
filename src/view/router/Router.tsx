@@ -47,8 +47,9 @@ export const Router = () => {
             pageComponent = (
                 <LandingPage
                     onRecordButtonPress={async () => {
-                        goToPage("recording");
-                        await refreshAndGetSize();
+                        if (await refreshAndGetSize()) {
+                            goToPage("recording");
+                        }
                     }}
                 />
             );
@@ -69,8 +70,9 @@ export const Router = () => {
             pageComponent = (
                 <ResultsPage
                     onRestartButtonPress={async () => {
-                        goToPage("recording");
-                        await refreshAndGetSize();
+                        if (await refreshAndGetSize()) {
+                            goToPage("recording");
+                        }
                     }}
                     recordings={calculationHistory}
                     selectedCountries={
