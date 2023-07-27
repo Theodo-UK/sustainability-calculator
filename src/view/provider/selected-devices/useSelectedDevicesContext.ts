@@ -3,17 +3,7 @@ import { useState } from "react";
 import { DeviceName } from "../../../data/constants/DeviceEmissions";
 import { ISelectedDevicesRepository } from "../../../data/selected-devices/ISelectedDevicesRepository";
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
-
-export type SelectedDevicesContextType = {
-    selectedDevices: Map<DeviceName, number>;
-    addSelectedDevice: (device: DeviceName) => Promise<void>;
-    removeSelectedDevice: (device: DeviceName) => Promise<void>;
-    setDevicePercentage: (
-        device: DeviceName,
-        percentage: number
-    ) => Promise<void>;
-    validatePercentages: () => void;
-};
+import { SelectedDevicesContextType } from "./SelectedDevicesProvider";
 
 export const useSelectedDevicesContext = (): SelectedDevicesContextType => {
     const selectedDevicesRepository: ISelectedDevicesRepository =
