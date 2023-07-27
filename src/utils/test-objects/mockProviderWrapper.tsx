@@ -3,6 +3,10 @@ import {
     SelectedCountriesContext,
     SelectedCountriesContextType,
 } from "../../view/provider/selected-countries/SelectedCountriesProvider";
+import {
+    SelectedDevicesContext,
+    SelectedDevicesContextType,
+} from "../../view/provider/selected-devices/SelectedDevicesProvider";
 
 export const mockProviderWrapper = ({
     children,
@@ -17,9 +21,19 @@ export const mockProviderWrapper = ({
         setCountryPercentage: jest.fn(),
     };
 
+    const selectedDevicesContext: SelectedDevicesContextType = {
+        selectedDevices: new Map([]),
+        addSelectedDevice: jest.fn(),
+        removeSelectedDevice: jest.fn(),
+        validatePercentages: jest.fn(),
+        setDevicePercentage: jest.fn(),
+    };
+
     return (
         <SelectedCountriesContext.Provider value={selectedCountriesContext}>
-            {children}
+            <SelectedDevicesContext.Provider value={selectedDevicesContext}>
+                {children}
+            </SelectedDevicesContext.Provider>
         </SelectedCountriesContext.Provider>
     );
 };
