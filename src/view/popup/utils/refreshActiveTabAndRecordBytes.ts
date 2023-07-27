@@ -4,15 +4,15 @@ export const refreshActiveTabAndRecordBytes = async (
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
 
     if (tabs.length > 0) {
-        const tabId = tabs[0].id;
-        if (tabId) {
-            await chrome.tabs.reload(tabId, {
+        const activeTabId = tabs[0].id;
+        if (activeTabId) {
+            await chrome.tabs.reload(activeTabId, {
                 bypassCache: bypassCache,
             });
 
             const { success, message } = await chrome.runtime.sendMessage({
                 command: "startRecordingBytesTransferred",
-                tabId,
+                tabId: activeTabId,
             });
 
             if (!success) {
