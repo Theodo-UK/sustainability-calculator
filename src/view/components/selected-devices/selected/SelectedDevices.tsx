@@ -21,7 +21,7 @@ export const SelectedDevices = () => {
                         value={(averagePercentage * 100).toFixed(2)}
                         disabled
                     />
-                    <a>% of users following world average</a>
+                    <a>% of users following average device emissions</a>
                 </div>
                 <TileTooltip
                     text="The figure is used by default<br />where devices have not been<br />specified for a % of users"
