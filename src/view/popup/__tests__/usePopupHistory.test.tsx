@@ -5,6 +5,7 @@ import {
     ICalculationsRepository,
 } from "../../../data/calculations/ICalculationsRepository";
 import { mockChrome } from "../../../utils/test-objects/mockChrome";
+import { mockProviderWrapper } from "../../../utils/test-objects/mockProviderWrapper";
 import { usePopup } from "../usePopup";
 
 (global as any).chrome = mockChrome;
@@ -13,9 +14,10 @@ describe("usePopup", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
-
     it("refreshCalculationHistory should show all calculations", async () => {
-        const { result } = renderHook(() => usePopup());
+        const { result } = renderHook(usePopup, {
+            wrapper: mockProviderWrapper,
+        });
 
         const mockCalculationRepository = ICalculationsRepository.instance;
         mockCalculationRepository.storeCalculation(

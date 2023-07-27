@@ -4,25 +4,23 @@ import {
     ICalculationsRepository,
     UserType,
 } from "../../data/calculations/ICalculationsRepository";
-import { CountryName } from "../../data/constants/CountryEmissions";
-import { ISelectedCountriesRepository } from "../../data/selected-countries/ISelectedCountriesRepository";
-import { useMountEffect } from "./useOnceAfterFirstMount";
+import { useRootContext } from "../provider/useRootContext";
 import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
 import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "./utils/calculateCarbon";
 import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
 
 export const usePopup = () => {
-    const selectedCountriesRepository: ISelectedCountriesRepository =
-        ISelectedCountriesRepository.instance;
+    const {
+        selectedCountriesContext: { selectedCountries, validatePercentages },
+    } = useRootContext();
+
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
 
     const [bytesTransferred, setBytesTransferred] = useState(0);
     const [emissions, setEmissions] = useState(0);
-    const [selectedCountries, setSelectedCountries] = useState<
-        Map<CountryName, number>
-    >(new Map<CountryName, number>());
+
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [error, setError] = useState<string>();
     const [calculationHistory, setCalculationHistory] = useState<
@@ -36,41 +34,10 @@ export const usePopup = () => {
         setCalculationHistory(calculationsData);
     };
 
-    const setCountryPercentage = async (
-        country: CountryName,
-        percentage: number
-    ) => {
-        await selectedCountriesRepository.setSelectedCountryPercentage(
-            country,
-            percentage
-        );
-        const newMap =
-            await selectedCountriesRepository.getSelectedCountriesAndPercentages();
-        setSelectedCountries(newMap);
-    };
-
-    const sumPercentages = () => {
-        const percentage = Array.from(selectedCountries.values()).reduce(
-            (accumulator, country) => {
-                return accumulator + country;
-            },
-            0
-        );
-
-        if (percentage > 1) {
-            throw new Error(
-                `Error: The sum of the percentages is greater than 100%. Current sum: ${
-                    percentage * 100
-                }%`
-            );
-        }
-
-        return percentage;
-    };
 
     const refreshAndGetSize = async (): Promise<boolean> => {
         try {
-            sumPercentages();
+            validatePercentages();
             setAverageSpecificEmissions(
                 calculateAverageSpecificEmissionsHelper(selectedCountries)
             );
@@ -121,20 +88,6 @@ export const usePopup = () => {
         }
     };
 
-    const addSelectedCountry = async (country: CountryName) => {
-        await selectedCountriesRepository.addSelectedCountry(country);
-        const newMap =
-            await selectedCountriesRepository.getSelectedCountriesAndPercentages();
-        setSelectedCountries(newMap);
-    };
-
-    const removeSelectedCountry = async (country: CountryName) => {
-        await selectedCountriesRepository.removeSelectedCountry(country);
-        const newMap =
-            await selectedCountriesRepository.getSelectedCountriesAndPercentages();
-        setSelectedCountries(newMap);
-    };
-
     useEffect(() => {
         const bytesTransferredChangedListener = (
             message: { command: { bytesTransferredChanged: number } },
@@ -142,10 +95,14 @@ export const usePopup = () => {
             sendResponse: (response?: boolean) => void
         ) => {
             if (message.command.bytesTransferredChanged) {
-                const _bytes = message.command.bytesTransferredChanged;
-                setBytesTransferred(_bytes);
-                const _emissions = calculateCarbon(_bytes, selectedCountries);
-                setEmissions(_emissions);
+                const bytesTransferred =
+                    message.command.bytesTransferredChanged;
+                setBytesTransferred(bytesTransferred);
+                const emissions = calculateCarbon(
+                    bytesTransferred,
+                    selectedCountries
+                );
+                setEmissions(emissions);
             }
             sendResponse(true);
             return true;
@@ -160,21 +117,19 @@ export const usePopup = () => {
         };
     }, [selectedCountries]);
 
-    useMountEffect(() => {
+    useEffect(() => {
         const getLastCalculationAndSetState = async () => {
-            const _selectedCountries =
-                await selectedCountriesRepository.getSelectedCountriesAndPercentages();
-            setSelectedCountries(_selectedCountries);
-
             if (await calculationsRepository.isOngoingCalculation()) {
-                const _bytes = await chrome.runtime.sendMessage(
+                const bytesTransferred = await chrome.runtime.sendMessage(
                     "getBytesTransferred"
                 );
 
-                setBytesTransferred(_bytes);
-                setEmissions(calculateCarbon(_bytes, _selectedCountries));
+                setBytesTransferred(bytesTransferred);
+                setEmissions(
+                    calculateCarbon(bytesTransferred, selectedCountries)
+                );
                 setAverageSpecificEmissions(
-                    calculateAverageSpecificEmissionsHelper(_selectedCountries)
+                    calculateAverageSpecificEmissionsHelper(selectedCountries)
                 );
                 return;
             }
@@ -193,15 +148,11 @@ export const usePopup = () => {
             setAverageSpecificEmissions(0);
         };
         getLastCalculationAndSetState();
-    });
+    }, [calculationsRepository, selectedCountries]);
 
     return {
         emissions,
         bytesTransferred,
-        selectedCountries,
-        addSelectedCountry,
-        removeSelectedCountry,
-        setCountryPercentage,
         refreshAndGetSize,
         stopRecording,
         calculationHistory,
