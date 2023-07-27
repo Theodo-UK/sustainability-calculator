@@ -68,7 +68,7 @@ export const usePopup = () => {
         return percentage;
     };
 
-    const refreshAndGetSize = async () => {
+    const refreshAndGetSize = async (): Promise<boolean> => {
         try {
             sumPercentages();
             setAverageSpecificEmissions(
@@ -78,7 +78,7 @@ export const usePopup = () => {
             if (e instanceof Error) {
                 setError(e.message);
             }
-            return;
+            return false;
         }
         try {
             await calculationsRepository.setOngoingCalculation(true);
@@ -86,10 +86,17 @@ export const usePopup = () => {
             if (e instanceof Error) {
                 setError(e.message);
             }
-            return;
+            return false;
+        }
+        try {
+            await refreshActiveTabAndRecordBytes(userType === "new user");
+        } catch (e: unknown) {
+            setError((e as Error).message);
+            return false;
         }
         setError(undefined);
-        refreshActiveTabAndRecordBytes(userType === "new user");
+
+        return true;
     };
 
     const stopRecording = async (): Promise<void> => {

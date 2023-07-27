@@ -20,6 +20,11 @@ describe("usePopup", () => {
         expect(chrome.tabs.query).toHaveBeenCalledTimes(1);
 
         expect(chrome.tabs.reload).toHaveBeenCalledTimes(1);
+
+        expect(chrome.runtime.sendMessage).toHaveBeenCalledTimes(2);
+        expect(chrome.runtime.sendMessage).toBeCalledWith(
+            "getBytesTransferred"
+        );
         expect(chrome.runtime.sendMessage).toBeCalledWith({
             command: "startRecordingBytesTransferred",
             tabId: mockTabId,

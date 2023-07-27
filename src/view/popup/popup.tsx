@@ -53,8 +53,9 @@ export const Popup = () => {
             {page === "landing" ? (
                 <LandingPage
                     onRecordButtonPress={async () => {
-                        goToPage("recording");
-                        await refreshAndGetSize();
+                        if (await refreshAndGetSize()) {
+                            goToPage("recording");
+                        }
                     }}
                 />
             ) : page === "recording" ? (
@@ -69,8 +70,9 @@ export const Popup = () => {
             ) : page === "results" ? (
                 <ResultsPage
                     onRestartButtonPress={async () => {
-                        goToPage("recording");
-                        await refreshAndGetSize();
+                        if (await refreshAndGetSize()) {
+                            goToPage("recording");
+                        }
                     }}
                     recordings={calculationHistory}
                     selectedCountries={selectedCountries}
