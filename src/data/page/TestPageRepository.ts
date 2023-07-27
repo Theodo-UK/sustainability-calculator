@@ -1,13 +1,13 @@
-import { IPageRepository, Page } from "./IPageRepository";
+import { IPageRepository, PageType } from "./IPageRepository";
 
 export class TestPageRepository implements IPageRepository {
-    private _page: Page = "landing";
+    private _page: PageType = "landing";
 
-    async getCurrentPage(): Promise<Page> {
+    async getCurrentPage(): Promise<PageType> {
         return this._page;
     }
 
-    async setCurrentPage(page: Page): Promise<void> {
+    async setCurrentPage(page: PageType): Promise<void> {
         this._page = page;
     }
 }

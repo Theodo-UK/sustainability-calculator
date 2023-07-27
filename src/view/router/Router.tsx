@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IPageRepository, Page } from "../../data/page/IPageRepository";
+import { IPageRepository, PageType } from "../../data/page/IPageRepository";
 import { ErrorPage } from "../popup/pages/ErrorPage";
 import { LandingPage } from "../popup/pages/LandingPage";
 import { RecordingPage } from "../popup/pages/RecordingPage";
@@ -23,10 +23,10 @@ export const Router = () => {
         error,
     } = usePopup();
 
-    const [page, setPage] = useState<Page>("landing");
+    const [page, setPage] = useState<PageType>("landing");
     const pageRepository = IPageRepository.instance;
 
-    const goToPage = (page: Page) => {
+    const goToPage = (page: PageType) => {
         setPage(page);
         pageRepository.setCurrentPage(page);
     };
