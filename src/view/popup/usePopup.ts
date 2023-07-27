@@ -34,31 +34,30 @@ export const usePopup = () => {
         setCalculationHistory(calculationsData);
     };
 
-
     const refreshAndGetSize = async (): Promise<boolean> => {
         try {
             validatePercentages();
             setAverageSpecificEmissions(
                 calculateAverageSpecificEmissionsHelper(selectedCountries)
             );
-        } catch (e: unknown) {
-            if (e instanceof Error) {
-                setError(e.message);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setError(error.message);
             }
             return false;
         }
         try {
             await calculationsRepository.setOngoingCalculation(true);
-        } catch (e: unknown) {
-            if (e instanceof Error) {
-                setError(e.message);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setError(error.message);
             }
             return false;
         }
         try {
             await refreshActiveTabAndRecordBytes(userType === "new user");
-        } catch (e: unknown) {
-            setError((e as Error).message);
+        } catch (error: unknown) {
+            setError((error as Error).message);
             return false;
         }
         setError(undefined);
@@ -81,9 +80,9 @@ export const usePopup = () => {
             );
             await calculationsRepository.setOngoingCalculation(false);
             await refreshCalculationHistory();
-        } catch (e: unknown) {
-            if (e instanceof Error) {
-                setError(e.message);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setError(error.message);
             }
         }
     };

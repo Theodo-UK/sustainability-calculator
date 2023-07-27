@@ -86,7 +86,7 @@ export const Router = () => {
     const renderPage = () => {
         try {
             return pageComponents[page];
-        } catch (e: unknown) {
+        } catch (error: unknown) {
             return <ErrorPage />;
         }
     };

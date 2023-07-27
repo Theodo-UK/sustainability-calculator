@@ -16,8 +16,8 @@ export class SelectedDevicesRepository implements ISelectedDevicesRepository {
                 DeviceName,
                 number
             >;
-        } catch (e: unknown) {
-            throw Error(e as string);
+        } catch (error: unknown) {
+            throw Error(error as string);
         }
     }
 
@@ -32,8 +32,8 @@ export class SelectedDevicesRepository implements ISelectedDevicesRepository {
             await this.remoteDataSource.set({
                 selectedDevices: maptoJSON(newMap),
             });
-        } catch (e: unknown) {
-            throw Error(e as string);
+        } catch (error: unknown) {
+            throw Error(error as string);
         }
     }
 
@@ -48,8 +48,8 @@ export class SelectedDevicesRepository implements ISelectedDevicesRepository {
             await this.remoteDataSource.set({
                 selectedDevices: maptoJSON(newMap),
             });
-        } catch (e: unknown) {
-            throw Error(e as string);
+        } catch (error: unknown) {
+            throw Error(error as string);
         }
     }
 
@@ -71,8 +71,8 @@ export class SelectedDevicesRepository implements ISelectedDevicesRepository {
             await this.remoteDataSource.set({
                 selectedDevices: maptoJSON(newMap),
             });
-        } catch (e: unknown) {
-            throw Error(e as string);
+        } catch (error: unknown) {
+            throw Error(error as string);
         }
     }
 }
