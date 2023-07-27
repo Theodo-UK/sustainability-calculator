@@ -5,7 +5,7 @@ export const backgroundStopRecordingBytes = async () => {
         if (activeTabId) {
             chrome.runtime.sendMessage({
                 command: "stopRecordingBytesTransferred",
-                activeTabId,
+                tabId: activeTabId,
             });
         }
     }
