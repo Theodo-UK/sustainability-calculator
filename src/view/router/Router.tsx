@@ -5,23 +5,23 @@ import { LandingPage } from "../popup/pages/LandingPage";
 import { RecordingPage } from "../popup/pages/RecordingPage";
 import { ResultsPage } from "../popup/pages/ResultsPage";
 import { useMountEffect } from "../popup/useOnceAfterFirstMount";
-import { usePopup } from "../popup/usePopup";
 import { useRootContext } from "../provider/useRootContext";
 
 export const Router = () => {
     const { selectedCountriesContext } = useRootContext();
 
     const {
-        bytesTransferred,
-        emissions,
-        refreshAndGetSize,
-        stopRecording,
-        refreshCalculationHistory,
-        calculationHistory,
-        userType,
-        setUserType,
-        error,
-    } = usePopup();
+        recordingContext: {
+            bytesTransferred,
+            emissions,
+            startRecording,
+            stopRecording,
+            userType,
+            setUserType,
+            error,
+        },
+        historyContext: { calculationHistory, refreshCalculationHistory },
+    } = useRootContext();
 
     const [page, setPage] = useState<PageType>("landing");
     const pageRepository = IPageRepository.instance;
@@ -44,7 +44,7 @@ export const Router = () => {
         landing: (
             <LandingPage
                 onRecordButtonPress={async () => {
-                    if (await refreshAndGetSize()) {
+                    if (await startRecording()) {
                         goToPage("recording");
                     }
                 }}
@@ -63,7 +63,7 @@ export const Router = () => {
         results: (
             <ResultsPage
                 onRestartButtonPress={async () => {
-                    if (await refreshAndGetSize()) {
+                    if (await startRecording()) {
                         goToPage("recording");
                     }
                 }}

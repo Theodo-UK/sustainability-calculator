@@ -20,6 +20,7 @@ export const useHistoryContext = (): HistoryContextType => {
     };
 
     return {
+        calculationHistory,
         refreshCalculationHistory,
     };
 };

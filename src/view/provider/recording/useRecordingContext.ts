@@ -129,5 +129,13 @@ export const useRecordingContext = (): RecordingContextType => {
         };
     }, [selectedCountries]);
 
-    return { startRecording, stopRecording };
+    return {
+        startRecording,
+        stopRecording,
+        bytesTransferred,
+        emissions,
+        error,
+        userType,
+        setUserType,
+    };
 };
