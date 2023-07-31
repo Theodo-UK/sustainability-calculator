@@ -1,68 +1,28 @@
 import { useEffect, useState } from "react";
 import {
-    CalculationData,
-    ICalculationsRepository,
-    UserType,
+    CalculationData
 } from "../../data/calculations/ICalculationsRepository";
 import { useRootContext } from "../provider/useRootContext";
 import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
 import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "./utils/calculateCarbon";
-import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
 
 export const usePopup = () => {
     const {
         selectedCountriesContext: { selectedCountries, validatePercentages },
     } = useRootContext();
 
-    const calculationsRepository: ICalculationsRepository =
-        ICalculationsRepository.instance;
-
     const [bytesTransferred, setBytesTransferred] = useState(0);
     const [emissions, setEmissions] = useState(0);
 
-    const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
-    const [error, setError] = useState<string>();
     const [calculationHistory, setCalculationHistory] = useState<
         CalculationData[]
     >([]);
-    const [userType, setUserType] = useState<UserType>("new user");
 
     const refreshCalculationHistory = async () => {
         const calculationsData =
             await calculationsRepository.getAllCalculations();
         setCalculationHistory(calculationsData);
-    };
-
-    const refreshAndGetSize = async (): Promise<boolean> => {
-        try {
-            validatePercentages();
-            setAverageSpecificEmissions(
-                calculateAverageSpecificEmissionsHelper(selectedCountries)
-            );
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                setError(error.message);
-            }
-            return false;
-        }
-        try {
-            await calculationsRepository.setOngoingCalculation(true);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                setError(error.message);
-            }
-            return false;
-        }
-        try {
-            await refreshActiveTabAndRecordBytes(userType === "new user");
-        } catch (error: unknown) {
-            setError((error as Error).message);
-            return false;
-        }
-        setError(undefined);
-
-        return true;
     };
 
     const stopRecording = async (): Promise<void> => {
@@ -152,12 +112,10 @@ export const usePopup = () => {
     return {
         emissions,
         bytesTransferred,
-        refreshAndGetSize,
         stopRecording,
         calculationHistory,
         refreshCalculationHistory,
         userType,
         setUserType,
-        error,
     };
 };
