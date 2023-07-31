@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { CalculationData } from "../../data/calculations/ICalculationsRepository";
+import { useEffect } from "react";
 import { useRootContext } from "../provider/useRootContext";
 import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "./utils/calculateCarbon";
@@ -8,16 +7,6 @@ export const usePopup = () => {
     const {
         selectedCountriesContext: { selectedCountries, validatePercentages },
     } = useRootContext();
-
-    const [calculationHistory, setCalculationHistory] = useState<
-        CalculationData[]
-    >([]);
-
-    const refreshCalculationHistory = async () => {
-        const calculationsData =
-            await calculationsRepository.getAllCalculations();
-        setCalculationHistory(calculationsData);
-    };
 
     useEffect(() => {
         const getLastCalculationAndSetState = async () => {
