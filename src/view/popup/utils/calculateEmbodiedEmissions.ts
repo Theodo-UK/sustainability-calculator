@@ -4,10 +4,12 @@ import {
     DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS
 } from "../../../data/constants/DeviceEmissions";
 
-const AVG_DEVICE_LIFETIME = (4 * 365 + 1) * 24 * 3600;
+const AVG_DEVICE_LIFETIME_YEARS = 4;
+const AVG_DEVICE_LIFETIME_SECONDS =
+    (AVG_DEVICE_LIFETIME_YEARS * 365 + 1) * 24 * 3600;
 
 export const calculateEmbodiedEmissions = (
-    flowLength: number,
+    flowLengthSeconds: number,
     selectedDevices: Map<DeviceName, number>
 ): number => {
     const _selectedDevices = new Map(selectedDevices);
@@ -17,14 +19,14 @@ export const calculateEmbodiedEmissions = (
     _selectedDevices.forEach((percentage, device) => {
         totalPercentage += percentage;
         carbon +=
-            ((flowLength * DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS[device]) /
-                AVG_DEVICE_LIFETIME) *
+            ((flowLengthSeconds * DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS[device]) /
+                AVG_DEVICE_LIFETIME_SECONDS) *
             percentage;
     });
 
     carbon +=
-        ((flowLength * AVERAGE_DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS) /
-            AVG_DEVICE_LIFETIME) *
+        ((flowLengthSeconds * AVERAGE_DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS) /
+            AVG_DEVICE_LIFETIME_SECONDS) *
         (1 - totalPercentage);
 
     return carbon;
