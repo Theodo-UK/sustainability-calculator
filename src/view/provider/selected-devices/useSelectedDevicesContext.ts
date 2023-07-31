@@ -53,9 +53,9 @@ export const useSelectedDevicesContext = (): SelectedDevicesContextType => {
 
     useMountEffect(() => {
         const getSelectedDevicesAndSetState = async () => {
-            const _selectedDevices =
+            const selectedDevices =
                 await selectedDevicesRepository.getSelectedDevices();
-            setSelectedDevices(_selectedDevices);
+            setSelectedDevices(selectedDevices);
         };
         getSelectedDevicesAndSetState();
     });

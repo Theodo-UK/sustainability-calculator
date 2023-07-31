@@ -29,7 +29,7 @@ describe("useSelectedDevicesContext", () => {
         expect(result.current.selectedDevices).toStrictEqual(mockCountries);
     });
 
-    it("removeSelectedCountries should update selectedDevices", async () => {
+    it("removeSelectedCountries should remove selectedDevices", async () => {
         const { result } = renderHook(useSelectedDevicesContext);
 
         const mockDevice1 = "iPhone 12";
