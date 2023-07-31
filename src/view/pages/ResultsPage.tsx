@@ -3,17 +3,17 @@ import { FaSyncAlt } from "react-icons/fa";
 import {
     CalculationData,
     UserType,
-} from "../../../data/calculations/ICalculationsRepository";
+} from "../../data/calculations/ICalculationsRepository";
 import {
     formatBytes,
     formatEmissions,
-} from "../../../utils/helpers/formatNumbersToString";
-import { Button } from "../../components/atomic/Button";
-import { SwitchAtom } from "../../components/atomic/SwitchAtom";
-import { CalculationHistory } from "../../components/calculation-history/CalculationHistory";
-import { SelectedCountriesDisclosure } from "../../components/countries/SelectedCountriesDisclosure";
-import { EmissionsComparison } from "../../components/emissions-comparison/EmissionsComparison";
-import { SelectedDevicesDisclosure } from "../../components/selected-devices/disclosure/SelectedDevicesDisclosure";
+} from "../../utils/helpers/formatNumbersToString";
+import { Button } from "../components/atomic/Button";
+import { SwitchAtom } from "../components/atomic/SwitchAtom";
+import { CalculationHistory } from "../components/calculation-history/CalculationHistory";
+import { SelectedCountriesDisclosure } from "../components/countries/SelectedCountriesDisclosure";
+import { EmissionsComparison } from "../components/emissions-comparison/EmissionsComparison";
+import { SelectedDevicesDisclosure } from "../components/selected-devices/disclosure/SelectedDevicesDisclosure";
 
 type ResultsPageProps = {
     onRestartButtonPress: () => void;

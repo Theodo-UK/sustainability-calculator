@@ -3,9 +3,9 @@ import { FaPause } from "react-icons/fa";
 import {
     formatBytes,
     formatEmissions,
-} from "../../../utils/helpers/formatNumbersToString";
-import { Button } from "../../components/atomic/Button";
-import { PageTooltip } from "../../components/atomic/PageTooltip";
+} from "../../utils/helpers/formatNumbersToString";
+import { Button } from "../components/atomic/Button";
+import { PageTooltip } from "../components/atomic/PageTooltip";
 
 type RecordingPageProps = {
     onStopButtonPress: () => void;

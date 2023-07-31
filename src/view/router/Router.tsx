@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { IPageRepository, PageType } from "../../data/page/IPageRepository";
-import { ErrorPage } from "../popup/pages/ErrorPage";
-import { LandingPage } from "../popup/pages/LandingPage";
-import { RecordingPage } from "../popup/pages/RecordingPage";
-import { ResultsPage } from "../popup/pages/ResultsPage";
+import { ErrorPage } from "../pages/ErrorPage";
+import { LandingPage } from "../pages/LandingPage";
+import { RecordingPage } from "../pages/RecordingPage";
+import { ResultsPage } from "../pages/ResultsPage";
 import { useMountEffect } from "../popup/useOnceAfterFirstMount";
 import {
     HistoryContext,
