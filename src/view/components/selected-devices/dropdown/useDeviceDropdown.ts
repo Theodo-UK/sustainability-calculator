@@ -3,6 +3,7 @@ import {
     DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS,
     DeviceName,
 } from "../../../../data/constants/DeviceEmissions";
+import { removeWhiteSpace } from "../../../../utils/helpers/stringHelpers";
 import { useRootContext } from "../../../provider/useRootContext";
 
 export const useDeviceDropdown = () => {
@@ -21,7 +22,7 @@ export const useDeviceDropdown = () => {
             : filteredCountries.filter((country) =>
                   country
                       .toLowerCase()
-                      .includes(query.toLowerCase().replace(/\s+/g, ""))
+                      .includes(removeWhiteSpace(query.toLowerCase()))
               );
     return {
         displayedDevices,
