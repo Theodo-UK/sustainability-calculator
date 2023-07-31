@@ -4,12 +4,15 @@ import {
     DeviceName,
 } from "../../../../data/constants/DeviceEmissions";
 import { removeWhiteSpace } from "../../../../utils/helpers/stringHelpers";
-import { useRootContext } from "../../../provider/useRootContext";
+import {
+    SelectedDevicesContext,
+    SelectedDevicesContextType,
+} from "../../../provider/selected-devices/SelectedDevicesProvider";
+import { useNullSafeContext } from "../../../provider/useNullSafeContext";
 
 export const useDeviceDropdown = () => {
-    const {
-        selectedDevicesContext: { selectedDevices, addSelectedDevice },
-    } = useRootContext();
+    const { selectedDevices, addSelectedDevice } =
+        useNullSafeContext<SelectedDevicesContextType>(SelectedDevicesContext);
     const filteredCountries = Object.keys(
         DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS
     ).filter((device) => !selectedDevices.has(device as DeviceName));

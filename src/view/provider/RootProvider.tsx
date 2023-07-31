@@ -1,4 +1,6 @@
 import React from "react";
+import { HistoryProvider } from "./history/HistoryProvider";
+import { RecordingProvider } from "./recording/RecordingProvider";
 import { SelectedCountriesProvider } from "./selected-countries/SelectedCountriesProvider";
 import { SelectedDevicesProvider } from "./selected-devices/SelectedDevicesProvider";
 interface RootProviderProps {
@@ -8,7 +10,11 @@ interface RootProviderProps {
 export const RootProvider = ({ children }: RootProviderProps) => {
     return (
         <SelectedCountriesProvider>
-            <SelectedDevicesProvider>{children}</SelectedDevicesProvider>
+            <SelectedDevicesProvider>
+                <HistoryProvider>
+                    <RecordingProvider>{children}</RecordingProvider>
+                </HistoryProvider>
+            </SelectedDevicesProvider>
         </SelectedCountriesProvider>
     );
 };

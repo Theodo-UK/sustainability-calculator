@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { useRootContext } from "../../../provider/useRootContext";
+import {
+    SelectedDevicesContext,
+    SelectedDevicesContextType,
+} from "../../../provider/selected-devices/SelectedDevicesProvider";
+import { useNullSafeContext } from "../../../provider/useNullSafeContext";
 
 export const useSelectedDevices = () => {
-    const {
-        selectedDevicesContext: {
-            selectedDevices,
-            removeSelectedDevice,
-            setDevicePercentage,
-        },
-    } = useRootContext();
+    const { selectedDevices, removeSelectedDevice, setDevicePercentage } =
+        useNullSafeContext<SelectedDevicesContextType>(SelectedDevicesContext);
     const [averagePercentage, setWorldPercentage] = useState(1);
     const [isPercentageError, setIsPercentageError] = useState(false);
 

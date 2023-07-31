@@ -3,66 +3,53 @@ import {
     CalculationData,
     ICalculationsRepository,
     UserType,
-} from "../../data/calculations/ICalculationsRepository";
-import { useRootContext } from "../provider/useRootContext";
-import { backgroundStopRecordingBytes } from "./utils/backgroundStopRecordingBytes";
-import { calculateAverageSpecificEmissionsHelper } from "./utils/calculateAverageSpecificEmissions";
-import { calculateCarbon } from "./utils/calculateCarbon";
-import { refreshActiveTabAndRecordBytes } from "./utils/refreshActiveTabAndRecordBytes";
+} from "../../../data/calculations/ICalculationsRepository";
+import { backgroundStopRecordingBytes } from "../../popup/utils/backgroundStopRecordingBytes";
+import { calculateAverageSpecificEmissionsHelper } from "../../popup/utils/calculateAverageSpecificEmissions";
+import { calculateCarbon } from "../../popup/utils/calculateCarbon";
+import { refreshActiveTabAndRecordBytes } from "../../popup/utils/refreshActiveTabAndRecordBytes";
+import { HistoryContext, HistoryContextType } from "../history/HistoryProvider";
+import {
+    SelectedCountriesContext,
+    SelectedCountriesContextType,
+} from "../selected-countries/SelectedCountriesProvider";
+import { useNullSafeContext } from "../useNullSafeContext";
+import { RecordingContextType } from "./RecordingProvider";
 
-export const usePopup = () => {
-    const {
-        selectedCountriesContext: { selectedCountries, validatePercentages },
-    } = useRootContext();
+export const useRecordingContext = (): RecordingContextType => {
+    const { selectedCountries, validatePercentages } =
+        useNullSafeContext<SelectedCountriesContextType>(
+            SelectedCountriesContext
+        );
+    const { refreshCalculationHistory } =
+        useNullSafeContext<HistoryContextType>(HistoryContext);
 
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
 
-    const [bytesTransferred, setBytesTransferred] = useState(0);
     const [emissions, setEmissions] = useState(0);
-
-    const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
+    const [bytesTransferred, setBytesTransferred] = useState(0);
     const [error, setError] = useState<string>();
-    const [calculationHistory, setCalculationHistory] = useState<
-        CalculationData[]
-    >([]);
+    const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [userType, setUserType] = useState<UserType>("new user");
 
-    const refreshCalculationHistory = async () => {
-        const calculationsData =
-            await calculationsRepository.getAllCalculations();
-        setCalculationHistory(calculationsData);
-    };
-
-    const refreshAndGetSize = async (): Promise<boolean> => {
+    const startRecording = async (): Promise<boolean> => {
         try {
             validatePercentages();
             setAverageSpecificEmissions(
                 calculateAverageSpecificEmissionsHelper(selectedCountries)
             );
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                setError(error.message);
-            }
-            return false;
-        }
-        try {
             await calculationsRepository.setOngoingCalculation(true);
+            await refreshActiveTabAndRecordBytes(userType === "new user");
+            setError(undefined);
+
+            return true;
         } catch (error: unknown) {
             if (error instanceof Error) {
                 setError(error.message);
             }
             return false;
         }
-        try {
-            await refreshActiveTabAndRecordBytes(userType === "new user");
-        } catch (error: unknown) {
-            setError((error as Error).message);
-            return false;
-        }
-        setError(undefined);
-
-        return true;
     };
 
     const stopRecording = async (): Promise<void> => {
@@ -86,35 +73,6 @@ export const usePopup = () => {
             }
         }
     };
-
-    useEffect(() => {
-        const bytesTransferredChangedListener = (
-            message: { command: { bytesTransferredChanged: number } },
-            sender: chrome.runtime.MessageSender,
-            sendResponse: (response?: boolean) => void
-        ) => {
-            if (message.command.bytesTransferredChanged) {
-                const bytesTransferred =
-                    message.command.bytesTransferredChanged;
-                setBytesTransferred(bytesTransferred);
-                const emissions = calculateCarbon(
-                    bytesTransferred,
-                    selectedCountries
-                );
-                setEmissions(emissions);
-            }
-            sendResponse(true);
-            return true;
-        };
-
-        chrome.runtime.onMessage.addListener(bytesTransferredChangedListener);
-
-        return () => {
-            chrome.runtime.onMessage.removeListener(
-                bytesTransferredChangedListener
-            );
-        };
-    }, [selectedCountries]);
 
     useEffect(() => {
         const getLastCalculationAndSetState = async () => {
@@ -149,15 +107,42 @@ export const usePopup = () => {
         getLastCalculationAndSetState();
     }, [calculationsRepository, selectedCountries]);
 
+    useEffect(() => {
+        const bytesTransferredChangedListener = (
+            message: { command: { bytesTransferredChanged: number } },
+            sender: chrome.runtime.MessageSender,
+            sendResponse: (response?: boolean) => void
+        ) => {
+            if (message.command.bytesTransferredChanged) {
+                const bytesTransferred =
+                    message.command.bytesTransferredChanged;
+                setBytesTransferred(bytesTransferred);
+                const emissions = calculateCarbon(
+                    bytesTransferred,
+                    selectedCountries
+                );
+                setEmissions(emissions);
+            }
+            sendResponse(true);
+            return true;
+        };
+
+        chrome.runtime.onMessage.addListener(bytesTransferredChangedListener);
+
+        return () => {
+            chrome.runtime.onMessage.removeListener(
+                bytesTransferredChangedListener
+            );
+        };
+    }, [selectedCountries]);
+
     return {
-        emissions,
-        bytesTransferred,
-        refreshAndGetSize,
+        startRecording,
         stopRecording,
-        calculationHistory,
-        refreshCalculationHistory,
+        bytesTransferred,
+        emissions,
+        error,
         userType,
         setUserType,
-        error,
     };
 };
