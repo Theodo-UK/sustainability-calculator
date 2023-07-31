@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
+import { PERCENTAGE_ERROR_MESSAGE } from "../../../utils/constants";
 import { TileTooltip } from "../atomic/TileTooltip";
 
 type SelectedCountriesType = {
@@ -7,8 +8,6 @@ type SelectedCountriesType = {
     removeSelectedCountry: (country: CountryName) => void;
     setCountryPercentage: (country: CountryName, percentage: number) => void;
 };
-
-const PERCENTAGE_ERROR_MESSAGE = "Percentages must stay between 0% and 100%";
 
 export const SelectedCountries = ({
     selectedCountries,

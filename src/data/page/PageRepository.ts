@@ -11,8 +11,8 @@ export class PageRepository implements IPageRepository {
             });
 
             return parsePage(data["currentPage"] as string);
-        } catch (e: unknown) {
-            throw Error(e as string);
+        } catch (error: unknown) {
+            throw Error(error as string);
         }
     }
 
@@ -21,8 +21,8 @@ export class PageRepository implements IPageRepository {
             await this.remoteDataSource.set({
                 currentPage: page,
             });
-        } catch (e: unknown) {
-            throw Error(e as string);
+        } catch (error: unknown) {
+            throw Error(error as string);
         }
     }
 }

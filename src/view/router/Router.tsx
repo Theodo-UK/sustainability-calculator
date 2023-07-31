@@ -40,63 +40,60 @@ export const Router = () => {
         });
     });
 
-    let pageComponent;
+    const pageComponents: Record<PageType, React.JSX.Element> = {
+        landing: (
+            <LandingPage
+                onRecordButtonPress={async () => {
+                    if (await refreshAndGetSize()) {
+                        goToPage("recording");
+                    }
+                }}
+            />
+        ),
+        recording: (
+            <RecordingPage
+                onStopButtonPress={async () => {
+                    await stopRecording();
+                    goToPage("results");
+                }}
+                bytesTransferred={bytesTransferred}
+                emissions={emissions}
+            />
+        ),
+        results: (
+            <ResultsPage
+                onRestartButtonPress={async () => {
+                    if (await refreshAndGetSize()) {
+                        goToPage("recording");
+                    }
+                }}
+                recordings={calculationHistory}
+                selectedCountries={selectedCountriesContext.selectedCountries}
+                addSelectedCountry={selectedCountriesContext.addSelectedCountry}
+                removeSelectedCountry={
+                    selectedCountriesContext.removeSelectedCountry
+                }
+                setCountryPercentage={
+                    selectedCountriesContext.setCountryPercentage
+                }
+                userType={userType}
+                setUserType={setUserType}
+                error={error}
+            />
+        ),
+    };
 
-    switch (page) {
-        case "landing":
-            pageComponent = (
-                <LandingPage
-                    onRecordButtonPress={async () => {
-                        goToPage("recording");
-                        await refreshAndGetSize();
-                    }}
-                />
-            );
-            break;
-        case "recording":
-            pageComponent = (
-                <RecordingPage
-                    onStopButtonPress={async () => {
-                        await stopRecording();
-                        goToPage("results");
-                    }}
-                    bytesTransferred={bytesTransferred}
-                    emissions={emissions}
-                />
-            );
-            break;
-        case "results":
-            pageComponent = (
-                <ResultsPage
-                    onRestartButtonPress={async () => {
-                        goToPage("recording");
-                        await refreshAndGetSize();
-                    }}
-                    recordings={calculationHistory}
-                    selectedCountries={
-                        selectedCountriesContext.selectedCountries
-                    }
-                    addSelectedCountry={
-                        selectedCountriesContext.addSelectedCountry
-                    }
-                    removeSelectedCountry={
-                        selectedCountriesContext.removeSelectedCountry
-                    }
-                    setCountryPercentage={
-                        selectedCountriesContext.setCountryPercentage
-                    }
-                    userType={userType}
-                    setUserType={setUserType}
-                    error={error}
-                />
-            );
-            break;
-        default:
-            pageComponent = <ErrorPage />;
-    }
+    const renderPage = () => {
+        try {
+            return pageComponents[page];
+        } catch (error: unknown) {
+            return <ErrorPage />;
+        }
+    };
+
     return (
         <div className="p-10 w-96 flex flex-col justify-stretch gap-6">
-            {pageComponent}
+            {renderPage()}
         </div>
     );
 };

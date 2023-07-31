@@ -49,9 +49,9 @@ export class StorageRemoteDataSource {
     ): Promise<void> {
         try {
             await this.storage.readAndWrite(key, mutateValue);
-        } catch (e) {
+        } catch (error) {
             throw new Error(
-                `StorageRemoteDataSource failed to getAndSet: ${key}: ${e}`
+                `StorageRemoteDataSource failed to getAndSet: ${key}: ${error}`
             );
         }
     }
@@ -74,9 +74,9 @@ export class StorageRemoteDataSource {
                 }
                 return result;
             });
-        } catch (e) {
+        } catch (error) {
             throw new Error(
-                `StorageRemoteDataSource failed to get: ${data}: ${e}`
+                `StorageRemoteDataSource failed to get: ${data}: ${error}`
             );
         }
     }
@@ -84,9 +84,9 @@ export class StorageRemoteDataSource {
     async set(data: { [key: string]: any }): Promise<void> {
         try {
             await this.storage.write(data);
-        } catch (e) {
+        } catch (error) {
             throw new Error(
-                `StorageRemoteDataSource failed to set: ${data}: ${e}`
+                `StorageRemoteDataSource failed to set: ${data}: ${error}`
             );
         }
     }
@@ -94,8 +94,10 @@ export class StorageRemoteDataSource {
     async clear(): Promise<void> {
         try {
             await this.storage.clear();
-        } catch (e) {
-            throw new Error(`StorageRemoteDataSource failed to clear: ${e}`);
+        } catch (error) {
+            throw new Error(
+                `StorageRemoteDataSource failed to clear: ${error}`
+            );
         }
     }
 }

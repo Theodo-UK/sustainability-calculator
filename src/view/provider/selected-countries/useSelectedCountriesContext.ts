@@ -2,17 +2,7 @@ import { useState } from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
 import { ISelectedCountriesRepository } from "../../../data/selected-countries/ISelectedCountriesRepository";
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
-
-export type SelectedCountriesContextType = {
-    selectedCountries: Map<CountryName, number>;
-    addSelectedCountry: (country: CountryName) => Promise<void>;
-    removeSelectedCountry: (country: CountryName) => Promise<void>;
-    setCountryPercentage: (
-        country: CountryName,
-        percentage: number
-    ) => Promise<void>;
-    validatePercentages: () => void;
-};
+import { SelectedCountriesContextType } from "./SelectedCountriesProvider";
 
 export const useSelectedCountriesContext = (): SelectedCountriesContextType => {
     const selectedCountriesRepository: ISelectedCountriesRepository =

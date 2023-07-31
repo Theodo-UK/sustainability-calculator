@@ -21,8 +21,8 @@ export class SelectedCountriesRepository
             return JSONtoMap(
                 data["selectedCountriesAndPercentages"] as string
             ) as Map<CountryName, number>;
-        } catch (e: unknown) {
-            throw Error(e as string);
+        } catch (error: unknown) {
+            throw Error(error as string);
         }
     }
 
@@ -37,8 +37,8 @@ export class SelectedCountriesRepository
             await this.remoteDataSource.set({
                 selectedCountriesAndPercentages: maptoJSON(newMap),
             });
-        } catch (e: unknown) {
-            throw Error(e as string);
+        } catch (error: unknown) {
+            throw Error(error as string);
         }
     }
 
@@ -53,8 +53,8 @@ export class SelectedCountriesRepository
             await this.remoteDataSource.set({
                 selectedCountriesAndPercentages: maptoJSON(newMap),
             });
-        } catch (e: unknown) {
-            throw Error(e as string);
+        } catch (error: unknown) {
+            throw Error(error as string);
         }
     }
 
@@ -76,8 +76,8 @@ export class SelectedCountriesRepository
             await this.remoteDataSource.set({
                 selectedCountriesAndPercentages: maptoJSON(newMap),
             });
-        } catch (e: unknown) {
-            throw Error(e as string);
+        } catch (error: unknown) {
+            throw Error(error as string);
         }
     }
 }
