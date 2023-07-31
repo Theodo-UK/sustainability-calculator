@@ -1,8 +1,10 @@
 import { useState } from "react";
 import {
+    CalculationData,
     ICalculationsRepository,
     UserType,
 } from "../../../data/calculations/ICalculationsRepository";
+import { backgroundStopRecordingBytes } from "../../popup/utils/backgroundStopRecordingBytes";
 import { calculateAverageSpecificEmissionsHelper } from "../../popup/utils/calculateAverageSpecificEmissions";
 import { refreshActiveTabAndRecordBytes } from "../../popup/utils/refreshActiveTabAndRecordBytes";
 import { useRootContext } from "../useRootContext";
@@ -16,6 +18,7 @@ export const useRecordingContext = (): RecordingContextType => {
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
 
+    const [bytesTransferred, setBytesTransferred] = useState(0);
     const [error, setError] = useState<string>();
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [userType, setUserType] = useState<UserType>("new user");
@@ -38,5 +41,27 @@ export const useRecordingContext = (): RecordingContextType => {
             return false;
         }
     };
-    return { startRecording };
+
+    const stopRecording = async (): Promise<void> => {
+        backgroundStopRecordingBytes();
+        try {
+            await calculationsRepository.storeCalculation(
+                new CalculationData(
+                    bytesTransferred,
+                    emissions,
+                    averageSpecificEmissions,
+                    selectedCountries,
+                    Date.now(),
+                    userType
+                )
+            );
+            await calculationsRepository.setOngoingCalculation(false);
+            await refreshCalculationHistory();
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setError(error.message);
+            }
+        }
+    };
+    return { startRecording, stopRecording };
 };

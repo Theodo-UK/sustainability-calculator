@@ -6,6 +6,7 @@ interface Props {
 
 export type RecordingContextType = {
     startRecording: () => Promise<boolean>;
+    stopRecording: () => Promise<void>;
 };
 
 export const RecordingContext = createContext<RecordingContextType | null>(
