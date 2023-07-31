@@ -1,4 +1,5 @@
 import React from "react";
+import { HistoryProvider } from "./history/HistoryProvider";
 import { RecordingProvider } from "./recording/RecordingProvider";
 import { SelectedCountriesProvider } from "./selected-countries/SelectedCountriesProvider";
 import { SelectedDevicesProvider } from "./selected-devices/SelectedDevicesProvider";
@@ -10,7 +11,9 @@ export const RootProvider = ({ children }: RootProviderProps) => {
     return (
         <SelectedCountriesProvider>
             <SelectedDevicesProvider>
-                <RecordingProvider>{children}</RecordingProvider>
+                <HistoryProvider>
+                    <RecordingProvider>{children}</RecordingProvider>
+                </HistoryProvider>
             </SelectedDevicesProvider>
         </SelectedCountriesProvider>
     );
