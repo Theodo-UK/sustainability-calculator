@@ -11,73 +11,57 @@ export class SelectedCountriesRepository
     async getSelectedCountriesAndPercentages(): Promise<
         Map<CountryName, number>
     > {
-        try {
-            const data = await this.remoteDataSource.get({
-                selectedCountriesAndPercentages: maptoJSON(
-                    new Map<CountryName, number>([])
-                ),
-            });
+        const data = await this.remoteDataSource.get({
+            selectedCountriesAndPercentages: maptoJSON(
+                new Map<CountryName, number>([])
+            ),
+        });
 
-            return JSONtoMap(
-                data["selectedCountriesAndPercentages"] as string
-            ) as Map<CountryName, number>;
-        } catch (error: unknown) {
-            throw Error(error as string);
-        }
+        return JSONtoMap(
+            data["selectedCountriesAndPercentages"] as string
+        ) as Map<CountryName, number>;
     }
 
     async addSelectedCountry(countryName: CountryName): Promise<void> {
-        try {
-            const newMap = await this.getSelectedCountriesAndPercentages();
+        const newMap = await this.getSelectedCountriesAndPercentages();
 
-            if (!newMap.has(countryName)) {
-                newMap.set(countryName, 0);
-            }
-
-            await this.remoteDataSource.set({
-                selectedCountriesAndPercentages: maptoJSON(newMap),
-            });
-        } catch (error: unknown) {
-            throw Error(error as string);
+        if (!newMap.has(countryName)) {
+            newMap.set(countryName, 0);
         }
+
+        await this.remoteDataSource.set({
+            selectedCountriesAndPercentages: maptoJSON(newMap),
+        });
     }
 
     async removeSelectedCountry(countryName: CountryName): Promise<void> {
-        try {
-            const newMap = await this.getSelectedCountriesAndPercentages();
+        const newMap = await this.getSelectedCountriesAndPercentages();
 
-            if (newMap.has(countryName)) {
-                newMap.delete(countryName);
-            }
-
-            await this.remoteDataSource.set({
-                selectedCountriesAndPercentages: maptoJSON(newMap),
-            });
-        } catch (error: unknown) {
-            throw Error(error as string);
+        if (newMap.has(countryName)) {
+            newMap.delete(countryName);
         }
+
+        await this.remoteDataSource.set({
+            selectedCountriesAndPercentages: maptoJSON(newMap),
+        });
     }
 
     async setSelectedCountryPercentage(
         countryName: CountryName,
         percentage: number
     ): Promise<void> {
-        try {
-            const newMap = await this.getSelectedCountriesAndPercentages();
+        const newMap = await this.getSelectedCountriesAndPercentages();
 
-            if (newMap.has(countryName)) {
-                newMap.set(countryName, percentage);
-            } else {
-                throw Error(
-                    `SelectedCountriesRemoteDataSource.setSelectedCountryPercentage: countryName ${countryName} not found`
-                );
-            }
-
-            await this.remoteDataSource.set({
-                selectedCountriesAndPercentages: maptoJSON(newMap),
-            });
-        } catch (error: unknown) {
-            throw Error(error as string);
+        if (newMap.has(countryName)) {
+            newMap.set(countryName, percentage);
+        } else {
+            throw Error(
+                `SelectedCountriesRemoteDataSource.setSelectedCountryPercentage: countryName ${countryName} not found`
+            );
         }
+
+        await this.remoteDataSource.set({
+            selectedCountriesAndPercentages: maptoJSON(newMap),
+        });
     }
 }
