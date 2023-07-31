@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
 import { ISelectedCountriesRepository } from "../../../data/selected-countries/ISelectedCountriesRepository";
+import { percentageAboveHundredString } from "../../../utils/messages/errorMessages";
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import { SelectedCountriesContextType } from "./SelectedCountriesProvider";
 
@@ -45,11 +46,7 @@ export const useSelectedCountriesContext = (): SelectedCountriesContextType => {
         );
 
         if (percentage > 1) {
-            throw new Error(
-                `Error: The sum of the percentages is greater than 100%. Current sum: ${(
-                    percentage * 100
-                ).toFixed(0)}%`
-            );
+            throw new Error(percentageAboveHundredString(percentage * 100));
         }
     };
 
