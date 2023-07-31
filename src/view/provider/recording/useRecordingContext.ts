@@ -14,6 +14,7 @@ import { RecordingContextType } from "./RecordingProvider";
 export const useRecordingContext = (): RecordingContextType => {
     const {
         selectedCountriesContext: { selectedCountries, validatePercentages },
+        historyContext: { refreshCalculationHistory },
     } = useRootContext();
 
     const calculationsRepository: ICalculationsRepository =
