@@ -6,7 +6,7 @@ import {
 
 const AVG_DEVICE_LIFETIME_YEARS = 4;
 const AVG_DEVICE_LIFETIME_SECONDS =
-    (AVG_DEVICE_LIFETIME_YEARS * 365 + 1) * 24 * 3600;
+    AVG_DEVICE_LIFETIME_YEARS * 365.25 * 24 * 3600;
 
 export const calculateEmbodiedEmissions = (
     flowLengthSeconds: number,
