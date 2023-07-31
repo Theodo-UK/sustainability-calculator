@@ -20,35 +20,6 @@ export const usePopup = () => {
     };
 
     useEffect(() => {
-        const bytesTransferredChangedListener = (
-            message: { command: { bytesTransferredChanged: number } },
-            sender: chrome.runtime.MessageSender,
-            sendResponse: (response?: boolean) => void
-        ) => {
-            if (message.command.bytesTransferredChanged) {
-                const bytesTransferred =
-                    message.command.bytesTransferredChanged;
-                setBytesTransferred(bytesTransferred);
-                const emissions = calculateCarbon(
-                    bytesTransferred,
-                    selectedCountries
-                );
-                setEmissions(emissions);
-            }
-            sendResponse(true);
-            return true;
-        };
-
-        chrome.runtime.onMessage.addListener(bytesTransferredChangedListener);
-
-        return () => {
-            chrome.runtime.onMessage.removeListener(
-                bytesTransferredChangedListener
-            );
-        };
-    }, [selectedCountries]);
-
-    useEffect(() => {
         const getLastCalculationAndSetState = async () => {
             if (await calculationsRepository.isOngoingCalculation()) {
                 const bytesTransferred = await chrome.runtime.sendMessage(
