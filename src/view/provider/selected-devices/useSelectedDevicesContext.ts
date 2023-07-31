@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { DeviceName } from "../../../data/constants/DeviceEmissions";
 import { ISelectedDevicesRepository } from "../../../data/selected-devices/ISelectedDevicesRepository";
+import { percentageAboveHundredString } from "../../../utils/messages/errorMessages";
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import { SelectedDevicesContextType } from "./SelectedDevicesProvider";
 
@@ -46,19 +47,15 @@ export const useSelectedDevicesContext = (): SelectedDevicesContextType => {
         );
 
         if (percentage > 1) {
-            throw new Error(
-                `Error: The sum of the percentages is greater than 100%. Current sum: ${(
-                    percentage * 100
-                ).toFixed(0)}%`
-            );
+            throw new Error(percentageAboveHundredString(percentage * 100));
         }
     };
 
     useMountEffect(() => {
         const getSelectedDevicesAndSetState = async () => {
-            const _selectedDevices =
+            const selectedDevices =
                 await selectedDevicesRepository.getSelectedDevices();
-            setSelectedDevices(_selectedDevices);
+            setSelectedDevices(selectedDevices);
         };
         getSelectedDevicesAndSetState();
     });

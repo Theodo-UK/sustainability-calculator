@@ -1,6 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import { CountryName } from "../../../../data/constants/CountryEmissions";
 import { areMapsDeepEqual } from "../../../../utils/helpers/areMapsDeepEqual";
+import { percentageAboveHundredString } from "../../../../utils/messages/errorMessages";
 import { useSelectedDevicesContext } from "../useSelectedDevicesContext";
 
 describe("useSelectedDevicesContext", () => {
@@ -28,7 +29,7 @@ describe("useSelectedDevicesContext", () => {
         expect(result.current.selectedDevices).toStrictEqual(mockCountries);
     });
 
-    it("removeSelectedCountries should update selectedDevices", async () => {
+    it("removeSelectedCountries should remove selectedDevices", async () => {
         const { result } = renderHook(useSelectedDevicesContext);
 
         const mockDevice1 = "iPhone 12";
@@ -67,7 +68,7 @@ describe("useSelectedDevicesContext", () => {
         result.current.selectedDevices.set("Google Pixel 6", 0.6);
 
         expect(() => result.current.validatePercentages()).toThrowError(
-            "Error: The sum of the percentages is greater than 100%. Current sum: 110%"
+            percentageAboveHundredString(110)
         );
     });
 });
