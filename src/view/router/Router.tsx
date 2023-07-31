@@ -5,23 +5,38 @@ import { LandingPage } from "../popup/pages/LandingPage";
 import { RecordingPage } from "../popup/pages/RecordingPage";
 import { ResultsPage } from "../popup/pages/ResultsPage";
 import { useMountEffect } from "../popup/useOnceAfterFirstMount";
-import { useRootContext } from "../provider/useRootContext";
+import {
+    HistoryContext,
+    HistoryContextType,
+} from "../provider/history/HistoryProvider";
+import {
+    RecordingContext,
+    RecordingContextType,
+} from "../provider/recording/RecordingProvider";
+import {
+    SelectedCountriesContext,
+    SelectedCountriesContextType,
+} from "../provider/selected-countries/SelectedCountriesProvider";
+import { useNullSafeContext } from "../provider/useNullSafeContext";
 
 export const Router = () => {
-    const { selectedCountriesContext } = useRootContext();
+    const selectedCountriesContext =
+        useNullSafeContext<SelectedCountriesContextType>(
+            SelectedCountriesContext
+        );
 
     const {
-        recordingContext: {
-            bytesTransferred,
-            emissions,
-            startRecording,
-            stopRecording,
-            userType,
-            setUserType,
-            error,
-        },
-        historyContext: { calculationHistory, refreshCalculationHistory },
-    } = useRootContext();
+        bytesTransferred,
+        emissions,
+        startRecording,
+        stopRecording,
+        userType,
+        setUserType,
+        error,
+    } = useNullSafeContext<RecordingContextType>(RecordingContext);
+
+    const { calculationHistory, refreshCalculationHistory } =
+        useNullSafeContext<HistoryContextType>(HistoryContext);
 
     const [page, setPage] = useState<PageType>("landing");
     const pageRepository = IPageRepository.instance;

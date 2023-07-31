@@ -8,14 +8,21 @@ import { backgroundStopRecordingBytes } from "../../popup/utils/backgroundStopRe
 import { calculateAverageSpecificEmissionsHelper } from "../../popup/utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "../../popup/utils/calculateCarbon";
 import { refreshActiveTabAndRecordBytes } from "../../popup/utils/refreshActiveTabAndRecordBytes";
-import { useRootContext } from "../useRootContext";
+import { HistoryContext, HistoryContextType } from "../history/HistoryProvider";
+import {
+    SelectedCountriesContext,
+    SelectedCountriesContextType,
+} from "../selected-countries/SelectedCountriesProvider";
+import { useNullSafeContext } from "../useNullSafeContext";
 import { RecordingContextType } from "./RecordingProvider";
 
 export const useRecordingContext = (): RecordingContextType => {
-    const {
-        selectedCountriesContext: { selectedCountries, validatePercentages },
-        historyContext: { refreshCalculationHistory },
-    } = useRootContext();
+    const { selectedCountries, validatePercentages } =
+        useNullSafeContext<SelectedCountriesContextType>(
+            SelectedCountriesContext
+        );
+    const { refreshCalculationHistory } =
+        useNullSafeContext<HistoryContextType>(HistoryContext);
 
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
