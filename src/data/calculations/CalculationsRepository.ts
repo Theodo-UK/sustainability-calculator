@@ -40,18 +40,6 @@ export class CalculationsRepository implements ICalculationsRepository {
         return JSONtoCalculationDataArray(data);
     }
 
-    async _getOngoingCalculation(): Promise<CalculationData | null> {
-        const data = await this.remoteDataSource.get(
-            "ongoingCalculation",
-            null
-        );
-
-        if (data !== null) {
-            return JSON.parse(data as string) as CalculationData;
-        }
-        return null;
-    }
-
     async getLastCalculation(): Promise<CalculationData | null> {
         const oldCalculations = await this.getAllCalculations();
         if (oldCalculations.length > 0) {
