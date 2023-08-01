@@ -1,7 +1,10 @@
 import { JSONtoMap, maptoJSON } from "../../utils/helpers/jsonHelpers";
 import { DeviceName } from "../constants/DeviceEmissions";
 import { IStorageRepository } from "../storage/IStorageRepository";
-import { ISelectedDevicesRepository } from "./ISelectedDevicesRepository";
+import {
+    ISelectedDevicesRepository,
+    isSelectedDevicesMap,
+} from "./ISelectedDevicesRepository";
 
 export class SelectedDevicesRepository implements ISelectedDevicesRepository {
     remoteDataSource: IStorageRepository = IStorageRepository.instance;
@@ -12,7 +15,11 @@ export class SelectedDevicesRepository implements ISelectedDevicesRepository {
             maptoJSON(new Map<DeviceName, number>([]))
         );
 
-        return JSONtoMap(data) as Map<DeviceName, number>;
+        const map = JSONtoMap(data);
+        if (!isSelectedDevicesMap(map)) {
+            throw Error(`data ${data} is not a valid map`);
+        }
+        return map;
     }
 
     async addSelectedDevice(device: DeviceName): Promise<void> {
