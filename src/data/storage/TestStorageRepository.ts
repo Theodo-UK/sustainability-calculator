@@ -1,18 +1,22 @@
-import { IStorageRepository, StorageDataType } from "./IStorageRepository";
+import {
+    IStorageRepository,
+    StorageDataType,
+    parseStorageDataType,
+} from "./IStorageRepository";
 
 export class TestStorageRepository implements IStorageRepository {
     private _storageObject: { [key: string]: StorageDataType } = {};
 
-    async get(
+    async get<T extends StorageDataType>(
         key: string,
-        defaultValue: StorageDataType
-    ): Promise<StorageDataType> {
+        defaultValue: T
+    ): Promise<T> {
         const data = this._storageObject[key];
         if (data === undefined) {
             this._storageObject[key] = defaultValue;
             return defaultValue;
         }
-        return data;
+        return parseStorageDataType<T>(data);
     }
 
     async set(data: { [key: string]: StorageDataType }): Promise<void> {
