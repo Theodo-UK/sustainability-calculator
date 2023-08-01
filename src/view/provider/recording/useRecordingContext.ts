@@ -15,7 +15,10 @@ import {
 } from "../selected-countries/SelectedCountriesProvider";
 import { useNullSafeContext } from "../useNullSafeContext";
 import { RecordingContextType } from "./RecordingProvider";
-import { refreshActiveTab, startRecordingBytesTransferred } from "./helpers";
+import {
+    refreshActiveTab,
+    startRecordingBytesTransferred
+} from "./helpers";
 
 export const useRecordingContext = (): RecordingContextType => {
     const { selectedCountries, validatePercentages } =
@@ -74,7 +77,7 @@ export const useRecordingContext = (): RecordingContextType => {
     };
 
     useMountEffect(() => {
-        const getLastCalculationAndSetState = async () => {
+        const setBytesOnMount = async () => {
             if (await calculationsRepository.isOngoingCalculation()) {
                 const bytesTransferred = await chrome.runtime.sendMessage(
                     "getBytesTransferred"
@@ -103,7 +106,7 @@ export const useRecordingContext = (): RecordingContextType => {
             setEmissions(0);
             setAverageSpecificEmissions(0);
         };
-        getLastCalculationAndSetState();
+        setBytesOnMount();
     });
 
     useEffect(() => {
