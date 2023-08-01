@@ -1,14 +1,10 @@
 import React from "react";
 import { FaSyncAlt } from "react-icons/fa";
-import {
-    formatBytes,
-    formatEmissions,
-} from "../../utils/helpers/formatNumbersToString";
 import { Button } from "../components/atomic/Button";
 import { SwitchAtom } from "../components/atomic/SwitchAtom";
 import { CalculationHistory } from "../components/calculation-history/CalculationHistory";
 import { SelectedCountriesDisclosure } from "../components/countries/SelectedCountriesDisclosure";
-import { EmissionsComparison } from "../components/emissions-comparison/EmissionsComparison";
+import { Results } from "../components/results/Results";
 import { SelectedDevicesDisclosure } from "../components/selected-devices/disclosure/SelectedDevicesDisclosure";
 import {
     RecordingContext,
@@ -33,17 +29,7 @@ export const ResultsPage = () => {
             </h1>
             <SelectedCountriesDisclosure />
             <SelectedDevicesDisclosure />
-            <div className=" h-32 grid grid-cols-2 text-base bg-nyanza rounded-2xl shadow font-medium">
-                <p className="text-center flex flex-wrap content-center justify-center">
-                    {formatBytes(recordings[0].bytes)}
-                    <br />
-                    {`${formatEmissions(recordings[0].specificEmissions)}
-                        gCO2/GB`}
-                    <br />
-                    {`${formatEmissions(recordings[0].emissions)} g of CO2`}
-                </p>
-                <EmissionsComparison calculation={recordings[0]} />
-            </div>
+            <Results />
             <Button
                 onClick={async () => {
                     if (await startRecording()) {
