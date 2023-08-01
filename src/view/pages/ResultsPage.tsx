@@ -55,7 +55,7 @@ export const ResultsPage = () => {
                     />
                 </div>
             </div>
-            <CalculationHistory calculationHistory={recordings} />
+            <CalculationHistory />
             {error && <p>{error}</p>}
         </>
     );
