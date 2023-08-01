@@ -6,7 +6,7 @@ interface Props {
 }
 
 export type HistoryContextType = {
-    calculationHistory: CalculationData[];
+    calculationHistory: CalculationData[] | null;
     refreshCalculationHistory: () => Promise<void>;
 };
 

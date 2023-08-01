@@ -17,10 +17,7 @@ export const useRouterContext = (): RouterContextType => {
     };
 
     useMountEffect(() => {
-        pageRepository.getCurrentPage().then(async (page) => {
-            if (page === "results") {
-                await refreshCalculationHistory();
-            }
+        pageRepository.getCurrentPage().then((page) => {
             setPage(page);
         });
     });

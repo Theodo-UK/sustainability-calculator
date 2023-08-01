@@ -36,7 +36,7 @@ export const CalculationHistory = () => {
                     <h2 className="font-semibold text-center mb-2 text-lg">
                         Calculation History
                     </h2>
-                    {calculationHistory.map((calculation, index) => {
+                    {calculationHistory?.map((calculation, index) => {
                         const [day, time] = msToDateTimeStrings(
                             calculation.unixTimeMs
                         );

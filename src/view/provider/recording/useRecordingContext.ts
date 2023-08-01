@@ -8,7 +8,6 @@ import { backgroundStopRecordingBytes } from "../../popup/utils/backgroundStopRe
 import { calculateAverageSpecificEmissionsHelper } from "../../popup/utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "../../popup/utils/calculateCarbon";
 import { refreshActiveTabAndRecordBytes } from "../../popup/utils/refreshActiveTabAndRecordBytes";
-import { HistoryContext, HistoryContextType } from "../history/HistoryProvider";
 import {
     SelectedCountriesContext,
     SelectedCountriesContextType,
@@ -21,8 +20,6 @@ export const useRecordingContext = (): RecordingContextType => {
         useNullSafeContext<SelectedCountriesContextType>(
             SelectedCountriesContext
         );
-    const { refreshCalculationHistory } =
-        useNullSafeContext<HistoryContextType>(HistoryContext);
 
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
@@ -66,7 +63,6 @@ export const useRecordingContext = (): RecordingContextType => {
                 )
             );
             await calculationsRepository.setOngoingCalculation(false);
-            await refreshCalculationHistory();
         } catch (error: unknown) {
             if (error instanceof Error) {
                 setError(error.message);

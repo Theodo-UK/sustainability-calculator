@@ -6,6 +6,11 @@ import { CalculationHistory } from "../components/calculation-history/Calculatio
 import { SelectedCountriesDisclosure } from "../components/countries/SelectedCountriesDisclosure";
 import { Results } from "../components/results/Results";
 import { SelectedDevicesDisclosure } from "../components/selected-devices/disclosure/SelectedDevicesDisclosure";
+import { useMountEffect } from "../popup/useOnceAfterFirstMount";
+import {
+    HistoryContext,
+    HistoryContextType,
+} from "../provider/history/HistoryProvider";
 import {
     RecordingContext,
     RecordingContextType,
@@ -20,8 +25,18 @@ export const ResultsPage = () => {
     const { startRecording, userType, setUserType, error } =
         useNullSafeContext<RecordingContextType>(RecordingContext);
     const { goToPage } = useNullSafeContext<RouterContextType>(RouterContext);
-
+    const { calculationHistory, refreshCalculationHistory } =
+        useNullSafeContext<HistoryContextType>(HistoryContext);
     const isReturningUser = userType === "returning user";
+
+    useMountEffect(() => {
+        refreshCalculationHistory();
+    });
+
+    if (!calculationHistory) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <>
             <h1 className="text-2xl font-bold text-center">
