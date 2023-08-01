@@ -28,27 +28,7 @@ export const useRouterContext = (): RouterContextType => {
     const pageComponents: Record<PageType, React.JSX.Element> = {
         landing: <LandingPage />,
         recording: <RecordingPage />,
-        results: (
-            <ResultsPage
-                onRestartButtonPress={async () => {
-                    if (await startRecording()) {
-                        goToPage("recording");
-                    }
-                }}
-                recordings={calculationHistory}
-                selectedCountries={selectedCountriesContext.selectedCountries}
-                addSelectedCountry={selectedCountriesContext.addSelectedCountry}
-                removeSelectedCountry={
-                    selectedCountriesContext.removeSelectedCountry
-                }
-                setCountryPercentage={
-                    selectedCountriesContext.setCountryPercentage
-                }
-                userType={userType}
-                setUserType={setUserType}
-                error={error}
-            />
-        ),
+        results: <ResultsPage />,
     };
 
     const renderPage = () => {

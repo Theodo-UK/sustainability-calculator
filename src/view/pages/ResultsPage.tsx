@@ -1,10 +1,6 @@
 import React from "react";
 import { FaSyncAlt } from "react-icons/fa";
 import {
-    CalculationData,
-    UserType,
-} from "../../data/calculations/ICalculationsRepository";
-import {
     formatBytes,
     formatEmissions,
 } from "../../utils/helpers/formatNumbersToString";
@@ -14,33 +10,21 @@ import { CalculationHistory } from "../components/calculation-history/Calculatio
 import { SelectedCountriesDisclosure } from "../components/countries/SelectedCountriesDisclosure";
 import { EmissionsComparison } from "../components/emissions-comparison/EmissionsComparison";
 import { SelectedDevicesDisclosure } from "../components/selected-devices/disclosure/SelectedDevicesDisclosure";
+import {
+    RecordingContext,
+    RecordingContextType,
+} from "../provider/recording/RecordingProvider";
+import {
+    RouterContext,
+    RouterContextType,
+} from "../provider/router/RouterProvider";
+import { useNullSafeContext } from "../provider/useNullSafeContext";
 
-type ResultsPageProps = {
-    onRestartButtonPress: () => void;
-    recordings: CalculationData[];
-    selectedCountries: Map<string, number>;
-    addSelectedCountry: (country: string) => Promise<void>;
-    removeSelectedCountry: (country: string) => Promise<void>;
-    setCountryPercentage: (
-        country: string,
-        percentage: number
-    ) => Promise<void>;
-    userType: UserType;
-    setUserType: (userType: UserType) => void;
-    error: string | undefined;
-};
+export const ResultsPage = () => {
+    const { startRecording, userType, setUserType, error } =
+        useNullSafeContext<RecordingContextType>(RecordingContext);
+    const { goToPage } = useNullSafeContext<RouterContextType>(RouterContext);
 
-export const ResultsPage = ({
-    onRestartButtonPress,
-    recordings,
-    selectedCountries,
-    addSelectedCountry,
-    removeSelectedCountry,
-    setCountryPercentage,
-    userType,
-    setUserType,
-    error,
-}: ResultsPageProps) => {
     const isReturningUser = userType === "returning user";
     return (
         <>
@@ -65,7 +49,14 @@ export const ResultsPage = ({
                 </p>
                 <EmissionsComparison calculation={recordings[0]} />
             </div>
-            <Button onClick={onRestartButtonPress} colour="light-green">
+            <Button
+                onClick={async () => {
+                    if (await startRecording()) {
+                        goToPage("recording");
+                    }
+                }}
+                colour="light-green"
+            >
                 <div className="flex flex-row gap-2 items-center">
                     <FaSyncAlt />
                     <p>Restart recording</p>
