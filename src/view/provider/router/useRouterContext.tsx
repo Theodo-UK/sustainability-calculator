@@ -27,16 +27,7 @@ export const useRouterContext = (): RouterContextType => {
 
     const pageComponents: Record<PageType, React.JSX.Element> = {
         landing: <LandingPage />,
-        recording: (
-            <RecordingPage
-                onStopButtonPress={async () => {
-                    await stopRecording();
-                    goToPage("results");
-                }}
-                bytesTransferred={bytesTransferred}
-                emissions={emissions}
-            />
-        ),
+        recording: <RecordingPage />,
         results: (
             <ResultsPage
                 onRestartButtonPress={async () => {
