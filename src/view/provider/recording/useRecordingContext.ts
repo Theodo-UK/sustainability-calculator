@@ -8,6 +8,7 @@ import { backgroundStopRecordingBytes } from "../../popup/utils/backgroundStopRe
 import { calculateAverageSpecificEmissionsHelper } from "../../popup/utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "../../popup/utils/calculateCarbon";
 
+import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import {
     SelectedCountriesContext,
     SelectedCountriesContextType,
@@ -72,7 +73,7 @@ export const useRecordingContext = (): RecordingContextType => {
         }
     };
 
-    useEffect(() => {
+    useMountEffect(() => {
         const getLastCalculationAndSetState = async () => {
             if (await calculationsRepository.isOngoingCalculation()) {
                 const bytesTransferred = await chrome.runtime.sendMessage(
@@ -103,7 +104,7 @@ export const useRecordingContext = (): RecordingContextType => {
             setAverageSpecificEmissions(0);
         };
         getLastCalculationAndSetState();
-    }, [calculationsRepository, selectedCountries]);
+    });
 
     useEffect(() => {
         const bytesTransferredChangedListener = (
