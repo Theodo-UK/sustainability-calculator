@@ -7,14 +7,12 @@ export class SelectedDevicesRepository implements ISelectedDevicesRepository {
     remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
     async getSelectedDevices(): Promise<Map<DeviceName, number>> {
-        const data = await this.remoteDataSource.get({
-            selectedDevices: maptoJSON(new Map<DeviceName, number>([])),
-        });
+        const data = await this.remoteDataSource.get(
+            "selectedDevices",
+            maptoJSON(new Map<DeviceName, number>([]))
+        );
 
-        return JSONtoMap(data["selectedDevices"] as string) as Map<
-            DeviceName,
-            number
-        >;
+        return JSONtoMap(data as string) as Map<DeviceName, number>;
     }
 
     async addSelectedDevice(device: DeviceName): Promise<void> {

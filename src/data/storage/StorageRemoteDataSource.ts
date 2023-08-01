@@ -56,27 +56,18 @@ export class StorageRemoteDataSource {
         }
     }
 
-    async get(
-        data: string | string[] | { [key: string]: any } | null
-    ): Promise<{ [key: string]: any }> {
+    async get(key: string, defaultValue: any): Promise<any> {
         try {
-            return await this.storage.read(data).then(async (result: any) => {
-                if (typeof data === "object" && data !== null) {
-                    const resultWithDefault = result as { [key: string]: any };
-
-                    for (const key in data) {
-                        if (!(key in result)) {
-                            resultWithDefault[key] = result[key];
-                        }
-                    }
-                    await this.storage.write(resultWithDefault);
-                    return resultWithDefault;
+            return await this.storage.read(key).then(async (result: any) => {
+                if (!(key in result)) {
+                    await this.storage.write({ key: defaultValue });
+                    return defaultValue;
                 }
-                return result;
+                return result[key];
             });
         } catch (error) {
             throw new Error(
-                `StorageRemoteDataSource failed to get: ${data}: ${error}`
+                `StorageRemoteDataSource failed to get: ${key}: ${error}`
             );
         }
     }

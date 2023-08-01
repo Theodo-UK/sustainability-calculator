@@ -5,11 +5,9 @@ export class PageRepository implements IPageRepository {
     remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
     async getCurrentPage(): Promise<PageType> {
-        const data = await this.remoteDataSource.get({
-            currentPage: "landing",
-        });
+        const data = await this.remoteDataSource.get("currentPage", "landing");
 
-        return parsePage(data["currentPage"] as string);
+        return parsePage(data as string);
     }
 
     async setCurrentPage(page: PageType): Promise<void> {

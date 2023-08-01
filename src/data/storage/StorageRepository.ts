@@ -5,9 +5,16 @@ export class StorageRepository implements IStorageRepository {
     remoteDataSource: StorageRemoteDataSource = new StorageRemoteDataSource();
 
     async get(
-        data: string | string[] | { [key: string]: StorageDataType } | null
-    ): Promise<{ [key: string]: StorageDataType }> {
-        return await this.remoteDataSource.get(data);
+        key: string,
+        defaultValue: StorageDataType
+    ): Promise<StorageDataType> {
+        const data = await this.remoteDataSource.get(key, defaultValue);
+        if (typeof data !== typeof defaultValue) {
+            throw new Error(
+                `Expected ${key} to be of type ${typeof defaultValue} but got ${typeof data}`
+            );
+        }
+        return data;
     }
 
     async set(data: { [key: string]: StorageDataType }): Promise<void> {

@@ -21,13 +21,10 @@ export abstract class IStorageRepository {
         return this._instance;
     }
 
-    /**
-     * @param keys A single key to get, list of keys to get, or a dictionary specifying default values.
-     * An empty list or object will return an empty result object. Pass in null to get the entire contents of storage.
-     */
     abstract get(
-        keys: string | string[] | { [key: string]: StorageDataType } | null
-    ): Promise<{ [key: string]: StorageDataType }>;
+        key: string,
+        defaultValue: StorageDataType
+    ): Promise<StorageDataType>;
 
     abstract set(data: { [key: string]: StorageDataType }): Promise<void>;
 

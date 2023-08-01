@@ -11,15 +11,12 @@ export class SelectedCountriesRepository
     async getSelectedCountriesAndPercentages(): Promise<
         Map<CountryName, number>
     > {
-        const data = await this.remoteDataSource.get({
-            selectedCountriesAndPercentages: maptoJSON(
-                new Map<CountryName, number>([])
-            ),
-        });
+        const data = await this.remoteDataSource.get(
+            "selectedCountriesAndPercentages",
+            maptoJSON(new Map<CountryName, number>([]))
+        );
 
-        return JSONtoMap(
-            data["selectedCountriesAndPercentages"] as string
-        ) as Map<CountryName, number>;
+        return JSONtoMap(data as string) as Map<CountryName, number>;
     }
 
     async addSelectedCountry(countryName: CountryName): Promise<void> {
