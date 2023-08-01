@@ -1,23 +1,13 @@
 import { act, renderHook } from "@testing-library/react";
-
 import {
     CalculationData,
     ICalculationsRepository,
-} from "../../../data/calculations/ICalculationsRepository";
-import { mockChrome } from "../../../utils/test-objects/mockChrome";
-import { mockProviderWrapper } from "../../../utils/test-objects/mockProviderWrapper";
-import { usePopup } from "../usePopup";
+} from "../../../../data/calculations/ICalculationsRepository";
+import { useHistoryContext } from "../useHistoryContext";
 
-(global as any).chrome = mockChrome;
-
-describe("usePopup", () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-    it("refreshCalculationHistory should show all calculations", async () => {
-        const { result } = renderHook(usePopup, {
-            wrapper: mockProviderWrapper,
-        });
+describe("useHistoryContext", () => {
+    it("refreshCalculationHistory should return the correct calculation history", async () => {
+        const { result } = renderHook(() => useHistoryContext());
 
         const mockCalculationRepository = ICalculationsRepository.instance;
         mockCalculationRepository.storeCalculation(
