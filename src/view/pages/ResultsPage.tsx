@@ -31,12 +31,7 @@ export const ResultsPage = () => {
             <h1 className="text-2xl font-bold text-center">
                 Sustainability Calculator
             </h1>
-            <SelectedCountriesDisclosure
-                selectedCountries={selectedCountries}
-                addSelectedCountry={addSelectedCountry}
-                removeSelectedCountry={removeSelectedCountry}
-                setCountryPercentage={setCountryPercentage}
-            />
+            <SelectedCountriesDisclosure />
             <SelectedDevicesDisclosure />
             <div className=" h-32 grid grid-cols-2 text-base bg-nyanza rounded-2xl shadow font-medium">
                 <p className="text-center flex flex-wrap content-center justify-center">

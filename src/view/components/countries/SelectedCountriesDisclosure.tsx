@@ -1,23 +1,23 @@
 import { Disclosure } from "@headlessui/react";
 import React from "react";
 import { FaEdit } from "react-icons/fa";
-import { CountryName } from "../../../data/constants/CountryEmissions";
+import {
+    SelectedCountriesContext,
+    SelectedCountriesContextType,
+} from "../../provider/selected-countries/SelectedCountriesProvider";
+import { useNullSafeContext } from "../../provider/useNullSafeContext";
 import { CountryDropdown } from "./CountryDropdown";
 import { SelectedCountries } from "./SelectedCountries";
 
-type SelectedCountriesDisclosureProps = {
-    selectedCountries: Map<CountryName, number>;
-    addSelectedCountry: (CountryName: string) => void;
-    removeSelectedCountry: (CountryName: string) => void;
-    setCountryPercentage: (CountryName: string, percentage: number) => void;
-};
-
-export const SelectedCountriesDisclosure = ({
-    selectedCountries,
-    addSelectedCountry,
-    removeSelectedCountry,
-    setCountryPercentage,
-}: SelectedCountriesDisclosureProps) => {
+export const SelectedCountriesDisclosure = () => {
+    const {
+        selectedCountries,
+        addSelectedCountry,
+        removeSelectedCountry,
+        setCountryPercentage,
+    } = useNullSafeContext<SelectedCountriesContextType>(
+        SelectedCountriesContext
+    );
     return (
         <div>
             <Disclosure>
