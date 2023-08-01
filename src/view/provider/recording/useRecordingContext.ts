@@ -7,13 +7,14 @@ import {
 import { backgroundStopRecordingBytes } from "../../popup/utils/backgroundStopRecordingBytes";
 import { calculateAverageSpecificEmissionsHelper } from "../../popup/utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "../../popup/utils/calculateCarbon";
-import { refreshActiveTabAndRecordBytes } from "../../popup/utils/refreshActiveTabAndRecordBytes";
+
 import {
     SelectedCountriesContext,
     SelectedCountriesContextType,
 } from "../selected-countries/SelectedCountriesProvider";
 import { useNullSafeContext } from "../useNullSafeContext";
 import { RecordingContextType } from "./RecordingProvider";
+import { refreshActiveTab, startRecordingBytesTransferred } from "./helpers";
 
 export const useRecordingContext = (): RecordingContextType => {
     const { selectedCountries, validatePercentages } =
@@ -37,7 +38,8 @@ export const useRecordingContext = (): RecordingContextType => {
                 calculateAverageSpecificEmissionsHelper(selectedCountries)
             );
             await calculationsRepository.setOngoingCalculation(true);
-            await refreshActiveTabAndRecordBytes(userType === "new user");
+            await refreshActiveTab(userType === "new user");
+            await startRecordingBytesTransferred();
             setError(undefined);
 
             return true;
