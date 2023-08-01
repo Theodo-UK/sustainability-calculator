@@ -1,4 +1,7 @@
-import { CountryName } from "../constants/CountryEmissions";
+import {
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
+    CountryName,
+} from "../constants/CountryEmissions";
 import { SelectedCountriesRepository } from "./SelectedCountriesRepository";
 import { TestSelectedCountriesRepository } from "./TestSelectedCountriesRepository";
 
@@ -33,3 +36,27 @@ export abstract class ISelectedCountriesRepository {
         percentage: number
     ): Promise<void>;
 }
+
+const countryNames = Object.keys(
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB
+) as CountryName[];
+
+export const isSelectedCountriesMap = (
+    data: unknown
+): data is Map<CountryName, number> => {
+    if (!(data instanceof Map)) {
+        return false;
+    }
+
+    const keys = Array.from(data.keys());
+    const values = Array.from(data.values());
+
+    if (
+        keys.some((key) => !countryNames.includes(key)) ||
+        values.some((value) => typeof value !== "number")
+    ) {
+        return false;
+    }
+
+    return true;
+};

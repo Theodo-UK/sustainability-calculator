@@ -1,7 +1,10 @@
 import { JSONtoMap, maptoJSON } from "../../utils/helpers/jsonHelpers";
 import { CountryName } from "../constants/CountryEmissions";
 import { IStorageRepository } from "../storage/IStorageRepository";
-import { ISelectedCountriesRepository } from "./ISelectedCountriesRepository";
+import {
+    ISelectedCountriesRepository,
+    isSelectedCountriesMap,
+} from "./ISelectedCountriesRepository";
 
 export class SelectedCountriesRepository
     implements ISelectedCountriesRepository
@@ -15,8 +18,11 @@ export class SelectedCountriesRepository
             "selectedCountriesAndPercentages",
             maptoJSON(new Map<CountryName, number>([]))
         );
-
-        return JSONtoMap(data) as Map<CountryName, number>;
+        const map = JSONtoMap(data);
+        if (!isSelectedCountriesMap(map)) {
+            throw Error(`data ${data} is not a valid map`);
+        }
+        return map;
     }
 
     async addSelectedCountry(countryName: CountryName): Promise<void> {
