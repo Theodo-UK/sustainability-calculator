@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
     CalculationData,
     ICalculationsRepository,
@@ -7,40 +7,49 @@ import {
 import { backgroundStopRecordingBytes } from "../../popup/utils/backgroundStopRecordingBytes";
 import { calculateAverageSpecificEmissionsHelper } from "../../popup/utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "../../popup/utils/calculateCarbon";
-import { refreshActiveTabAndRecordBytes } from "../../popup/utils/refreshActiveTabAndRecordBytes";
-import { HistoryContext, HistoryContextType } from "../history/HistoryProvider";
+
+import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import {
     SelectedCountriesContext,
     SelectedCountriesContextType,
 } from "../selected-countries/SelectedCountriesProvider";
 import { useNullSafeContext } from "../useNullSafeContext";
 import { RecordingContextType } from "./RecordingProvider";
+import {
+    getBytesFromBackground,
+    getBytesFromStorage,
+    refreshActiveTab,
+    startRecordingBytesTransferred,
+} from "./helpers";
 
 export const useRecordingContext = (): RecordingContextType => {
     const { selectedCountries, validatePercentages } =
         useNullSafeContext<SelectedCountriesContextType>(
             SelectedCountriesContext
         );
-    const { refreshCalculationHistory } =
-        useNullSafeContext<HistoryContextType>(HistoryContext);
 
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
 
-    const [emissions, setEmissions] = useState(0);
     const [bytesTransferred, setBytesTransferred] = useState(0);
     const [error, setError] = useState<string>();
-    const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [userType, setUserType] = useState<UserType>("new user");
+
+    const emissions = useMemo(
+        () => calculateCarbon(bytesTransferred, selectedCountries),
+        [bytesTransferred, selectedCountries]
+    );
+    const averageSpecificEmissions = useMemo(
+        () => calculateAverageSpecificEmissionsHelper(selectedCountries),
+        [selectedCountries]
+    );
 
     const startRecording = async (): Promise<boolean> => {
         try {
             validatePercentages();
-            setAverageSpecificEmissions(
-                calculateAverageSpecificEmissionsHelper(selectedCountries)
-            );
             await calculationsRepository.setOngoingCalculation(true);
-            await refreshActiveTabAndRecordBytes(userType === "new user");
+            await refreshActiveTab(userType === "new user");
+            await startRecordingBytesTransferred();
             setError(undefined);
 
             return true;
@@ -66,7 +75,6 @@ export const useRecordingContext = (): RecordingContextType => {
                 )
             );
             await calculationsRepository.setOngoingCalculation(false);
-            await refreshCalculationHistory();
         } catch (error: unknown) {
             if (error instanceof Error) {
                 setError(error.message);
@@ -74,38 +82,20 @@ export const useRecordingContext = (): RecordingContextType => {
         }
     };
 
-    useEffect(() => {
-        const getLastCalculationAndSetState = async () => {
+    useMountEffect(() => {
+        const setBytesOnMount = async () => {
             if (await calculationsRepository.isOngoingCalculation()) {
-                const bytesTransferred = await chrome.runtime.sendMessage(
-                    "getBytesTransferred"
-                );
-
+                const bytesTransferred = await getBytesFromBackground();
                 setBytesTransferred(bytesTransferred);
-                setEmissions(
-                    calculateCarbon(bytesTransferred, selectedCountries)
-                );
-                setAverageSpecificEmissions(
-                    calculateAverageSpecificEmissionsHelper(selectedCountries)
-                );
                 return;
             }
 
-            const calculationData =
-                await calculationsRepository.getLastCalculation();
-            if (!(calculationData === null)) {
-                setBytesTransferred(calculationData.bytes);
-                setEmissions(calculationData.emissions);
-                setAverageSpecificEmissions(calculationData.specificEmissions);
-                return;
-            }
-
-            setBytesTransferred(0);
-            setEmissions(0);
-            setAverageSpecificEmissions(0);
+            const bytesTransferred = await getBytesFromStorage();
+            setBytesTransferred(bytesTransferred);
         };
-        getLastCalculationAndSetState();
-    }, [calculationsRepository, selectedCountries]);
+
+        setBytesOnMount();
+    });
 
     useEffect(() => {
         const bytesTransferredChangedListener = (
@@ -117,11 +107,6 @@ export const useRecordingContext = (): RecordingContextType => {
                 const bytesTransferred =
                     message.command.bytesTransferredChanged;
                 setBytesTransferred(bytesTransferred);
-                const emissions = calculateCarbon(
-                    bytesTransferred,
-                    selectedCountries
-                );
-                setEmissions(emissions);
             }
             sendResponse(true);
             return true;

@@ -3,21 +3,23 @@ import { FaPause } from "react-icons/fa";
 import {
     formatBytes,
     formatEmissions,
-} from "../../../utils/helpers/formatNumbersToString";
-import { Button } from "../../components/atomic/Button";
-import { PageTooltip } from "../../components/atomic/PageTooltip";
+} from "../../utils/helpers/formatNumbersToString";
+import { Button } from "../components/atomic/Button";
+import { PageTooltip } from "../components/atomic/PageTooltip";
+import {
+    RecordingContext,
+    RecordingContextType,
+} from "../provider/recording/RecordingProvider";
+import {
+    RouterContext,
+    RouterContextType,
+} from "../provider/router/RouterProvider";
+import { useNullSafeContext } from "../provider/useNullSafeContext";
 
-type RecordingPageProps = {
-    onStopButtonPress: () => void;
-    bytesTransferred: number;
-    emissions: number;
-};
-
-export const RecordingPage = ({
-    onStopButtonPress,
-    bytesTransferred,
-    emissions,
-}: RecordingPageProps) => {
+export const RecordingPage = () => {
+    const { emissions, bytesTransferred, stopRecording } =
+        useNullSafeContext<RecordingContextType>(RecordingContext);
+    const { goToPage } = useNullSafeContext<RouterContextType>(RouterContext);
     return (
         <>
             <div className="absolute top-1 right-1">
@@ -36,7 +38,10 @@ export const RecordingPage = ({
             </p>
             <Button
                 text="Stop Recording"
-                onClick={onStopButtonPress}
+                onClick={async () => {
+                    await stopRecording();
+                    goToPage("results");
+                }}
                 colour="burgundy"
                 type="icon"
             >

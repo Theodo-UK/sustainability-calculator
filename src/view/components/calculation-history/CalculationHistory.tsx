@@ -1,20 +1,20 @@
 import React from "react";
 import { FaClipboard } from "react-icons/fa";
-import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
 import {
     formatBytes,
     formatEmissions,
     msToDateTimeStrings,
 } from "../../../utils/helpers/formatNumbersToString";
+import {
+    HistoryContext,
+    HistoryContextType,
+} from "../../provider/history/HistoryProvider";
+import { useNullSafeContext } from "../../provider/useNullSafeContext";
 import { Button } from "../atomic/Button";
 
-type CountryDropdownType = {
-    calculationHistory: CalculationData[];
-};
-
-export const CalculationHistory = ({
-    calculationHistory,
-}: CountryDropdownType) => {
+export const CalculationHistory = () => {
+    const { calculationHistory } =
+        useNullSafeContext<HistoryContextType>(HistoryContext);
     const [isListClosed, setIsListClosed] = React.useState(true);
     const handleViewHistoryButtonPress = () => setIsListClosed(false);
 
@@ -36,7 +36,7 @@ export const CalculationHistory = ({
                     <h2 className="font-semibold text-center mb-2 text-lg">
                         Calculation History
                     </h2>
-                    {calculationHistory.map((calculation, index) => {
+                    {calculationHistory?.map((calculation, index) => {
                         const [day, time] = msToDateTimeStrings(
                             calculation.unixTimeMs
                         );

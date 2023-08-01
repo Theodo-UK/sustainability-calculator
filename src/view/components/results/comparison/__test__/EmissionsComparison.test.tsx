@@ -3,9 +3,9 @@ import React from "react";
 import "@testing-library/jest-dom";
 import { render } from "@testing-library/react";
 
-import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
-import { CountryName } from "../../../data/constants/CountryEmissions";
-import { EmissionsComparison } from "../emissions-comparison/EmissionsComparison";
+import { CalculationData } from "../../../../../data/calculations/ICalculationsRepository";
+import { CountryName } from "../../../../../data/constants/CountryEmissions";
+import { EmissionsComparison } from "../EmissionsComparison";
 
 describe("EmissionsComparison", () => {
     it("renders the correct image and description", () => {

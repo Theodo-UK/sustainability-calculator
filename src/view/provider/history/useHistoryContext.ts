@@ -10,8 +10,8 @@ export const useHistoryContext = (): HistoryContextType => {
         ICalculationsRepository.instance;
 
     const [calculationHistory, setCalculationHistory] = useState<
-        CalculationData[]
-    >([]);
+        CalculationData[] | null
+    >(null);
 
     const refreshCalculationHistory = async () => {
         const calculationsData =

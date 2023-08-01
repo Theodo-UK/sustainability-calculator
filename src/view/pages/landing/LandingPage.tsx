@@ -1,13 +1,11 @@
 import React from "react";
 import { FaPlay } from "react-icons/fa";
-import { Button } from "../../../view/components/atomic/Button";
+import { Button } from "../../components/atomic/Button";
 import { PageTooltip } from "../../components/atomic/PageTooltip";
+import { useLandingPage } from "./useLandingPage";
 
-export const LandingPage = ({
-    onRecordButtonPress,
-}: {
-    onRecordButtonPress: () => void;
-}) => {
+export const LandingPage = () => {
+    const { onRecordButtonPress } = useLandingPage();
     return (
         <>
             <div className="absolute top-1 right-1">
