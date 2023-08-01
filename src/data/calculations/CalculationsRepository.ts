@@ -12,11 +12,11 @@ export class CalculationsRepository implements ICalculationsRepository {
     remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
     async isOngoingCalculation(): Promise<boolean> {
-        const data = await this.remoteDataSource.get(
+        const data = await this.remoteDataSource.get<boolean>(
             "ongoingCalculation",
             false
         );
-        return data as boolean;
+        return data;
     }
 
     async setOngoingCalculation(ongoing: boolean): Promise<void> {
@@ -33,11 +33,11 @@ export class CalculationsRepository implements ICalculationsRepository {
     }
 
     async getAllCalculations(): Promise<CalculationData[]> {
-        const data = await this.remoteDataSource.get(
+        const data = await this.remoteDataSource.get<string>(
             "allCalculations",
             JSON.stringify([])
         );
-        return JSONtoCalculationDataArray(data as string);
+        return JSONtoCalculationDataArray(data);
     }
 
     async _getOngoingCalculation(): Promise<CalculationData | null> {
