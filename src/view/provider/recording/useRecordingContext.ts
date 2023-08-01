@@ -16,8 +16,10 @@ import {
 import { useNullSafeContext } from "../useNullSafeContext";
 import { RecordingContextType } from "./RecordingProvider";
 import {
+    getBytesFromBackground,
+    getBytesFromStorage,
     refreshActiveTab,
-    startRecordingBytesTransferred
+    startRecordingBytesTransferred,
 } from "./helpers";
 
 export const useRecordingContext = (): RecordingContextType => {
@@ -29,9 +31,9 @@ export const useRecordingContext = (): RecordingContextType => {
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
 
-    const [emissions, setEmissions] = useState(0);
     const [bytesTransferred, setBytesTransferred] = useState(0);
     const [error, setError] = useState<string>();
+    const [emissions, setEmissions] = useState(0);
     const [averageSpecificEmissions, setAverageSpecificEmissions] = useState(0);
     const [userType, setUserType] = useState<UserType>("new user");
 
@@ -79,9 +81,7 @@ export const useRecordingContext = (): RecordingContextType => {
     useMountEffect(() => {
         const setBytesOnMount = async () => {
             if (await calculationsRepository.isOngoingCalculation()) {
-                const bytesTransferred = await chrome.runtime.sendMessage(
-                    "getBytesTransferred"
-                );
+                const bytesTransferred = await getBytesFromBackground();
 
                 setBytesTransferred(bytesTransferred);
                 setEmissions(
@@ -93,18 +93,9 @@ export const useRecordingContext = (): RecordingContextType => {
                 return;
             }
 
-            const calculationData =
-                await calculationsRepository.getLastCalculation();
-            if (!(calculationData === null)) {
-                setBytesTransferred(calculationData.bytes);
-                setEmissions(calculationData.emissions);
-                setAverageSpecificEmissions(calculationData.specificEmissions);
-                return;
-            }
+            const bytesTransferred = await getBytesFromStorage();
 
-            setBytesTransferred(0);
-            setEmissions(0);
-            setAverageSpecificEmissions(0);
+            setBytesTransferred(bytesTransferred);
         };
         setBytesOnMount();
     });

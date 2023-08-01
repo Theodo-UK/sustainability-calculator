@@ -1,3 +1,5 @@
+import { ICalculationsRepository } from "../../../data/calculations/ICalculationsRepository";
+
 export const refreshActiveTab = async (bypassCache: boolean): Promise<void> => {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
 
@@ -27,4 +29,17 @@ export const startRecordingBytesTransferred = async (): Promise<void> => {
             }
         }
     }
+};
+
+export const getBytesFromBackground = async (): Promise<number> => {
+    return await chrome.runtime.sendMessage("getBytesTransferred");
+};
+
+export const getBytesFromStorage = async (): Promise<number> => {
+    const calculationData =
+        await ICalculationsRepository.instance.getLastCalculation();
+    if (!(calculationData === null)) {
+        return calculationData.bytes;
+    }
+    return 0;
 };
