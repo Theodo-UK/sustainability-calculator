@@ -5,7 +5,7 @@ import { render } from "@testing-library/react";
 
 import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
 import { CountryName } from "../../../data/constants/CountryEmissions";
-import { EmissionsComparison } from "../emissions-comparison/EmissionsComparison";
+import { EmissionsComparison } from "../results/comparison/EmissionsComparison";
 
 describe("EmissionsComparison", () => {
     it("renders the correct image and description", () => {

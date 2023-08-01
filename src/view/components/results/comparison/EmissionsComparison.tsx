@@ -1,11 +1,11 @@
 import React from "react";
-import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
-import { getEmissionsComparison } from "../../../utils/helpers/getEmissionComparison";
+import { CalculationData } from "../../../../data/calculations/ICalculationsRepository";
+import { getEmissionsComparison } from "../../../../utils/helpers/getEmissionComparison";
 
+import { RealLifeExample } from "../../../../data/constants/RealLifeComparison";
 import CoffeeCupPath from "../../../assets/coffee-cup.svg";
 import GoogleSearchPath from "../../../assets/google-search.svg";
 import PlasticBottlePath from "../../../assets/plastic-bottle.svg";
-import { RealLifeExample } from "../../../data/constants/RealLifeComparison";
 
 export const EmissionsComparison = ({
     calculation,
