@@ -24,37 +24,13 @@ export class StorageRemoteDataSource {
         const syncClear = () =>
             new Promise((resolve) => API.clear(() => resolve(null)));
 
-        const getAndSet = (key: string, mutateValue: (value: any) => any) => {
-            return new Promise((resolve) => {
-                syncGet(key).then((currentValue: any) => {
-                    const newValue = mutateValue(currentValue);
-                    syncSet({ [key]: newValue }).then(() => resolve(null));
-                });
-            });
-        };
-
         return {
             read: (data: string | string[] | { [key: string]: any } | null) =>
                 mutexExec(() => syncGet(data)),
             write: (data: any) => mutexExec(() => syncSet(data)),
             clear: () => mutexExec(() => syncClear()),
-            readAndWrite: (key: string, mutateValue: (value: any) => any) =>
-                mutexExec(() => getAndSet(key, mutateValue)),
         };
     })();
-
-    async getAndSet(
-        key: string,
-        mutateValue: (value: any) => any
-    ): Promise<void> {
-        try {
-            await this.storage.readAndWrite(key, mutateValue);
-        } catch (error) {
-            throw new Error(
-                `StorageRemoteDataSource failed to getAndSet: ${key}: ${error}`
-            );
-        }
-    }
 
     async get(key: string, defaultValue: any): Promise<any> {
         try {

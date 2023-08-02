@@ -29,11 +29,6 @@ export abstract class IStorageRepository {
 
     abstract set(data: { [key: string]: StorageDataType }): Promise<void>;
 
-    abstract getAndSet(
-        key: string,
-        mutateValue: (value: any) => any
-    ): Promise<void>;
-
     abstract clear(): Promise<void>;
 }
 
