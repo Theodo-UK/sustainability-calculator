@@ -22,10 +22,6 @@ export abstract class ICalculationsRepository {
         return this._instance;
     }
 
-    abstract isOngoingCalculation(): Promise<boolean>;
-
-    abstract setOngoingCalculation(ongoing: boolean): Promise<void>;
-
     abstract storeCalculation(calculationData: CalculationData): Promise<void>;
 
     abstract getLastCalculation(): Promise<CalculationData | null>;
@@ -41,7 +37,8 @@ export class CalculationData {
         public emissions: number,
         public specificEmissions: number,
         public selectedCountries: Map<CountryName, number>,
-        public unixTimeMs: number,
+        public startUnixTimeMs: number,
+        public endUnixTimeMs: number,
         public userType: UserType
     ) {}
 
@@ -51,7 +48,8 @@ export class CalculationData {
             emissions: this.emissions,
             specificEmissions: this.specificEmissions,
             selectedCountries: maptoJSON(this.selectedCountries),
-            unixTimeMs: this.unixTimeMs,
+            startUnixTimeMs: this.startUnixTimeMs,
+            endUnixTimeMs: this.endUnixTimeMs,
             userType: this.userType,
         });
     }
@@ -66,7 +64,8 @@ export class CalculationData {
             obj.emissions,
             obj.specificEmissions,
             selectedCountries,
-            obj.unixTimeMs,
+            obj.startUnixTimeMs,
+            obj.endUnixTimeMs,
             obj.userType
         );
     }

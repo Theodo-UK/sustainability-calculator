@@ -17,6 +17,7 @@ describe("useHistory", () => {
                 12345,
                 new Map([]),
                 12345,
+                12345,
                 "new user"
             )
         );
@@ -26,6 +27,7 @@ describe("useHistory", () => {
                 54321,
                 54321,
                 new Map([]),
+                54321,
                 54321,
                 "new user"
             )
@@ -42,6 +44,7 @@ describe("useHistory", () => {
                 54321,
                 new Map([]),
                 54321,
+                54321,
                 "new user"
             ),
             new CalculationData(
@@ -49,6 +52,7 @@ describe("useHistory", () => {
                 12345,
                 12345,
                 new Map([]),
+                12345,
                 12345,
                 "new user"
             ),

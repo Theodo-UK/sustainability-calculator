@@ -11,19 +11,6 @@ import {
 export class CalculationsRepository implements ICalculationsRepository {
     remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
-    async isOngoingCalculation(): Promise<boolean> {
-        const data = await this.remoteDataSource.get<boolean>(
-            "ongoingCalculation",
-            false
-        );
-        return data;
-    }
-
-    async setOngoingCalculation(ongoing: boolean): Promise<void> {
-        await this.remoteDataSource.set({
-            ongoingCalculation: ongoing,
-        });
-    }
     async storeCalculation(calculationData: CalculationData): Promise<void> {
         const oldCalculations = await this.getAllCalculations();
         const newCalculations = [calculationData, ...oldCalculations];

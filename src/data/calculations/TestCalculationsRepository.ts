@@ -7,19 +7,9 @@ export class TestCalculationsRepository implements ICalculationsRepository {
     private _allCalculations: CalculationData[] = [];
     private _ongoingCalculation = false;
 
-    async storeCalculation(
-        calculationData: CalculationData
-    ): Promise<void> {
+    async storeCalculation(calculationData: CalculationData): Promise<void> {
         const tempArray = [calculationData, ...this._allCalculations];
         this._allCalculations = tempArray;
-    }
-
-    async isOngoingCalculation(): Promise<boolean> {
-        return this._ongoingCalculation;
-    }
-
-    async setOngoingCalculation(ongoing: boolean): Promise<void> {
-        this._ongoingCalculation = ongoing;
     }
 
     async getAllCalculations(): Promise<CalculationData[]> {

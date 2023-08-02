@@ -18,6 +18,7 @@ describe("EmissionsComparison", () => {
                         0,
                         new Map<CountryName, number>(),
                         0,
+                        0,
                         "new user"
                     )
                 }

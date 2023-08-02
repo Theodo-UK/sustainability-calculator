@@ -5,6 +5,7 @@ import {
     formatEmissions,
     msToDateTimeStrings,
 } from "../../../utils/helpers/formatNumbersToString";
+import { secondsToTimeString } from "../../../utils/helpers/stringHelpers";
 import {
     HistoryContext,
     HistoryContextType,
@@ -38,7 +39,7 @@ export const CalculationHistory = () => {
                     </h2>
                     {calculationHistory?.map((calculation, index) => {
                         const [day, time] = msToDateTimeStrings(
-                            calculation.unixTimeMs
+                            calculation.endUnixTimeMs
                         );
                         return (
                             <li
@@ -64,6 +65,12 @@ export const CalculationHistory = () => {
                                     {`Specific Emissions: ${formatEmissions(
                                         calculation.specificEmissions
                                     )} g of CO2`}
+                                    <br />
+                                    {`Flow Time: ${secondsToTimeString(
+                                        (calculation.endUnixTimeMs -
+                                            calculation.startUnixTimeMs) /
+                                            1000
+                                    )}`}
                                 </p>
                                 <ul>
                                     {Array.from(

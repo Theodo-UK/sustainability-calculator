@@ -8,6 +8,7 @@ import { backgroundStopRecordingBytes } from "../../popup/utils/backgroundStopRe
 import { calculateAverageSpecificEmissionsHelper } from "../../popup/utils/calculateAverageSpecificEmissions";
 import { calculateCarbon } from "../../popup/utils/calculateCarbon";
 
+import { RecordingRepository } from "../../../data/recording/RecordingRepository";
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import {
     SelectedCountriesContext,
@@ -47,7 +48,8 @@ export const useRecording = (): RecordingContextType => {
     const startRecording = async (): Promise<boolean> => {
         try {
             validatePercentages();
-            await calculationsRepository.setOngoingCalculation(true);
+            await RecordingRepository.setOngoingCalculation(true);
+            await RecordingRepository.setStartUnixTime(Date.now());
             await refreshActiveTab(userType === "new user");
             await startRecordingBytesTransferred();
             setError(undefined);
@@ -70,11 +72,13 @@ export const useRecording = (): RecordingContextType => {
                     emissions,
                     averageSpecificEmissions,
                     selectedCountries,
+                    await RecordingRepository.getStartUnixTime(),
                     Date.now(),
                     userType
                 )
             );
-            await calculationsRepository.setOngoingCalculation(false);
+            await RecordingRepository.setOngoingCalculation(false);
+            await RecordingRepository.clearStartUnixTime();
         } catch (error: unknown) {
             if (error instanceof Error) {
                 setError(error.message);
@@ -84,7 +88,7 @@ export const useRecording = (): RecordingContextType => {
 
     useMountEffect(() => {
         const setBytesOnMount = async () => {
-            if (await calculationsRepository.isOngoingCalculation()) {
+            if (await RecordingRepository.isOngoingCalculation()) {
                 const bytesTransferred = await getBytesFromBackground();
                 setBytesTransferred(bytesTransferred);
                 return;
