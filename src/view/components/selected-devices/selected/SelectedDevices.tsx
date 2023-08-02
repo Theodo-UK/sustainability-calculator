@@ -18,7 +18,7 @@ export const SelectedDevices = () => {
                     <input
                         className="w-12 text-gray-800 bg-gray-100 border border-gray-200 rounded-md shadow-sm pl-1 mr-1"
                         type="string"
-                        value={(averagePercentage * 100).toFixed(2)}
+                        value={averagePercentage.toFixed(2)}
                         disabled
                     />
                     <a>% of users following average device emissions</a>
@@ -36,7 +36,7 @@ export const SelectedDevices = () => {
                                 <input
                                     className="w-12 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 pl-1 mr-1"
                                     type="number"
-                                    defaultValue={percentage * 100}
+                                    defaultValue={percentage}
                                     onChange={(e) =>
                                         setDevicePercentage(
                                             device,

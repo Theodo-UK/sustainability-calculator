@@ -47,7 +47,7 @@ export const useSelectedDevices = (): SelectedDevicesContextType => {
         );
 
         if (percentage > 1) {
-            throw new Error(percentageAboveHundredString(percentage * 100));
+            throw new Error(percentageAboveHundredString(percentage));
         }
     };
 
