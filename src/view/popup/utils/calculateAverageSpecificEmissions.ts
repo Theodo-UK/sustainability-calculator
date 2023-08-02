@@ -18,7 +18,8 @@ export const calculateAverageSpecificEmissionsHelper = (
 
     if (totalPercentage < 1) {
         averageSpecificEmissions +=
-            (100 - totalPercentage) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
+            (1 - totalPercentage / 100) *
+            WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
     }
 
     return averageSpecificEmissions;

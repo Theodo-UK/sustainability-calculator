@@ -17,13 +17,13 @@ const mockLargeBytes = 500000;
 describe("calculateCarbon", () => {
     it("country should return corresponding value", () => {
         expect(calculateCarbon(mockSmallBytes, mockCountry)).toBeCloseTo(
-            0.0017695
+            0.000017695
         );
     });
 
     it("multiple countries should return corresponding carbon consumption for a given transfer size", () => {
         expect(calculateCarbon(mockLargeBytes, mockCountries)).toBeCloseTo(
-            16.074
+            0.16074
         );
     });
 });
