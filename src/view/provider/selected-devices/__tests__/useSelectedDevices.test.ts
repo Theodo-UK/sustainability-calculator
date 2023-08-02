@@ -2,9 +2,9 @@ import { act, renderHook } from "@testing-library/react";
 import { CountryName } from "../../../../data/constants/CountryEmissions";
 import { areMapsDeepEqual } from "../../../../utils/helpers/areMapsDeepEqual";
 import { percentageAboveHundredString } from "../../../../utils/messages/errorMessages";
-import { useSelectedDevicesContext } from "../useSelectedDevicesContext";
+import { useSelectedDevices } from "../useSelectedDevices";
 
-describe("useSelectedDevicesContext", () => {
+describe("useSelectedDevices", () => {
     const mockCountries: Map<CountryName, number> = new Map([]);
 
     beforeEach(() => {
@@ -12,7 +12,7 @@ describe("useSelectedDevicesContext", () => {
     });
 
     it("addSelectedDevice should update selectedDevices", async () => {
-        const { result } = renderHook(useSelectedDevicesContext);
+        const { result } = renderHook(useSelectedDevices);
         const mockDevice1 = "iPhone 12";
         const mockDevice2 = "Google Pixel 6";
 
@@ -30,7 +30,7 @@ describe("useSelectedDevicesContext", () => {
     });
 
     it("removeSelectedCountries should remove selectedDevices", async () => {
-        const { result } = renderHook(useSelectedDevicesContext);
+        const { result } = renderHook(useSelectedDevices);
 
         const mockDevice1 = "iPhone 12";
         const mockDevice2 = "Google Pixel 6";
@@ -62,7 +62,7 @@ describe("useSelectedDevicesContext", () => {
     });
 
     it("validatePercentages should throw an error if the sum of percentages is greater than 100%", () => {
-        const { result } = renderHook(useSelectedDevicesContext);
+        const { result } = renderHook(useSelectedDevices);
 
         result.current.selectedDevices.set("iPhone 12", 0.5);
         result.current.selectedDevices.set("Google Pixel 6", 0.6);

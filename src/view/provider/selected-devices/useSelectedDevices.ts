@@ -6,7 +6,7 @@ import { percentageAboveHundredString } from "../../../utils/messages/errorMessa
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import { SelectedDevicesContextType } from "./SelectedDevicesProvider";
 
-export const useSelectedDevicesContext = (): SelectedDevicesContextType => {
+export const useSelectedDevices = (): SelectedDevicesContextType => {
     const selectedDevicesRepository: ISelectedDevicesRepository =
         ISelectedDevicesRepository.instance;
     const [selectedDevices, setSelectedDevices] = useState<

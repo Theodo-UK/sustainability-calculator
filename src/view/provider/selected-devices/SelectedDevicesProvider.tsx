@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import { DeviceName } from "../../../data/constants/DeviceEmissions";
-import { useSelectedDevicesContext } from "./useSelectedDevicesContext";
+import { useSelectedDevices } from "./useSelectedDevices";
 
 interface Props {
     children: React.ReactNode;
@@ -21,7 +21,7 @@ export const SelectedDevicesContext =
     createContext<SelectedDevicesContextType | null>(null);
 
 export const SelectedDevicesProvider = ({ children }: Props) => {
-    const selectedDevicesContext = useSelectedDevicesContext();
+    const selectedDevicesContext = useSelectedDevices();
 
     return (
         <SelectedDevicesContext.Provider value={selectedDevicesContext}>

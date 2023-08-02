@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import { PageType } from "../../../data/page/IPageRepository";
-import { useRouterContext } from "./useRouterContext";
+import { useRouter } from "./useRouter";
 interface Props {
     children: React.ReactNode;
 }
@@ -13,7 +13,7 @@ export type RouterContextType = {
 export const RouterContext = createContext<RouterContextType | null>(null);
 
 export const RouterProvider = ({ children }: Props) => {
-    const selectedCountriesContext = useRouterContext();
+    const selectedCountriesContext = useRouter();
 
     return (
         <RouterContext.Provider value={selectedCountriesContext}>

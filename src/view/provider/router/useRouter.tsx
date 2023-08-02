@@ -7,7 +7,7 @@ import { LandingPage } from "../../pages/landing/LandingPage";
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import { RouterContextType } from "./RouterProvider";
 
-export const useRouterContext = (): RouterContextType => {
+export const useRouter = (): RouterContextType => {
     const [page, setPage] = useState<PageType>("landing");
     const pageRepository = IPageRepository.instance;
 

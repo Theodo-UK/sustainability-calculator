@@ -3,11 +3,11 @@ import {
     CalculationData,
     ICalculationsRepository,
 } from "../../../../data/calculations/ICalculationsRepository";
-import { useHistoryContext } from "../useHistoryContext";
+import { useHistory } from "../useHistory";
 
-describe("useHistoryContext", () => {
+describe("useHistory", () => {
     it("refreshCalculationHistory should return the correct calculation history", async () => {
-        const { result } = renderHook(() => useHistoryContext());
+        const { result } = renderHook(() => useHistory());
 
         const mockCalculationRepository = ICalculationsRepository.instance;
         mockCalculationRepository.storeCalculation(

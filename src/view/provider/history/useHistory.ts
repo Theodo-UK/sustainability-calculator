@@ -5,7 +5,7 @@ import {
 } from "../../../data/calculations/ICalculationsRepository";
 import { HistoryContextType } from "./HistoryProvider";
 
-export const useHistoryContext = (): HistoryContextType => {
+export const useHistory = (): HistoryContextType => {
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
 
