@@ -19,7 +19,7 @@ module.exports = {
     testMatch: ["<rootDir>/src/**/__tests__/*.test.{js,jsx,ts,tsx}"],
     moduleDirectories: ["src", "node_modules"],
     moduleFileExtensions: ["ts", "tsx", "js"],
-
+    setupFilesAfterEnv: ["./jest.setup.js"],
     coverageDirectory: "coverage",
     preset: "ts-jest",
     transform: {

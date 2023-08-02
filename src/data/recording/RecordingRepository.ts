@@ -1,33 +1,31 @@
 import { IStorageRepository } from "../storage/IStorageRepository";
 
-export abstract class RecordingRepository {
-    static async isOngoingCalculation(): Promise<boolean> {
+export const RecordingRepository = {
+    isOngoingCalculation: async (): Promise<boolean> => {
         const data = await IStorageRepository.instance.get<boolean>(
             "ongoingCalculation",
             false
         );
         return data;
-    }
+    },
 
-    static async setOngoingCalculation(ongoing: boolean): Promise<void> {
+    setOngoingCalculation: async (ongoing: boolean): Promise<void> => {
         await IStorageRepository.instance.set({
             ongoingCalculation: ongoing,
         });
-    }
+    },
 
-    static async setStartUnixTime(unixTimeMs: number | null): Promise<void> {
+    setStartUnixTime: async (unixTimeMs: number | null): Promise<void> => {
         await IStorageRepository.instance.set({
             ongoingCalculationStartUnixTimeMs: unixTimeMs,
         });
-    }
-
-    static async clearStartUnixTime(): Promise<void> {
+    },
+    clearStartUnixTime: async (): Promise<void> => {
         await IStorageRepository.instance.set({
             ongoingCalculationStartUnixTimeMs: -1,
         });
-    }
-
-    static async getStartUnixTime(): Promise<number> {
+    },
+    getStartUnixTime: async (): Promise<number> => {
         const data = await IStorageRepository.instance.get<number>(
             "ongoingCalculationStartUnixTimeMs",
             -1
@@ -39,5 +37,5 @@ export abstract class RecordingRepository {
         }
 
         return data;
-    }
-}
+    },
+};
