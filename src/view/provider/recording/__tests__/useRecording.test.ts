@@ -1,4 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
+import { RecordingRepository } from "../../../../data/recording/RecordingRepository";
 import {
     mockChrome,
     mockTabId,
@@ -42,5 +43,22 @@ describe("useRecording", () => {
             command: "stopRecordingBytesTransferred",
             tabId: mockTabId,
         });
+    });
+});
+
+describe("stopRecording", () => {
+    it("should call RecordingRepository.setOngoingCalculation and RecordingRepository.clearStartUnixTime", async () => {
+        const { result } = renderHook(useRecording, {
+            wrapper: mockProviderWrapper,
+        });
+
+        await act(async () => {
+            await result.current.stopRecording();
+        });
+
+        expect(RecordingRepository.setOngoingCalculation).toHaveBeenCalledWith(
+            false
+        );
+        expect(RecordingRepository.clearStartUnixTime).toHaveBeenCalled();
     });
 });
