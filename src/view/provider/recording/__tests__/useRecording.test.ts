@@ -4,17 +4,17 @@ import {
     mockTabId,
 } from "../../../../utils/test-objects/mockChrome";
 import { mockProviderWrapper } from "../../../../utils/test-objects/mockProviderWrapper";
-import { useRecordingContext } from "../useRecordingContext";
+import { useRecording } from "../useRecording";
 
 (global as any).chrome = mockChrome;
 
-describe("useRecordingContext", () => {
+describe("useRecording", () => {
     beforeEach(() => {
         jest.clearAllMocks();
     });
 
     it("refreshAndGetSize should refresh the tab and send a message to runtime to start recording", async () => {
-        const { result } = renderHook(useRecordingContext, {
+        const { result } = renderHook(useRecording, {
             wrapper: mockProviderWrapper,
         });
 
@@ -30,7 +30,7 @@ describe("useRecordingContext", () => {
         });
     });
     it("stopRecording send a message to runtime to stop recording", async () => {
-        const { result } = renderHook(useRecordingContext, {
+        const { result } = renderHook(useRecording, {
             wrapper: mockProviderWrapper,
         });
 

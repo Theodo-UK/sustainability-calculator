@@ -5,7 +5,7 @@ import { percentageAboveHundredString } from "../../../utils/messages/errorMessa
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import { SelectedCountriesContextType } from "./SelectedCountriesProvider";
 
-export const useSelectedCountriesContext = (): SelectedCountriesContextType => {
+export const useSelectedCountries = (): SelectedCountriesContextType => {
     const selectedCountriesRepository: ISelectedCountriesRepository =
         ISelectedCountriesRepository.instance;
     const [selectedCountries, setSelectedCountries] = useState<

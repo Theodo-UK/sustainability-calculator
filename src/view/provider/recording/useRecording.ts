@@ -22,7 +22,7 @@ import {
     startRecordingBytesTransferred,
 } from "./helpers";
 
-export const useRecordingContext = (): RecordingContextType => {
+export const useRecording = (): RecordingContextType => {
     const { selectedCountries, validatePercentages } =
         useNullSafeContext<SelectedCountriesContextType>(
             SelectedCountriesContext

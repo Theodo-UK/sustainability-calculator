@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
-import { useSelectedCountriesContext } from "./useSelectedCountriesContext";
+import { useSelectedCountries } from "./useSelectedCountries";
 interface Props {
     children: React.ReactNode;
 }
@@ -20,7 +20,7 @@ export const SelectedCountriesContext =
     createContext<SelectedCountriesContextType | null>(null);
 
 export const SelectedCountriesProvider = ({ children }: Props) => {
-    const selectedCountriesContext = useSelectedCountriesContext();
+    const selectedCountriesContext = useSelectedCountries();
 
     return (
         <SelectedCountriesContext.Provider value={selectedCountriesContext}>

@@ -2,7 +2,7 @@ import { act, renderHook } from "@testing-library/react";
 import { CountryName } from "../../../../data/constants/CountryEmissions";
 import { areMapsDeepEqual } from "../../../../utils/helpers/areMapsDeepEqual";
 import { percentageAboveHundredString } from "../../../../utils/messages/errorMessages";
-import { useSelectedCountriesContext } from "../useSelectedCountriesContext";
+import { useSelectedCountries } from "../useSelectedCountries";
 
 describe("usePopup tests for selectedCountries", () => {
     const mockCountries: Map<CountryName, number> = new Map([]);
@@ -12,7 +12,7 @@ describe("usePopup tests for selectedCountries", () => {
     });
 
     it("addSelectedCountry should update selectedCountries", async () => {
-        const { result } = renderHook(useSelectedCountriesContext);
+        const { result } = renderHook(useSelectedCountries);
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
 
@@ -30,7 +30,7 @@ describe("usePopup tests for selectedCountries", () => {
     });
 
     it("removeSelectedCountries should update selectedCountries", async () => {
-        const { result } = renderHook(useSelectedCountriesContext);
+        const { result } = renderHook(useSelectedCountries);
 
         const mockCountry1 = "Australia";
         const mockCountry2 = "United Kingdom";
@@ -62,7 +62,7 @@ describe("usePopup tests for selectedCountries", () => {
     });
 
     it("validatePercentages should throw an error if the sum of percentages is greater than 100%", () => {
-        const { result } = renderHook(useSelectedCountriesContext);
+        const { result } = renderHook(useSelectedCountries);
 
         result.current.selectedCountries.set("Australia", 0.5);
         result.current.selectedCountries.set("United Kingdom", 0.6);

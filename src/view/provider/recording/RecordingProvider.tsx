@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import { UserType } from "../../../data/calculations/ICalculationsRepository";
-import { useRecordingContext } from "./useRecordingContext";
+import { useRecording } from "./useRecording";
 interface Props {
     children: React.ReactNode;
 }
@@ -20,7 +20,7 @@ export const RecordingContext = createContext<RecordingContextType | null>(
 );
 
 export const RecordingProvider = ({ children }: Props) => {
-    const selectedCountriesContext = useRecordingContext();
+    const selectedCountriesContext = useRecording();
 
     return (
         <RecordingContext.Provider value={selectedCountriesContext}>
