@@ -46,6 +46,23 @@ describe("useRecording", () => {
     });
 });
 
+describe("startRecording", () => {
+    it("should call RecordingRepository.setOngoingCalculation and RecordingRepository.setStartUnixTime", async () => {
+        const { result } = renderHook(useRecording, {
+            wrapper: mockProviderWrapper,
+        });
+
+        await act(async () => {
+            await result.current.startRecording();
+        });
+
+        expect(RecordingRepository.setOngoingCalculation).toHaveBeenCalledWith(
+            true
+        );
+        expect(RecordingRepository.setStartUnixTime).toHaveBeenCalled();
+    });
+});
+
 describe("stopRecording", () => {
     it("should call RecordingRepository.setOngoingCalculation and RecordingRepository.clearStartUnixTime", async () => {
         const { result } = renderHook(useRecording, {
