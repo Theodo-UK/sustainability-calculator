@@ -41,7 +41,7 @@ export class CalculationData {
         public emissions: number,
         public specificEmissions: number,
         public selectedCountries: Map<CountryName, number>,
-        public unixTimeMs: number,
+        public endUnixTimeMs: number,
         public userType: UserType
     ) {}
 
@@ -51,7 +51,7 @@ export class CalculationData {
             emissions: this.emissions,
             specificEmissions: this.specificEmissions,
             selectedCountries: maptoJSON(this.selectedCountries),
-            unixTimeMs: this.unixTimeMs,
+            endUnixTimeMs: this.endUnixTimeMs,
             userType: this.userType,
         });
     }
@@ -66,7 +66,7 @@ export class CalculationData {
             obj.emissions,
             obj.specificEmissions,
             selectedCountries,
-            obj.unixTimeMs,
+            obj.endUnixTimeMs,
             obj.userType
         );
     }

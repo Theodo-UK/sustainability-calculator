@@ -43,7 +43,7 @@ describe("jsonHelpers", () => {
             ),
         ];
         const humanReadableJson =
-            '["{\\"bytes\\":1,\\"emissions\\":1,\\"specificEmissions\\":1,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":1}\\",\\"unixTimeMs\\":1,\\"userType\\":\\"new user\\"}","{\\"bytes\\":2,\\"emissions\\":2,\\"specificEmissions\\":2,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":2}\\",\\"unixTimeMs\\":2,\\"userType\\":\\"returning user\\"}"]';
+            '["{\\"bytes\\":1,\\"emissions\\":1,\\"specificEmissions\\":1,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":1}\\",\\"endUnixTimeMs\\":1,\\"userType\\":\\"new user\\"}","{\\"bytes\\":2,\\"emissions\\":2,\\"specificEmissions\\":2,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":2}\\",\\"endUnixTimeMs\\":2,\\"userType\\":\\"returning user\\"}"]';
 
         const json = calculationDataArrayToJSON(calculationDataArray);
         expect(json).toEqual(humanReadableJson);
