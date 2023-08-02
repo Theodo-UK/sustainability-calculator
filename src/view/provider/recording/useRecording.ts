@@ -49,6 +49,7 @@ export const useRecording = (): RecordingContextType => {
         try {
             validatePercentages();
             await RecordingRepository.setOngoingCalculation(true);
+            await RecordingRepository.setStartUnixTime(Date.now());
             await refreshActiveTab(userType === "new user");
             await startRecordingBytesTransferred();
             setError(undefined);
@@ -71,7 +72,7 @@ export const useRecording = (): RecordingContextType => {
                     emissions,
                     averageSpecificEmissions,
                     selectedCountries,
-                    0, // TODO: replace with actual start time
+                    await RecordingRepository.getStartUnixTime(),
                     Date.now(),
                     userType
                 )
