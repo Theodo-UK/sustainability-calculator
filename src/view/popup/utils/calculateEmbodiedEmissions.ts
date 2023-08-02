@@ -27,7 +27,7 @@ export const calculateEmbodiedEmissions = (
     carbon +=
         ((flowLengthSeconds * AVERAGE_DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS) /
             AVG_DEVICE_LIFETIME_SECONDS) *
-        (100 - totalPercentage);
+        (1 - totalPercentage / 100);
 
     return carbon;
 };
