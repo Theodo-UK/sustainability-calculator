@@ -70,6 +70,7 @@ export const useRecording = (): RecordingContextType => {
                     emissions,
                     averageSpecificEmissions,
                     selectedCountries,
+                    0, // TODO: replace with actual start time
                     Date.now(),
                     userType
                 )
