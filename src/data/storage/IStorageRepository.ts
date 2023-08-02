@@ -2,6 +2,7 @@ import { StorageRepository } from "./StorageRepository";
 import { TestStorageRepository } from "./TestStorageRepository";
 
 export type StorageDataType = string | number | boolean | null;
+
 export abstract class IStorageRepository {
     private static _instance: IStorageRepository;
     static get instance(): IStorageRepository {
@@ -21,20 +22,26 @@ export abstract class IStorageRepository {
         return this._instance;
     }
 
-    /**
-     * @param keys A single key to get, list of keys to get, or a dictionary specifying default values.
-     * An empty list or object will return an empty result object. Pass in null to get the entire contents of storage.
-     */
-    abstract get(
-        keys: string | string[] | { [key: string]: StorageDataType } | null
-    ): Promise<{ [key: string]: StorageDataType }>;
+    abstract get<T extends StorageDataType>(
+        key: string,
+        defaultValue: T
+    ): Promise<T>;
 
     abstract set(data: { [key: string]: StorageDataType }): Promise<void>;
 
-    abstract getAndSet(
-        key: string,
-        mutateValue: (value: any) => any
-    ): Promise<void>;
-
     abstract clear(): Promise<void>;
 }
+
+export const parseStorageDataType = <T extends StorageDataType>(
+    data: StorageDataType
+): T => {
+    if (
+        typeof data === "string" ||
+        typeof data === "number" ||
+        typeof data === "boolean" ||
+        data === null
+    ) {
+        return data as T;
+    }
+    throw new Error(`${data} of type ${typeof data} is not a StorageDataType`);
+};

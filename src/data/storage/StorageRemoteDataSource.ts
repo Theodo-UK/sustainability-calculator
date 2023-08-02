@@ -24,59 +24,26 @@ export class StorageRemoteDataSource {
         const syncClear = () =>
             new Promise((resolve) => API.clear(() => resolve(null)));
 
-        const getAndSet = (key: string, mutateValue: (value: any) => any) => {
-            return new Promise((resolve) => {
-                syncGet(key).then((currentValue: any) => {
-                    const newValue = mutateValue(currentValue);
-                    syncSet({ [key]: newValue }).then(() => resolve(null));
-                });
-            });
-        };
-
         return {
             read: (data: string | string[] | { [key: string]: any } | null) =>
                 mutexExec(() => syncGet(data)),
             write: (data: any) => mutexExec(() => syncSet(data)),
             clear: () => mutexExec(() => syncClear()),
-            readAndWrite: (key: string, mutateValue: (value: any) => any) =>
-                mutexExec(() => getAndSet(key, mutateValue)),
         };
     })();
 
-    async getAndSet(
-        key: string,
-        mutateValue: (value: any) => any
-    ): Promise<void> {
+    async get(key: string, defaultValue: any): Promise<any> {
         try {
-            await this.storage.readAndWrite(key, mutateValue);
-        } catch (error) {
-            throw new Error(
-                `StorageRemoteDataSource failed to getAndSet: ${key}: ${error}`
-            );
-        }
-    }
-
-    async get(
-        data: string | string[] | { [key: string]: any } | null
-    ): Promise<{ [key: string]: any }> {
-        try {
-            return await this.storage.read(data).then(async (result: any) => {
-                if (typeof data === "object" && data !== null) {
-                    const resultWithDefault = result as { [key: string]: any };
-
-                    for (const key in data) {
-                        if (!(key in result)) {
-                            resultWithDefault[key] = result[key];
-                        }
-                    }
-                    await this.storage.write(resultWithDefault);
-                    return resultWithDefault;
+            return await this.storage.read(key).then(async (result: any) => {
+                if (!(key in result)) {
+                    await this.storage.write({ key: defaultValue });
+                    return defaultValue;
                 }
-                return result;
+                return result[key];
             });
         } catch (error) {
             throw new Error(
-                `StorageRemoteDataSource failed to get: ${data}: ${error}`
+                `StorageRemoteDataSource failed to get: ${key}: ${error}`
             );
         }
     }
