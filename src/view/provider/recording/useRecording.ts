@@ -78,6 +78,7 @@ export const useRecording = (): RecordingContextType => {
                 )
             );
             await RecordingRepository.setOngoingCalculation(false);
+            await RecordingRepository.clearStartUnixTime();
         } catch (error: unknown) {
             if (error instanceof Error) {
                 setError(error.message);

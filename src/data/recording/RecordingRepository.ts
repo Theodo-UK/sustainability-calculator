@@ -21,6 +21,12 @@ export abstract class RecordingRepository {
         });
     }
 
+    static async clearStartUnixTime(): Promise<void> {
+        await IStorageRepository.instance.set({
+            ongoingCalculationStartUnixTimeMs: -1,
+        });
+    }
+
     static async getStartUnixTime(): Promise<number> {
         const data = await IStorageRepository.instance.get<number>(
             "ongoingCalculationStartUnixTimeMs",
