@@ -22,13 +22,13 @@ export abstract class RecordingRepository {
     }
 
     static async getStartUnixTime(): Promise<number> {
-        const data = await IStorageRepository.instance.get<number | null>(
+        const data = await IStorageRepository.instance.get<number>(
             "ongoingCalculationStartUnixTimeMs",
-            null
+            -1
         );
-        if (data === null) {
+        if (data === -1) {
             throw Error(
-                "Tried to get start time when it was null. Start time is null when there is no ongoing calculation."
+                "Tried to get start time when it was -1. Start time is -1 when there is no ongoing calculation."
             );
         }
 
