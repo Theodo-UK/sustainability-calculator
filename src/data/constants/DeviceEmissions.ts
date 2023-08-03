@@ -1,3 +1,7 @@
+const AVG_DEVICE_LIFETIME_YEARS = 4;
+export const AVG_DEVICE_LIFETIME_SECONDS =
+    AVG_DEVICE_LIFETIME_YEARS * 365.25 * 24 * 3600;
+
 export const DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS: Record<string, number> = {
     Android: 71075,
     "Google Pixel 2": 66400,

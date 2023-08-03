@@ -20,7 +20,7 @@ export const EmissionsSummary = () => {
                 {formatBytes(calculationHistory[0].bytes)}
                 <br />
                 {`${formatEmissions(calculationHistory[0].specificEmissions)}
-        gCO2/GB`}
+        gCO2/kWh`}
                 <br />
                 {`${formatEmissions(calculationHistory[0].emissions)} g of CO2`}
                 <br />

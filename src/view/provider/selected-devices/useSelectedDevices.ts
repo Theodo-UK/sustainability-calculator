@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { DeviceName } from "../../../data/constants/DeviceEmissions";
 import { ISelectedDevicesRepository } from "../../../data/selected-devices/ISelectedDevicesRepository";
+import { useMountEffect } from "../../../utils/hooks/useOnceAfterFirstMount";
 import { percentageAboveHundredString } from "../../../utils/messages/errorMessages";
-import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import { SelectedDevicesContextType } from "./SelectedDevicesProvider";
 
 export const useSelectedDevices = (): SelectedDevicesContextType => {

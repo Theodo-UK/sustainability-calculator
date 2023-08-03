@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { IPageRepository, PageType } from "../../../data/page/IPageRepository";
+import { useMountEffect } from "../../../utils/hooks/useOnceAfterFirstMount";
 import { ErrorPage } from "../../pages/ErrorPage";
 import { RecordingPage } from "../../pages/RecordingPage";
 import { ResultsPage } from "../../pages/ResultsPage";
 import { LandingPage } from "../../pages/landing/LandingPage";
-import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import { RouterContextType } from "./RouterProvider";
 
 export const useRouter = (): RouterContextType => {

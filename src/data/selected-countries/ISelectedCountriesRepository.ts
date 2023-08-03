@@ -1,5 +1,5 @@
 import {
-    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH,
     CountryName,
 } from "../constants/CountryEmissions";
 import { SelectedCountriesRepository } from "./SelectedCountriesRepository";
@@ -38,7 +38,7 @@ export abstract class ISelectedCountriesRepository {
 }
 
 const countryNames = Object.keys(
-    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH
 ) as CountryName[];
 
 export const isSelectedCountriesMap = (
