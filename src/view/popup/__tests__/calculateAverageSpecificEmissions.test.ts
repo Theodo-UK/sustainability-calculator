@@ -3,7 +3,7 @@ import {
     CountryName,
     WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
 } from "../../../data/constants/CountryEmissions";
-import { calculateAverageSpecificEmissionsHelper } from "../utils/calculateAverageSpecificEmissions";
+import { calculateAverageSpecificEmissionsHelper } from "../../../utils/emissions/calculateAverageSpecificEmissions";
 
 describe("calculateAverageSpecificEmissionsHelper", () => {
     it("calculates the average specific emissions correctly", () => {

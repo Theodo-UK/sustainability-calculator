@@ -1,8 +1,8 @@
 import {
     AVERAGE_DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS,
+    DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS,
     DeviceName,
-    DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS
-} from "../../../data/constants/DeviceEmissions";
+} from "../../data/constants/DeviceEmissions";
 
 const AVG_DEVICE_LIFETIME_YEARS = 4;
 const AVG_DEVICE_LIFETIME_SECONDS =

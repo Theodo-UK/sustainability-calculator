@@ -1,5 +1,5 @@
 import { DeviceName } from "../../../data/constants/DeviceEmissions";
-import { calculateEmbodiedEmissions } from "../utils/calculateEmbodiedEmissions";
+import { calculateEmbodiedEmissions } from "../../../utils/emissions/calculateEmbodiedEmissions";
 
 const mockDevice: Map<DeviceName, number> = new Map([["iPhone 11", 1]]);
 

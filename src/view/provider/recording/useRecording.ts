@@ -4,11 +4,10 @@ import {
     ICalculationsRepository,
     UserType,
 } from "../../../data/calculations/ICalculationsRepository";
-import { backgroundStopRecordingBytes } from "../../popup/utils/backgroundStopRecordingBytes";
-import { calculateAverageSpecificEmissionsHelper } from "../../popup/utils/calculateAverageSpecificEmissions";
-import { calculateCarbon } from "../../popup/utils/calculateCarbon";
+import { calculateAverageSpecificEmissionsHelper } from "../../../utils/emissions/calculateAverageSpecificEmissions";
 
 import { RecordingRepository } from "../../../data/recording/RecordingRepository";
+import { calculateCarbon } from "../../../utils/emissions/calculateCarbon";
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import {
     SelectedCountriesContext,
@@ -17,6 +16,7 @@ import {
 import { useNullSafeContext } from "../useNullSafeContext";
 import { RecordingContextType } from "./RecordingProvider";
 import {
+    backgroundStopRecordingBytes,
     getBytesFromBackground,
     getBytesFromStorage,
     refreshActiveTab,

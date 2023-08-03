@@ -1,8 +1,8 @@
 import {
-    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
     COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
     CountryName,
-} from "../../../data/constants/CountryEmissions";
+    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
+} from "../../data/constants/CountryEmissions";
 
 const BYTES_PER_GB = 1073741824;
 
