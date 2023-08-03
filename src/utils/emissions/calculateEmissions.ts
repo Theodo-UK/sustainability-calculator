@@ -49,3 +49,23 @@ export const calculateEnergyConsumptionkWh = (bytesTransferred: number) => {
     const energykWhPerGb = 0.81;
     return dataTransferredGb * energykWhPerGb;
 };
+
+export const calculateLocationEmissionsGramsPerKwh = (
+    selectedCountries: Map<CountryName, number>
+) => {
+    let totalPercentage = 0;
+    let averageSpecificEmissions = 0;
+
+    selectedCountries.forEach((value, key) => {
+        totalPercentage += value;
+        averageSpecificEmissions +=
+            value * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[key];
+    });
+
+    if (totalPercentage < 1) {
+        averageSpecificEmissions +=
+            (1 - totalPercentage) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
+    }
+
+    return averageSpecificEmissions;
+};

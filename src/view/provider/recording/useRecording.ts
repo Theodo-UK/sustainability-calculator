@@ -4,10 +4,12 @@ import {
     ICalculationsRepository,
     UserType,
 } from "../../../data/calculations/ICalculationsRepository";
-import { calculateAverageSpecificEmissionsHelper } from "../../../utils/emissions/calculateAverageSpecificEmissions";
 
 import { RecordingRepository } from "../../../data/recording/RecordingRepository";
-import { calculateEmissions } from "../../../utils/emissions/calculateEmissions";
+import {
+    calculateEmissions,
+    calculateLocationEmissionsGramsPerKwh,
+} from "../../../utils/emissions/calculateEmissions";
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import {
     SelectedCountriesContext,
@@ -41,7 +43,7 @@ export const useRecording = (): RecordingContextType => {
         [bytesTransferred, selectedCountries]
     );
     const averageSpecificEmissions = useMemo(
-        () => calculateAverageSpecificEmissionsHelper(selectedCountries),
+        () => calculateLocationEmissionsGramsPerKwh(selectedCountries),
         [selectedCountries]
     );
 
