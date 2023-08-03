@@ -1,9 +1,9 @@
 import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
 import {
+    calculationDataArrayToJSON,
     JSONtoCalculationDataArray,
     JSONtoMap,
-    calculationDataArrayToJSON,
-    maptoJSON,
+    maptoJSON
 } from "../jsonHelpers";
 
 describe("jsonHelpers", () => {
@@ -27,16 +27,12 @@ describe("jsonHelpers", () => {
         const calculationDataArray = [
             new CalculationData(
                 1,
-                1,
-                1,
                 new Map([["United States", 1]]),
                 1,
                 1,
                 "new user"
             ),
             new CalculationData(
-                2,
-                2,
                 2,
                 new Map([["United States", 2]]),
                 2,
@@ -45,7 +41,7 @@ describe("jsonHelpers", () => {
             ),
         ];
         const humanReadableJson =
-            '["{\\"bytes\\":1,\\"emissions\\":1,\\"specificEmissions\\":1,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":1}\\",\\"startUnixTimeMs\\":1,\\"endUnixTimeMs\\":1,\\"userType\\":\\"new user\\"}","{\\"bytes\\":2,\\"emissions\\":2,\\"specificEmissions\\":2,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":2}\\",\\"startUnixTimeMs\\":2,\\"endUnixTimeMs\\":2,\\"userType\\":\\"returning user\\"}"]';
+            '["{\\"bytes\\":1,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":1}\\",\\"startUnixTimeMs\\":1,\\"endUnixTimeMs\\":1,\\"userType\\":\\"new user\\"}","{\\"bytes\\":2,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":2}\\",\\"startUnixTimeMs\\":2,\\"endUnixTimeMs\\":2,\\"userType\\":\\"returning user\\"}"]';
 
         const json = calculationDataArrayToJSON(calculationDataArray);
         expect(json).toEqual(humanReadableJson);

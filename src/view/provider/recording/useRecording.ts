@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
     CalculationData,
     ICalculationsRepository,
-    UserType,
+    UserType
 } from "../../../data/calculations/ICalculationsRepository";
 
 import { RecordingRepository } from "../../../data/recording/RecordingRepository";
@@ -12,26 +12,26 @@ import {
     calculateEnergyConsumptionkWh,
     calculateHardwareEmissions,
     calculateLocationEmissionsGramsPerKwh,
-    calculateSoftwareEmissions,
+    calculateSoftwareEmissions
 } from "../../../utils/helpers/calculateEmissions";
 import { useMountEffect } from "../../../utils/hooks/useOnceAfterFirstMount";
 import {
     SelectedCountriesContext,
-    SelectedCountriesContextType,
+    SelectedCountriesContextType
 } from "../selected-countries/SelectedCountriesProvider";
 import {
     SelectedDevicesContext,
-    SelectedDevicesContextType,
+    SelectedDevicesContextType
 } from "../selected-devices/SelectedDevicesProvider";
 import { useNullSafeContext } from "../useNullSafeContext";
-import { RecordingContextType } from "./RecordingProvider";
 import {
     backgroundStopRecordingBytes,
     getBytesFromBackground,
     getBytesFromStorage,
     refreshActiveTab,
-    startRecordingBytesTransferred,
+    startRecordingBytesTransferred
 } from "./helpers";
+import { RecordingContextType } from "./RecordingProvider";
 
 export const useRecording = (): RecordingContextType => {
     const { selectedCountries, validatePercentages } =
@@ -116,8 +116,6 @@ export const useRecording = (): RecordingContextType => {
             await calculationsRepository.storeCalculation(
                 new CalculationData(
                     bytesTransferred,
-                    emissions,
-                    averageSpecificEmissions,
                     selectedCountries,
                     startUnixTimeMs,
                     endUnixTimeMs,
