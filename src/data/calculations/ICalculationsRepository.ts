@@ -34,8 +34,6 @@ export type UserType = "new user" | "returning user";
 export class CalculationData {
     constructor(
         public bytes: number,
-        public emissions: number,
-        public specificEmissions: number,
         public selectedCountries: Map<CountryName, number>,
         public startUnixTimeMs: number,
         public endUnixTimeMs: number,
@@ -45,8 +43,6 @@ export class CalculationData {
     public toJSON(): string {
         return JSON.stringify({
             bytes: this.bytes,
-            emissions: this.emissions,
-            specificEmissions: this.specificEmissions,
             selectedCountries: maptoJSON(this.selectedCountries),
             startUnixTimeMs: this.startUnixTimeMs,
             endUnixTimeMs: this.endUnixTimeMs,
@@ -61,8 +57,6 @@ export class CalculationData {
         );
         return new CalculationData(
             obj.bytes,
-            obj.emissions,
-            obj.specificEmissions,
             selectedCountries,
             obj.startUnixTimeMs,
             obj.endUnixTimeMs,
