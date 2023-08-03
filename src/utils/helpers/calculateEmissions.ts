@@ -46,12 +46,13 @@ export const calculateLocationEmissionsGramsPerKwh = (
 
     selectedCountries.forEach((value, key) => {
         totalPercentage += value;
-        gramsPerKwh += value * COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH[key];
+        gramsPerKwh += (value / 100) * COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH[key];
     });
 
-    if (totalPercentage < 1) {
+    if (totalPercentage < 100) {
         gramsPerKwh +=
-            (1 - totalPercentage) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_KWH;
+            ((100 - totalPercentage) / 100) *
+            WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_KWH;
     }
 
     return gramsPerKwh;
@@ -66,12 +67,13 @@ export const calculateDeviceEmissionsGramsPerSecond = (
     selectedDevices.forEach((value, key) => {
         totalPercentage += value;
         lifetimeEmissionsGrams +=
-            value * DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS[key];
+            (value / 100) * DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS[key];
     });
 
-    if (totalPercentage < 1) {
+    if (totalPercentage < 100) {
         lifetimeEmissionsGrams +=
-            (1 - totalPercentage) * AVERAGE_DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS;
+            ((100 - totalPercentage) / 100) *
+            AVERAGE_DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS;
     }
     const gramsPerSecond = lifetimeEmissionsGrams / AVG_DEVICE_LIFETIME_SECONDS;
 

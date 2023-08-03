@@ -23,14 +23,14 @@ describe("calculateEmissions", () => {
     it("should return correct value", () => {
         const mockBytes = 12473123;
         const mockCountries = new Map<CountryName, number>([
-            ["United States", 0.5],
-            ["China (PR)", 0.3],
-            ["India", 0.2],
+            ["United States", 50],
+            ["China (PR)", 30],
+            ["India", 20],
         ]);
         const mockDevices = new Map<DeviceName, number>([
-            ["Google Pixel 3a XL", 0.5],
-            ["Google Pixel 4", 0.3],
-            ["Google Pixel 4 XL", 0.2],
+            ["Google Pixel 3a XL", 50],
+            ["Google Pixel 4", 30],
+            ["Google Pixel 4 XL", 20],
         ]);
 
         const kWhConsumption = calculateEnergyConsumptionkWh(mockBytes);
@@ -61,9 +61,9 @@ describe("calculateEmissions", () => {
 describe("calculateLocationEmissionsGramsPerKwh", () => {
     it("calculates correctly", () => {
         const mockCountries = new Map<CountryName, number>([
-            ["United States", 0.5],
-            ["China (PR)", 0.3],
-            ["India", 0.2],
+            ["United States", 50],
+            ["China (PR)", 30],
+            ["India", 20],
         ]);
         const expectedAverageSpecificEmissions =
             0.5 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH["United States"] +
@@ -74,10 +74,10 @@ describe("calculateLocationEmissionsGramsPerKwh", () => {
         );
     });
 
-    it("uses the world average when total percentage is less than 1", () => {
+    it("uses the world average when total percentage is less than 100%", () => {
         const mockCountries = new Map<CountryName, number>([
-            ["United States", 0.5],
-            ["India", 0.3],
+            ["United States", 50],
+            ["India", 30],
         ]);
         const expectedAverageSpecificEmissions =
             0.5 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH["United States"] +
@@ -92,9 +92,9 @@ describe("calculateLocationEmissionsGramsPerKwh", () => {
 describe("calculateDeviceEmissionsGramsPerSecond", () => {
     it("calculates correctly", () => {
         const mockDevices = new Map<DeviceName, number>([
-            ["Google Pixel 3a XL", 0.5],
-            ["Google Pixel 4", 0.3],
-            ["Google Pixel 4 XL", 0.2],
+            ["Google Pixel 3a XL", 50],
+            ["Google Pixel 4", 30],
+            ["Google Pixel 4 XL", 20],
         ]);
 
         const expectedAverageSpecificEmissions =
@@ -108,10 +108,10 @@ describe("calculateDeviceEmissionsGramsPerSecond", () => {
         );
     });
 
-    it("uses the world average when total percentage is less than 1", () => {
+    it("uses the world average when total percentage is less than 100%", () => {
         const mockDevices = new Map<DeviceName, number>([
-            ["Google Pixel 3a XL", 0.5],
-            ["Google Pixel 4 XL", 0.3],
+            ["Google Pixel 3a XL", 50],
+            ["Google Pixel 4 XL", 30],
         ]);
         const expectedAverageSpecificEmissions =
             (0.5 * DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS["Google Pixel 3a XL"] +
