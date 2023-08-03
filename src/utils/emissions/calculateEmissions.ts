@@ -29,3 +29,10 @@ export const calculateEmissions = (
 
     return carbon;
 };
+
+export const calculateSoftwareEmissions = (
+    kWhConsumption: number,
+    locationEmissionGramsPerKWh: number
+) => {
+    return kWhConsumption * locationEmissionGramsPerKWh;
+};
