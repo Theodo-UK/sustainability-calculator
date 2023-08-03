@@ -36,3 +36,10 @@ export const calculateSoftwareEmissions = (
 ) => {
     return kWhConsumption * locationEmissionGramsPerKWh;
 };
+
+export const calculateHardwareEmissions = (
+    flowTime: number,
+    deviceEmissionsGramsPerSecond: number
+) => {
+    return flowTime * deviceEmissionsGramsPerSecond;
+};
