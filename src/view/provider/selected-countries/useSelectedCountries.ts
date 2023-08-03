@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
 import { ISelectedCountriesRepository } from "../../../data/selected-countries/ISelectedCountriesRepository";
+import { useMountEffect } from "../../../utils/hooks/useOnceAfterFirstMount";
 import { percentageAboveHundredString } from "../../../utils/messages/errorMessages";
-import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import { SelectedCountriesContextType } from "./SelectedCountriesProvider";
 
 export const useSelectedCountries = (): SelectedCountriesContextType => {

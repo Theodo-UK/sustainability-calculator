@@ -9,8 +9,8 @@ import { RecordingRepository } from "../../../data/recording/RecordingRepository
 import {
     calculateEmissions,
     calculateLocationEmissionsGramsPerKwh,
-} from "../../../utils/emissions/calculateEmissions";
-import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
+} from "../../../utils/helpers/calculateEmissions";
+import { useMountEffect } from "../../../utils/hooks/useOnceAfterFirstMount";
 import {
     SelectedCountriesContext,
     SelectedCountriesContextType,

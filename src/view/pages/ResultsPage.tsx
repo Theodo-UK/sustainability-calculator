@@ -1,12 +1,12 @@
 import React from "react";
 import { FaSyncAlt } from "react-icons/fa";
+import { useMountEffect } from "../../utils/hooks/useOnceAfterFirstMount";
 import { Button } from "../components/atomic/Button";
 import { SwitchAtom } from "../components/atomic/SwitchAtom";
 import { CalculationHistory } from "../components/calculation-history/CalculationHistory";
 import { SelectedCountriesDisclosure } from "../components/countries/SelectedCountriesDisclosure";
 import { Results } from "../components/results/Results";
 import { SelectedDevicesDisclosure } from "../components/selected-devices/disclosure/SelectedDevicesDisclosure";
-import { useMountEffect } from "../popup/useOnceAfterFirstMount";
 import {
     HistoryContext,
     HistoryContextType,
