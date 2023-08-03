@@ -43,3 +43,9 @@ export const calculateHardwareEmissions = (
 ) => {
     return flowTime * deviceEmissionsGramsPerSecond;
 };
+
+export const calculateEnergyConsumptionkWh = (bytesTransferred: number) => {
+    const dataTransferredGb = (bytesTransferred / 10) ^ 9;
+    const energykWhPerGb = 0.81;
+    return dataTransferredGb * energykWhPerGb;
+};
