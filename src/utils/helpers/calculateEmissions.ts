@@ -5,6 +5,7 @@ import {
 } from "../../data/constants/CountryEmissions";
 import {
     AVERAGE_DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS,
+    AVG_DEVICE_LIFETIME_SECONDS,
     DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS,
     DeviceName,
 } from "../../data/constants/DeviceEmissions";
@@ -18,9 +19,9 @@ export const calculateEmissions = (
 
 export const calculateSoftwareEmissions = (
     kWhConsumption: number,
-    locationEmissionGramsPerKWh: number
+    locationEmissionGramsPerKwh: number
 ) => {
-    return kWhConsumption * locationEmissionGramsPerKWh;
+    return kWhConsumption * locationEmissionGramsPerKwh;
 };
 
 export const calculateHardwareEmissions = (
@@ -31,8 +32,9 @@ export const calculateHardwareEmissions = (
 };
 
 export const calculateEnergyConsumptionkWh = (bytesTransferred: number) => {
-    const dataTransferredGb = bytesTransferred / (10 ^ 9);
+    const dataTransferredGb = bytesTransferred / Math.pow(10, 9);
     const energykWhPerGb = 0.81;
+
     return dataTransferredGb * energykWhPerGb;
 };
 
@@ -54,10 +56,6 @@ export const calculateLocationEmissionsGramsPerKwh = (
 
     return gramsPerKwh;
 };
-
-const AVG_DEVICE_LIFETIME_YEARS = 4;
-const AVG_DEVICE_LIFETIME_SECONDS =
-    AVG_DEVICE_LIFETIME_YEARS * 365.25 * 24 * 3600;
 
 export const calculateDeviceEmissionsGramsPerSecond = (
     selectedDevices: Map<DeviceName, number>

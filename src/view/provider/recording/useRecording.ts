@@ -7,14 +7,22 @@ import {
 
 import { RecordingRepository } from "../../../data/recording/RecordingRepository";
 import {
+    calculateDeviceEmissionsGramsPerSecond,
     calculateEmissions,
+    calculateEnergyConsumptionkWh,
+    calculateHardwareEmissions,
     calculateLocationEmissionsGramsPerKwh,
+    calculateSoftwareEmissions,
 } from "../../../utils/helpers/calculateEmissions";
 import { useMountEffect } from "../../../utils/hooks/useOnceAfterFirstMount";
 import {
     SelectedCountriesContext,
     SelectedCountriesContextType,
 } from "../selected-countries/SelectedCountriesProvider";
+import {
+    SelectedDevicesContext,
+    SelectedDevicesContextType,
+} from "../selected-devices/SelectedDevicesProvider";
 import { useNullSafeContext } from "../useNullSafeContext";
 import { RecordingContextType } from "./RecordingProvider";
 import {
@@ -31,6 +39,10 @@ export const useRecording = (): RecordingContextType => {
             SelectedCountriesContext
         );
 
+    const { selectedDevices } = useNullSafeContext<SelectedDevicesContextType>(
+        SelectedDevicesContext
+    );
+
     const calculationsRepository: ICalculationsRepository =
         ICalculationsRepository.instance;
 
@@ -38,10 +50,39 @@ export const useRecording = (): RecordingContextType => {
     const [error, setError] = useState<string>();
     const [userType, setUserType] = useState<UserType>("new user");
 
-    const emissions = useMemo(
-        () => calculateEmissions(bytesTransferred, selectedCountries),
-        [bytesTransferred, selectedCountries]
+    const kwhConsumption = useMemo(
+        () => calculateEnergyConsumptionkWh(bytesTransferred),
+        [bytesTransferred]
     );
+    const locationEmissionsGramsPerKwh = useMemo(
+        () => calculateLocationEmissionsGramsPerKwh(selectedCountries),
+        [selectedCountries]
+    );
+    const softwareEmissions = useMemo(
+        () =>
+            calculateSoftwareEmissions(
+                kwhConsumption,
+                locationEmissionsGramsPerKwh
+            ),
+        [kwhConsumption, locationEmissionsGramsPerKwh]
+    );
+
+    const [flowTime, setFlowTime] = useState(0);
+    const deviceEmissionsGramsPerSecond = useMemo(
+        () => calculateDeviceEmissionsGramsPerSecond(selectedDevices),
+        [selectedDevices]
+    );
+    const hardwareEmissions = useMemo(
+        () =>
+            calculateHardwareEmissions(flowTime, deviceEmissionsGramsPerSecond),
+        [flowTime, deviceEmissionsGramsPerSecond]
+    );
+
+    const emissions = useMemo(
+        () => calculateEmissions(softwareEmissions, hardwareEmissions),
+        [softwareEmissions, hardwareEmissions]
+    );
+
     const averageSpecificEmissions = useMemo(
         () => calculateLocationEmissionsGramsPerKwh(selectedCountries),
         [selectedCountries]
@@ -68,17 +109,22 @@ export const useRecording = (): RecordingContextType => {
     const stopRecording = async (): Promise<void> => {
         backgroundStopRecordingBytes();
         try {
+            const startUnixTimeMs =
+                await RecordingRepository.getStartUnixTime();
+            const endUnixTimeMs = Date.now();
+
             await calculationsRepository.storeCalculation(
                 new CalculationData(
                     bytesTransferred,
                     emissions,
                     averageSpecificEmissions,
                     selectedCountries,
-                    await RecordingRepository.getStartUnixTime(),
-                    Date.now(),
+                    startUnixTimeMs,
+                    endUnixTimeMs,
                     userType
                 )
             );
+            setFlowTime((endUnixTimeMs - startUnixTimeMs) / 1000);
             await RecordingRepository.setOngoingCalculation(false);
             await RecordingRepository.clearStartUnixTime();
         } catch (error: unknown) {
