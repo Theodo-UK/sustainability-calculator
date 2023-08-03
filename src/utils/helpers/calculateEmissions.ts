@@ -79,6 +79,27 @@ const AVG_DEVICE_LIFETIME_YEARS = 4;
 const AVG_DEVICE_LIFETIME_SECONDS =
     AVG_DEVICE_LIFETIME_YEARS * 365.25 * 24 * 3600;
 
+export const calculateDeviceEmissionsGramsPerSecond = (
+    selectedDevices: Map<DeviceName, number>
+) => {
+    let totalPercentage = 0;
+    let lifetimeEmissionsGrams = 0;
+
+    selectedDevices.forEach((value, key) => {
+        totalPercentage += value;
+        lifetimeEmissionsGrams +=
+            value * DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS[key];
+    });
+
+    if (totalPercentage < 1) {
+        lifetimeEmissionsGrams +=
+            (1 - totalPercentage) * AVERAGE_DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS;
+    }
+    const gramsPerSecond = lifetimeEmissionsGrams / AVG_DEVICE_LIFETIME_SECONDS;
+
+    return gramsPerSecond;
+};
+
 export const calculateEmbodiedEmissions = (
     flowLengthSeconds: number,
     selectedDevices: Map<DeviceName, number>
