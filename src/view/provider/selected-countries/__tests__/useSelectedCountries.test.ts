@@ -64,8 +64,8 @@ describe("usePopup tests for selectedCountries", () => {
     it("validatePercentages should throw an error if the sum of percentages is greater than 100%", () => {
         const { result } = renderHook(useSelectedCountries);
 
-        result.current.selectedCountries.set("Australia", 0.5);
-        result.current.selectedCountries.set("United Kingdom", 0.6);
+        result.current.selectedCountries.set("Australia", 50);
+        result.current.selectedCountries.set("United Kingdom", 60);
 
         expect(() => result.current.validatePercentages()).toThrowError(
             percentageAboveHundredString(110)

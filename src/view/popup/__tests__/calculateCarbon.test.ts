@@ -1,14 +1,14 @@
 import { CountryName } from "../../../data/constants/CountryEmissions";
 import { calculateCarbon } from "../utils/calculateCarbon";
 
-const mockCountry: Map<CountryName, number> = new Map([["Australia", 0.5]]);
+const mockCountry: Map<CountryName, number> = new Map([["Australia", 50]]);
 
 const mockCountries: Map<CountryName, number> = new Map([
-    ["Australia", 0.2],
-    ["United Kingdom", 0.3],
-    ["Belgium", 0.2],
-    ["Bulgaria", 0.2],
-    ["Croatia", 0.1],
+    ["Australia", 20],
+    ["United Kingdom", 30],
+    ["Belgium", 20],
+    ["Bulgaria", 20],
+    ["Croatia", 10],
 ]);
 
 const mockSmallBytes = 50;

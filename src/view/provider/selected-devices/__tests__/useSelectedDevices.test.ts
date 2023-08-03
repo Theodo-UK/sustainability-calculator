@@ -64,8 +64,8 @@ describe("useSelectedDevices", () => {
     it("validatePercentages should throw an error if the sum of percentages is greater than 100%", () => {
         const { result } = renderHook(useSelectedDevices);
 
-        result.current.selectedDevices.set("iPhone 12", 0.5);
-        result.current.selectedDevices.set("Google Pixel 6", 0.6);
+        result.current.selectedDevices.set("iPhone 12", 50);
+        result.current.selectedDevices.set("Google Pixel 6", 60);
 
         expect(() => result.current.validatePercentages()).toThrowError(
             percentageAboveHundredString(110)

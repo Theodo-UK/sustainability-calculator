@@ -22,14 +22,14 @@ export const SelectedCountries = ({
             (total, entry) => total + entry,
             0
         );
-        setWorldPercentage(1 - totalPercentage);
+        setWorldPercentage(100 - totalPercentage);
     }, [selectedCountries]);
 
     useEffect(() => {
         const hasPercentageError = Array.from(selectedCountries.values()).some(
-            (percentage) => percentage > 1 || percentage < 0
+            (percentage) => percentage > 100 || percentage < 0
         );
-        const worldHasError = worldPercentage > 1 || worldPercentage < 0;
+        const worldHasError = worldPercentage > 100 || worldPercentage < 0;
         setIsPercentageError(hasPercentageError || worldHasError);
     }, [selectedCountries, worldPercentage]);
 
@@ -40,7 +40,7 @@ export const SelectedCountries = ({
                     <input
                         className="w-12 text-gray-800 bg-gray-100 border border-gray-200 rounded-md shadow-sm pl-1 mr-1"
                         type="string"
-                        value={(worldPercentage * 100).toFixed(2)}
+                        value={worldPercentage.toFixed(2)}
                         disabled
                     />
                     <a>% of users following world average</a>
@@ -58,11 +58,11 @@ export const SelectedCountries = ({
                                 <input
                                     className="w-12 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 pl-1 mr-1"
                                     type="number"
-                                    defaultValue={percentage * 100}
+                                    defaultValue={percentage}
                                     onChange={(e) =>
                                         setCountryPercentage(
                                             country,
-                                            Number(e.target.value) / 100
+                                            Number(e.target.value)
                                         )
                                     }
                                 />

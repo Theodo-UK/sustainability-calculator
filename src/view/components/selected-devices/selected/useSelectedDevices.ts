@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
     SelectedDevicesContext,
-    SelectedDevicesContextType,
+    SelectedDevicesContextType
 } from "../../../provider/selected-devices/SelectedDevicesProvider";
 import { useNullSafeContext } from "../../../provider/useNullSafeContext";
 
@@ -16,14 +16,14 @@ export const useSelectedDevices = () => {
             (total, entry) => total + entry,
             0
         );
-        setWorldPercentage(1 - totalPercentage);
+        setWorldPercentage(100 - totalPercentage);
     }, [selectedDevices]);
 
     useEffect(() => {
         const hasPercentageError = Array.from(selectedDevices.values()).some(
-            (percentage) => percentage > 1 || percentage < 0
+            (percentage) => percentage > 100 || percentage < 0
         );
-        const worldHasError = averagePercentage > 1 || averagePercentage < 0;
+        const worldHasError = averagePercentage > 100 || averagePercentage < 0;
         setIsPercentageError(hasPercentageError || worldHasError);
     }, [selectedDevices, averagePercentage]);
 

@@ -1,7 +1,7 @@
 import {
-    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
     CountryName,
-    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
+    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB
 } from "../../../data/constants/CountryEmissions";
 
 export const calculateAverageSpecificEmissionsHelper = (
@@ -18,7 +18,8 @@ export const calculateAverageSpecificEmissionsHelper = (
 
     if (totalPercentage < 1) {
         averageSpecificEmissions +=
-            (1 - totalPercentage) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
+            (1 - totalPercentage / 100) *
+            WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
     }
 
     return averageSpecificEmissions;

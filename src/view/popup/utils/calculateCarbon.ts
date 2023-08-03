@@ -1,7 +1,7 @@
 import {
-    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
-    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
     CountryName,
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
+    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB
 } from "../../../data/constants/CountryEmissions";
 
 const BYTES_PER_GB = 1073741824;
@@ -19,13 +19,13 @@ export const calculateCarbon = (
         carbon +=
             (bytes / BYTES_PER_GB) *
             COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[country] *
-            percentage;
+            (percentage / 100);
     });
 
     carbon +=
         (bytes / BYTES_PER_GB) *
         WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB *
-        (1 - totalPercentage);
+        (1 - totalPercentage / 100);
 
     return carbon;
 };

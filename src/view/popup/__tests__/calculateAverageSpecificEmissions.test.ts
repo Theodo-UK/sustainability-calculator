@@ -1,7 +1,5 @@
 import {
-    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
-    CountryName,
-    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
+    CountryName, COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB, WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB
 } from "../../../data/constants/CountryEmissions";
 import { calculateAverageSpecificEmissionsHelper } from "../utils/calculateAverageSpecificEmissions";
 
@@ -29,7 +27,7 @@ describe("calculateAverageSpecificEmissionsHelper", () => {
         const expectedAverageSpecificEmissions =
             50 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["United States"] +
             30 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["China"] +
-            (1 - 50 - 30) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
+            (100 - 50 - 30) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
         expect(calculateAverageSpecificEmissionsHelper(selectedCountries)).toBe(
             expectedAverageSpecificEmissions
         );
