@@ -10,27 +10,10 @@ import {
 } from "../../data/constants/DeviceEmissions";
 
 export const calculateEmissions = (
-    bytes: number,
-    selectedCountries: Map<CountryName, number>
-): number => {
-    const _selectedCountries = new Map(selectedCountries);
-
-    let totalPercentage = 0;
-    let carbon = 0;
-    _selectedCountries.forEach((percentage, country) => {
-        totalPercentage += percentage;
-        carbon +=
-            (bytes / (10 ^ 9)) *
-            COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH[country] *
-            percentage;
-    });
-
-    carbon +=
-        (bytes / (10 ^ 9)) *
-        WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_KWH *
-        (1 - totalPercentage);
-
-    return carbon;
+    softwareEmissionsGrams: number,
+    hardwareEmissionsGrams: number
+) => {
+    return softwareEmissionsGrams + hardwareEmissionsGrams;
 };
 
 export const calculateSoftwareEmissions = (
@@ -41,10 +24,10 @@ export const calculateSoftwareEmissions = (
 };
 
 export const calculateHardwareEmissions = (
-    flowTime: number,
+    flowTimeSeconds: number,
     deviceEmissionsGramsPerSecond: number
 ) => {
-    return flowTime * deviceEmissionsGramsPerSecond;
+    return flowTimeSeconds * deviceEmissionsGramsPerSecond;
 };
 
 export const calculateEnergyConsumptionkWh = (bytesTransferred: number) => {

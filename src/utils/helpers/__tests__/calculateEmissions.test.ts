@@ -5,34 +5,51 @@ import {
 } from "../../../data/constants/CountryEmissions";
 
 import {
+    calculateDeviceEmissionsGramsPerSecond,
     calculateEmissions,
+    calculateEnergyConsumptionkWh,
+    calculateHardwareEmissions,
     calculateLocationEmissionsGramsPerKwh,
+    calculateSoftwareEmissions,
 } from "../calculateEmissions";
 
-const mockCountry: Map<CountryName, number> = new Map([["Australia", 0.5]]);
-
-const mockCountries: Map<CountryName, number> = new Map([
-    ["Australia", 0.2],
-    ["United Kingdom", 0.3],
-    ["Belgium", 0.2],
-    ["Bulgaria", 0.2],
-    ["Croatia", 0.1],
-]);
-
-const mockSmallBytes = 50;
-const mockLargeBytes = 500000;
-
 describe("calculateEmissions", () => {
-    it("country should return corresponding value", () => {
-        expect(calculateEmissions(mockSmallBytes, mockCountry)).toBeCloseTo(
-            0.000017695
-        );
-    });
+    it("should return correct value", () => {
+        const mockBytes = 12473123;
+        const mockCountries = new Map([
+            ["Australia", 0.2],
+            ["United Kingdom", 0.3],
+            ["Belgium", 0.2],
+            ["Croatia", 0.1],
+        ]);
+        const mockDevices = new Map([
+            ["Google Pixel 2", 0.2],
+            ["Google Pixel 2 XL", 0.2],
+            ["Google Pixel 3a", 0.2],
+        ]);
 
-    it("multiple countries should return corresponding carbon consumption for a given transfer size", () => {
-        expect(calculateEmissions(mockLargeBytes, mockCountries)).toBeCloseTo(
-            0.16074
+        const kWhConsumption = calculateEnergyConsumptionkWh(mockBytes);
+        const locationEmissionGramsPerKWh =
+            calculateLocationEmissionsGramsPerKwh(mockCountries);
+        const softwareEmissionsGrams = calculateSoftwareEmissions(
+            kWhConsumption,
+            locationEmissionGramsPerKWh
         );
+
+        const mockflowTimeSeconds = 10;
+        const deviceEmissionsGramsPerSecond =
+            calculateDeviceEmissionsGramsPerSecond(mockDevices);
+        const hardwareEmissionsGrams = calculateHardwareEmissions(
+            mockflowTimeSeconds,
+            deviceEmissionsGramsPerSecond
+        );
+
+        const emissions = calculateEmissions(
+            softwareEmissionsGrams,
+            hardwareEmissionsGrams
+        );
+
+        expect(emissions).toBeCloseTo(-1);
     });
 });
 
