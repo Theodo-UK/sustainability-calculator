@@ -8,7 +8,7 @@ import { useNullSafeContext } from "../../../provider/useNullSafeContext";
 export const useSelectedDevices = () => {
     const { selectedDevices, removeSelectedDevice, setDevicePercentage } =
         useNullSafeContext<SelectedDevicesContextType>(SelectedDevicesContext);
-    const [averagePercentage, setWorldPercentage] = useState(1);
+    const [averagePercentage, setWorldPercentage] = useState(100);
     const [isPercentageError, setIsPercentageError] = useState(false);
 
     useEffect(() => {
