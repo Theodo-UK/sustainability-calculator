@@ -1,7 +1,7 @@
 import { Combobox, Transition } from "@headlessui/react";
 import React from "react";
 import {
-    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH,
     CountryName,
 } from "../../../data/constants/CountryEmissions";
 
@@ -15,7 +15,7 @@ export const CountryDropdown = ({
     selectedCountries,
 }: CountryDropdownType) => {
     const filteredCountries = Object.keys(
-        COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB
+        COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH
     ).filter((country) => !selectedCountries.has(country as CountryName));
 
     const [query, setQuery] = React.useState("");

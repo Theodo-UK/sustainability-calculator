@@ -1,7 +1,7 @@
 import {
-    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH,
     CountryName,
-    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
+    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_KWH,
 } from "../../../data/constants/CountryEmissions";
 import { DeviceName } from "../../../data/constants/DeviceEmissions";
 
@@ -46,9 +46,9 @@ describe("calculateLocationEmissionsGramsPerKwh", () => {
             ["India", 20],
         ]);
         const expectedAverageSpecificEmissions =
-            50 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["United States"] +
-            30 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["China"] +
-            20 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["India"];
+            50 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH["United States"] +
+            30 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH["China"] +
+            20 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH["India"];
         expect(calculateLocationEmissionsGramsPerKwh(selectedCountries)).toBe(
             expectedAverageSpecificEmissions
         );
@@ -60,9 +60,9 @@ describe("calculateLocationEmissionsGramsPerKwh", () => {
             ["China", 30],
         ]);
         const expectedAverageSpecificEmissions =
-            50 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["United States"] +
-            30 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB["China"] +
-            (1 - 50 - 30) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
+            50 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH["United States"] +
+            30 * COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH["China"] +
+            (1 - 50 - 30) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_KWH;
         expect(calculateLocationEmissionsGramsPerKwh(selectedCountries)).toBe(
             expectedAverageSpecificEmissions
         );

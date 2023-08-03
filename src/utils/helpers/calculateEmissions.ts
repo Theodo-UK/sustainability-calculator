@@ -1,7 +1,7 @@
 import {
-    COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB,
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH,
     CountryName,
-    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB,
+    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_KWH,
 } from "../../data/constants/CountryEmissions";
 import {
     AVERAGE_DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS,
@@ -23,13 +23,13 @@ export const calculateEmissions = (
         totalPercentage += percentage;
         carbon +=
             (bytes / BYTES_PER_GB) *
-            COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[country] *
+            COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH[country] *
             percentage;
     });
 
     carbon +=
         (bytes / BYTES_PER_GB) *
-        WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB *
+        WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_KWH *
         (1 - totalPercentage);
 
     return carbon;
@@ -59,20 +59,19 @@ export const calculateLocationEmissionsGramsPerKwh = (
     selectedCountries: Map<CountryName, number>
 ) => {
     let totalPercentage = 0;
-    let averageSpecificEmissions = 0;
+    let gramsPerKwh = 0;
 
     selectedCountries.forEach((value, key) => {
         totalPercentage += value;
-        averageSpecificEmissions +=
-            value * COUNTRY_CO2_EMISSIONS_GRAMS_PER_GB[key];
+        gramsPerKwh += value * COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH[key];
     });
 
     if (totalPercentage < 1) {
-        averageSpecificEmissions +=
-            (1 - totalPercentage) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_GB;
+        gramsPerKwh +=
+            (1 - totalPercentage) * WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_KWH;
     }
 
-    return averageSpecificEmissions;
+    return gramsPerKwh;
 };
 
 const AVG_DEVICE_LIFETIME_YEARS = 4;
