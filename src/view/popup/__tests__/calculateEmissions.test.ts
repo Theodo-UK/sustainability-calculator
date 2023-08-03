@@ -1,5 +1,5 @@
 import { CountryName } from "../../../data/constants/CountryEmissions";
-import { calculateCarbon } from "../../../utils/emissions/calculateCarbon";
+import { calculateEmissions } from "../../../utils/emissions/calculateEmissions";
 
 const mockCountry: Map<CountryName, number> = new Map([["Australia", 0.5]]);
 
@@ -14,15 +14,15 @@ const mockCountries: Map<CountryName, number> = new Map([
 const mockSmallBytes = 50;
 const mockLargeBytes = 500000;
 
-describe("calculateCarbon", () => {
+describe("calculateEmissions", () => {
     it("country should return corresponding value", () => {
-        expect(calculateCarbon(mockSmallBytes, mockCountry)).toBeCloseTo(
+        expect(calculateEmissions(mockSmallBytes, mockCountry)).toBeCloseTo(
             0.000017695
         );
     });
 
     it("multiple countries should return corresponding carbon consumption for a given transfer size", () => {
-        expect(calculateCarbon(mockLargeBytes, mockCountries)).toBeCloseTo(
+        expect(calculateEmissions(mockLargeBytes, mockCountries)).toBeCloseTo(
             0.16074
         );
     });

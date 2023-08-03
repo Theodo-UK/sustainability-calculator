@@ -6,7 +6,7 @@ import {
 
 const BYTES_PER_GB = 1073741824;
 
-export const calculateCarbon = (
+export const calculateEmissions = (
     bytes: number,
     selectedCountries: Map<CountryName, number>
 ): number => {

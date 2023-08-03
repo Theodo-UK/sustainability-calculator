@@ -7,7 +7,7 @@ import {
 import { calculateAverageSpecificEmissionsHelper } from "../../../utils/emissions/calculateAverageSpecificEmissions";
 
 import { RecordingRepository } from "../../../data/recording/RecordingRepository";
-import { calculateCarbon } from "../../../utils/emissions/calculateCarbon";
+import { calculateEmissions } from "../../../utils/emissions/calculateEmissions";
 import { useMountEffect } from "../../popup/useOnceAfterFirstMount";
 import {
     SelectedCountriesContext,
@@ -37,7 +37,7 @@ export const useRecording = (): RecordingContextType => {
     const [userType, setUserType] = useState<UserType>("new user");
 
     const emissions = useMemo(
-        () => calculateCarbon(bytesTransferred, selectedCountries),
+        () => calculateEmissions(bytesTransferred, selectedCountries),
         [bytesTransferred, selectedCountries]
     );
     const averageSpecificEmissions = useMemo(
