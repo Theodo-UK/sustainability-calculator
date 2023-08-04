@@ -1,16 +1,16 @@
 import React from "react";
 import { PERCENTAGE_ERROR_MESSAGE } from "../../../../utils/constants";
 import { TileTooltip } from "../../atomic/TileTooltip";
-import { useSelectedDevices } from "./useSelectedDevices";
+import { useSelectedDevicesList } from "./useSelectedDevicesList";
 
-export const SelectedDevices = () => {
+export const SelectedDevicesList = () => {
     const {
         isPercentageError,
         averagePercentage,
         selectedDevices,
         removeSelectedDevice,
         setDevicePercentage,
-    } = useSelectedDevices();
+    } = useSelectedDevicesList();
     return (
         <div className="w-full relative">
             <div className="relative flex items-center text-sm w-full gap-1 p-2 my-2 bg-rose-quartz bg-opacity-20 rounded-lg">
@@ -40,11 +40,11 @@ export const SelectedDevices = () => {
                                     onChange={(e) =>
                                         setDevicePercentage(
                                             device,
-                                            Number(e.target.value) / 100
+                                            Number(e.target.value)
                                         )
                                     }
                                 />
-                                <a>% in {device}</a>
+                                <a>% on {device}</a>
                             </div>
                             <button
                                 className="country-tile-button "

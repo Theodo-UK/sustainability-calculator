@@ -2,7 +2,7 @@ import { Disclosure } from "@headlessui/react";
 import React from "react";
 import { FaEdit } from "react-icons/fa";
 import { DeviceDropdown } from "../dropdown/DeviceDropdown";
-import { SelectedDevices } from "../selected/SelectedDevices";
+import { SelectedDevicesList } from "../selected/SelectedDevicesList";
 import { useSelectedDevicesDisclosure } from "./useSelectedDevicesDisclosure";
 
 export const SelectedDevicesDisclosure = () => {
@@ -18,7 +18,7 @@ export const SelectedDevicesDisclosure = () => {
                     <FaEdit className="text-gray-800 text-sm font-medium" />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 py-2 border-nyanza border-4 border-t-0 rounded-b-2xl rounded-t-none">
-                    <SelectedDevices />
+                    <SelectedDevicesList />
                     <DeviceDropdown />
                 </Disclosure.Panel>
             </Disclosure>
