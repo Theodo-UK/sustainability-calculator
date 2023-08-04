@@ -1,13 +1,13 @@
 import {
-    COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH,
     CountryName,
-    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_KWH,
+    COUNTRY_CO2_EMISSIONS_GRAMS_PER_KWH,
+    WORLD_AVERAGE_CO2_EMISSIONS_GRAMS_PER_KWH
 } from "../../data/constants/CountryEmissions";
 import {
     AVERAGE_DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS,
     AVG_DEVICE_LIFETIME_SECONDS,
-    DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS,
     DeviceName,
+    DEVICE_LIFETIME_CO2_EMISSIONS_GRAMS
 } from "../../data/constants/DeviceEmissions";
 
 export const calculateEmissions = (
@@ -78,4 +78,30 @@ export const calculateDeviceEmissionsGramsPerSecond = (
     const gramsPerSecond = lifetimeEmissionsGrams / AVG_DEVICE_LIFETIME_SECONDS;
 
     return gramsPerSecond;
+};
+
+export const calculateEmissionsHelper = (
+    bytes: number,
+    selectedCountries: Map<CountryName, number>,
+    selectedDevices: Map<DeviceName, number>,
+    endUnixTimeMs: number,
+    startUnixTimeMs: number
+) => {
+    const flowTimeSeconds = (endUnixTimeMs - startUnixTimeMs) / 1000;
+    const kWhConsumption = calculateEnergyConsumptionkWh(bytes);
+    const locationEmissionGramsPerKWh =
+        calculateLocationEmissionsGramsPerKwh(selectedCountries);
+    const softwareEmissionsGrams = calculateSoftwareEmissions(
+        kWhConsumption,
+        locationEmissionGramsPerKWh
+    );
+
+    const deviceEmissionsGramsPerSecond =
+        calculateDeviceEmissionsGramsPerSecond(selectedDevices);
+    const hardwareEmissionsGrams = calculateHardwareEmissions(
+        flowTimeSeconds,
+        deviceEmissionsGramsPerSecond
+    );
+
+    return calculateEmissions(softwareEmissionsGrams, hardwareEmissionsGrams);
 };

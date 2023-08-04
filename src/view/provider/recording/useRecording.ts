@@ -117,6 +117,7 @@ export const useRecording = (): RecordingContextType => {
                 new CalculationData(
                     bytesTransferred,
                     selectedCountries,
+                    selectedDevices,
                     startUnixTimeMs,
                     endUnixTimeMs,
                     userType

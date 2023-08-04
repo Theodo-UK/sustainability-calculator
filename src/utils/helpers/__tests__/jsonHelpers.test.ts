@@ -28,6 +28,7 @@ describe("jsonHelpers", () => {
             new CalculationData(
                 1,
                 new Map([["United States", 1]]),
+                new Map([]),
                 1,
                 1,
                 "new user"
@@ -35,13 +36,14 @@ describe("jsonHelpers", () => {
             new CalculationData(
                 2,
                 new Map([["United States", 2]]),
+                new Map([]),
                 2,
                 2,
                 "returning user"
             ),
         ];
         const humanReadableJson =
-            '["{\\"bytes\\":1,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":1}\\",\\"startUnixTimeMs\\":1,\\"endUnixTimeMs\\":1,\\"userType\\":\\"new user\\"}","{\\"bytes\\":2,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":2}\\",\\"startUnixTimeMs\\":2,\\"endUnixTimeMs\\":2,\\"userType\\":\\"returning user\\"}"]';
+            '["{\\"bytes\\":1,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":1}\\",\\"selectedDevices\\":\\"{}\\",\\"startUnixTimeMs\\":1,\\"endUnixTimeMs\\":1,\\"userType\\":\\"new user\\"}","{\\"bytes\\":2,\\"selectedCountries\\":\\"{\\\\\\"United States\\\\\\":2}\\",\\"selectedDevices\\":\\"{}\\",\\"startUnixTimeMs\\":2,\\"endUnixTimeMs\\":2,\\"userType\\":\\"returning user\\"}"]';
 
         const json = calculationDataArrayToJSON(calculationDataArray);
         expect(json).toEqual(humanReadableJson);
