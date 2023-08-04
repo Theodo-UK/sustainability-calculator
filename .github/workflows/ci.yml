@@ -15,9 +15,14 @@ jobs:
         with:
           node-version: 18
 
-      - name: run CI
-        run: |
-          npm install
-          npm run lint
-          npm run build
-          npm run test
+      - name: install
+        run: npm install
+
+      - name: run lint
+        run: npm run lint
+
+      - name: build
+        run: npm run build
+
+      - name: run test
+        run: npm run test
