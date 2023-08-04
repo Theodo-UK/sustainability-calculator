@@ -14,9 +14,10 @@ export class CalculationsRepository implements ICalculationsRepository {
     async storeCalculation(calculationData: CalculationData): Promise<void> {
         const oldCalculations = await this.getAllCalculations();
         const newCalculations = [calculationData, ...oldCalculations];
-        await this.remoteDataSource.set({
-            allCalculations: calculationDataArrayToJSON(newCalculations),
-        });
+        await this.remoteDataSource.set(
+            "allCalculations",
+            calculationDataArrayToJSON(newCalculations)
+        );
     }
 
     async getAllCalculations(): Promise<CalculationData[]> {

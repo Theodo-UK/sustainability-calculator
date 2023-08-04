@@ -19,10 +19,8 @@ export class TestStorageRepository implements IStorageRepository {
         return parseStorageDataType<T>(data);
     }
 
-    async set(data: { [key: string]: StorageDataType }): Promise<void> {
-        for (const key in data) {
-            this._storageObject[key] = data[key];
-        }
+    async set(key: string, value: StorageDataType): Promise<void> {
+        this._storageObject[key] = value;
     }
 
     async clear(): Promise<void> {

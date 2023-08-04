@@ -32,9 +32,10 @@ export class SelectedCountriesRepository
             newMap.set(countryName, 0);
         }
 
-        await this.remoteDataSource.set({
-            selectedCountriesAndPercentages: maptoJSON(newMap),
-        });
+        await this.remoteDataSource.set(
+            "selectedCountriesAndPercentages",
+            maptoJSON(newMap)
+        );
     }
 
     async removeSelectedCountry(countryName: CountryName): Promise<void> {
@@ -44,9 +45,10 @@ export class SelectedCountriesRepository
             newMap.delete(countryName);
         }
 
-        await this.remoteDataSource.set({
-            selectedCountriesAndPercentages: maptoJSON(newMap),
-        });
+        await this.remoteDataSource.set(
+            "selectedCountriesAndPercentages",
+            maptoJSON(newMap)
+        );
     }
 
     async setSelectedCountryPercentage(
@@ -63,8 +65,9 @@ export class SelectedCountriesRepository
             );
         }
 
-        await this.remoteDataSource.set({
-            selectedCountriesAndPercentages: maptoJSON(newMap),
-        });
+        await this.remoteDataSource.set(
+            "selectedCountriesAndPercentages",
+            maptoJSON(newMap)
+        );
     }
 }

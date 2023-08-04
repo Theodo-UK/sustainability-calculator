@@ -7,9 +7,10 @@ export class BytesRepository implements IBytesRepository {
     private remoteDataSource: IStorageRepository = IStorageRepository.instance;
 
     async saveBytesTransferred(): Promise<void> {
-        this.remoteDataSource.set({
-            bytesTransferred: this.localDataSource.getBytesTransferred(),
-        });
+        this.remoteDataSource.set(
+            "bytesTransferred",
+            this.localDataSource.getBytesTransferred()
+        );
     }
     getBytesTransferred(): number {
         return this.localDataSource.getBytesTransferred();

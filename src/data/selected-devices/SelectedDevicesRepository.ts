@@ -29,9 +29,7 @@ export class SelectedDevicesRepository implements ISelectedDevicesRepository {
             newMap.set(device, 0);
         }
 
-        await this.remoteDataSource.set({
-            selectedDevices: maptoJSON(newMap),
-        });
+        await this.remoteDataSource.set("selectedDevices", maptoJSON(newMap));
     }
 
     async removeSelectedDevice(device: DeviceName): Promise<void> {
@@ -41,9 +39,7 @@ export class SelectedDevicesRepository implements ISelectedDevicesRepository {
             newMap.delete(device);
         }
 
-        await this.remoteDataSource.set({
-            selectedDevices: maptoJSON(newMap),
-        });
+        await this.remoteDataSource.set("selectedDevices", maptoJSON(newMap));
     }
 
     async setSelectedDevicePercentage(
@@ -60,8 +56,6 @@ export class SelectedDevicesRepository implements ISelectedDevicesRepository {
             );
         }
 
-        await this.remoteDataSource.set({
-            selectedDevices: maptoJSON(newMap),
-        });
+        await this.remoteDataSource.set("selectedDevices", maptoJSON(newMap));
     }
 }

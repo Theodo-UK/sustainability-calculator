@@ -10,20 +10,20 @@ export const RecordingRepository = {
     },
 
     setOngoingCalculation: async (ongoing: boolean): Promise<void> => {
-        await IStorageRepository.instance.set({
-            ongoingCalculation: ongoing,
-        });
+        await IStorageRepository.instance.set("ongoingCalculation", ongoing);
     },
 
     setStartUnixTime: async (unixTimeMs: number | null): Promise<void> => {
-        await IStorageRepository.instance.set({
-            ongoingCalculationStartUnixTimeMs: unixTimeMs,
-        });
+        await IStorageRepository.instance.set(
+            "ongoingCalculationStartUnixTimeMs",
+            unixTimeMs
+        );
     },
     clearStartUnixTime: async (): Promise<void> => {
-        await IStorageRepository.instance.set({
-            ongoingCalculationStartUnixTimeMs: -1,
-        });
+        await IStorageRepository.instance.set(
+            "ongoingCalculationStartUnixTimeMs",
+            -1
+        );
     },
     getStartUnixTime: async (): Promise<number> => {
         const data = await IStorageRepository.instance.get<number>(

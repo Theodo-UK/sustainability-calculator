@@ -21,8 +21,8 @@ export class StorageRepository implements IStorageRepository {
         return parseStorageDataType<T>(data);
     }
 
-    async set(data: { [key: string]: StorageDataType }): Promise<void> {
-        return this.remoteDataSource.set(data);
+    async set(key: string, value: StorageDataType): Promise<void> {
+        return this.remoteDataSource.set({ [key]: value });
     }
 
     async clear(): Promise<void> {

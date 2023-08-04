@@ -14,8 +14,6 @@ export class PageRepository implements IPageRepository {
     }
 
     async setCurrentPage(page: PageType): Promise<void> {
-        await this.remoteDataSource.set({
-            currentPage: page,
-        });
+        await this.remoteDataSource.set("currentPage", page);
     }
 }
