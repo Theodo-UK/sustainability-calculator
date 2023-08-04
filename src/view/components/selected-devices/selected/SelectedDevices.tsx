@@ -40,7 +40,7 @@ export const SelectedDevices = () => {
                                     onChange={(e) =>
                                         setDevicePercentage(
                                             device,
-                                            Number(e.target.value) / 100
+                                            Number(e.target.value)
                                         )
                                     }
                                 />
