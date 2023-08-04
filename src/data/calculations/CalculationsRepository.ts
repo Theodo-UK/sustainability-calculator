@@ -3,6 +3,7 @@ import {
     calculationDataArrayToJSON,
 } from "../../utils/helpers/jsonHelpers";
 import { IStorageRepository } from "../storage/IStorageRepository";
+import { StorageKeys } from "../storage/StorageKeys";
 import {
     CalculationData,
     ICalculationsRepository,
@@ -15,23 +16,23 @@ export class CalculationsRepository implements ICalculationsRepository {
         const oldCalculations = await this.getAllCalculations();
         const newCalculations = [calculationData, ...oldCalculations];
         await this.remoteDataSource.set(
-            "allCalculations",
+            StorageKeys.allCalculations,
             calculationDataArrayToJSON(newCalculations)
         );
     }
 
     async getAllCalculations(): Promise<CalculationData[]> {
         const data = await this.remoteDataSource.get<string>(
-            "allCalculations",
+            StorageKeys.allCalculations,
             JSON.stringify([])
         );
         return JSONtoCalculationDataArray(data);
     }
 
     async getLastCalculation(): Promise<CalculationData | null> {
-        const oldCalculations = await this.getAllCalculations();
-        if (oldCalculations.length > 0) {
-            return oldCalculations[0];
+        const calculations = await this.getAllCalculations();
+        if (calculations.length > 0) {
+            return calculations[0];
         }
         return null;
     }

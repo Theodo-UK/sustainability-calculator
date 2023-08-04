@@ -1,6 +1,7 @@
 import { JSONtoMap, maptoJSON } from "../../utils/helpers/jsonHelpers";
 import { CountryName } from "../constants/CountryEmissions";
 import { IStorageRepository } from "../storage/IStorageRepository";
+import { StorageKeys } from "../storage/StorageKeys";
 import {
     ISelectedCountriesRepository,
     isSelectedCountriesMap,
@@ -15,7 +16,7 @@ export class SelectedCountriesRepository
         Map<CountryName, number>
     > {
         const data = await this.remoteDataSource.get<string>(
-            "selectedCountriesAndPercentages",
+            StorageKeys.selectedCountriesAndPercentages,
             maptoJSON(new Map<CountryName, number>([]))
         );
         const map = JSONtoMap(data);
@@ -33,7 +34,7 @@ export class SelectedCountriesRepository
         }
 
         await this.remoteDataSource.set(
-            "selectedCountriesAndPercentages",
+            StorageKeys.selectedCountriesAndPercentages,
             maptoJSON(newMap)
         );
     }
@@ -46,7 +47,7 @@ export class SelectedCountriesRepository
         }
 
         await this.remoteDataSource.set(
-            "selectedCountriesAndPercentages",
+            StorageKeys.selectedCountriesAndPercentages,
             maptoJSON(newMap)
         );
     }
@@ -66,7 +67,7 @@ export class SelectedCountriesRepository
         }
 
         await this.remoteDataSource.set(
-            "selectedCountriesAndPercentages",
+            StorageKeys.selectedCountriesAndPercentages,
             maptoJSON(newMap)
         );
     }

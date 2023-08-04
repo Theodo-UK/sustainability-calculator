@@ -1,4 +1,5 @@
 import { IStorageRepository } from "../storage/IStorageRepository";
+import { StorageKeys } from "../storage/StorageKeys";
 import { BytesLocalDataSource } from "./BytesLocalDataSource";
 import { IBytesRepository } from "./IBytesRepository";
 
@@ -8,7 +9,7 @@ export class BytesRepository implements IBytesRepository {
 
     async saveBytesTransferred(): Promise<void> {
         this.remoteDataSource.set(
-            "bytesTransferred",
+            StorageKeys.bytesTransferred,
             this.localDataSource.getBytesTransferred()
         );
     }
