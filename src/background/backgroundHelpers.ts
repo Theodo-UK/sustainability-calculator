@@ -1,14 +1,13 @@
-import { IBytesRepository } from "../data/bytes/IBytesRepository";
+import { BytesRepository } from "../data/bytes/BytesRepository";
 
 export const debuggingProtocolVersion = "1.2";
 export const addBytesTransferred = async (bytes: number) => {
-    IBytesRepository.instance.addBytesTransferred(bytes);
+    BytesRepository.addBytesTransferred(bytes);
 
     try {
         await chrome.runtime.sendMessage({
             command: {
-                bytesTransferredChanged:
-                    IBytesRepository.instance.getBytesTransferred(),
+                bytesTransferredChanged: BytesRepository.getBytesTransferred(),
             },
         });
     } catch (error: unknown) {
@@ -34,7 +33,7 @@ export const startRecordingBytesTransferred = async (
     tabId: number,
     sendResponse: (response: StartRecordingBytesTransferredReturnType) => void
 ): Promise<void> => {
-    IBytesRepository.instance.clearBytesTransferred();
+    BytesRepository.clearBytesTransferred();
 
     chrome.tabs.get(tabId).then((tab) => {
         if (tab.url && tab.url.startsWith("chrome://")) {

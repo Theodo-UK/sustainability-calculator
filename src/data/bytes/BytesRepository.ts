@@ -1,25 +1,13 @@
-import { IStorageRepository } from "../storage/IStorageRepository";
-import { BytesLocalDataSource } from "./BytesLocalDataSource";
-import { IBytesRepository } from "./IBytesRepository";
+export const BytesRepository = {
+    bytes: 0,
 
-export class BytesRepository implements IBytesRepository {
-    private localDataSource: BytesLocalDataSource = new BytesLocalDataSource();
-    private remoteDataSource: IStorageRepository = IStorageRepository.instance;
-
-    async saveBytesTransferred(): Promise<void> {
-        this.remoteDataSource.set({
-            bytesTransferred: this.localDataSource.getBytesTransferred(),
-        });
-    }
     getBytesTransferred(): number {
-        return this.localDataSource.getBytesTransferred();
-    }
-
+        return this.bytes;
+    },
     addBytesTransferred(bytes: number): void {
-        this.localDataSource.addBytesTransferred(bytes);
-    }
-
+        this.bytes += bytes;
+    },
     clearBytesTransferred(): void {
-        this.localDataSource.clearBytesTransferred();
-    }
-}
+        this.bytes = 0;
+    },
+};

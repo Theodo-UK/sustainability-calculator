@@ -27,7 +27,7 @@ export abstract class IStorageRepository {
         defaultValue: T
     ): Promise<T>;
 
-    abstract set(data: { [key: string]: StorageDataType }): Promise<void>;
+    abstract set(key: string, value: StorageDataType): Promise<void>;
 
     abstract clear(): Promise<void>;
 }

@@ -1,6 +1,7 @@
 import { JSONtoMap, maptoJSON } from "../../utils/helpers/jsonHelpers";
 import { CountryName } from "../constants/CountryEmissions";
 import { IStorageRepository } from "../storage/IStorageRepository";
+import { StorageKeys } from "../storage/StorageKeys";
 import {
     ISelectedCountriesRepository,
     isSelectedCountriesMap,
@@ -15,7 +16,7 @@ export class SelectedCountriesRepository
         Map<CountryName, number>
     > {
         const data = await this.remoteDataSource.get<string>(
-            "selectedCountriesAndPercentages",
+            StorageKeys.selectedCountries,
             maptoJSON(new Map<CountryName, number>([]))
         );
         const map = JSONtoMap(data);
@@ -32,9 +33,10 @@ export class SelectedCountriesRepository
             newMap.set(countryName, 0);
         }
 
-        await this.remoteDataSource.set({
-            selectedCountriesAndPercentages: maptoJSON(newMap),
-        });
+        await this.remoteDataSource.set(
+            StorageKeys.selectedCountries,
+            maptoJSON(newMap)
+        );
     }
 
     async removeSelectedCountry(countryName: CountryName): Promise<void> {
@@ -44,9 +46,10 @@ export class SelectedCountriesRepository
             newMap.delete(countryName);
         }
 
-        await this.remoteDataSource.set({
-            selectedCountriesAndPercentages: maptoJSON(newMap),
-        });
+        await this.remoteDataSource.set(
+            StorageKeys.selectedCountries,
+            maptoJSON(newMap)
+        );
     }
 
     async setSelectedCountryPercentage(
@@ -63,8 +66,9 @@ export class SelectedCountriesRepository
             );
         }
 
-        await this.remoteDataSource.set({
-            selectedCountriesAndPercentages: maptoJSON(newMap),
-        });
+        await this.remoteDataSource.set(
+            StorageKeys.selectedCountries,
+            maptoJSON(newMap)
+        );
     }
 }

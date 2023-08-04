@@ -1,4 +1,5 @@
 import { IStorageRepository } from "../storage/IStorageRepository";
+import { StorageKeys } from "../storage/StorageKeys";
 import { IPageRepository, PageType, parsePage } from "./IPageRepository";
 
 export class PageRepository implements IPageRepository {
@@ -6,7 +7,7 @@ export class PageRepository implements IPageRepository {
 
     async getCurrentPage(): Promise<PageType> {
         const data = await this.remoteDataSource.get<string>(
-            "currentPage",
+            StorageKeys.currentPage,
             "landing"
         );
 
@@ -14,8 +15,6 @@ export class PageRepository implements IPageRepository {
     }
 
     async setCurrentPage(page: PageType): Promise<void> {
-        await this.remoteDataSource.set({
-            currentPage: page,
-        });
+        await this.remoteDataSource.set(StorageKeys.currentPage, page);
     }
 }

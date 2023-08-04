@@ -1,4 +1,4 @@
-import { IBytesRepository } from "../data/bytes/IBytesRepository";
+import { BytesRepository } from "../data/bytes/BytesRepository";
 import {
     addBytesTransferred,
     startRecordingBytesTransferred,
@@ -7,7 +7,7 @@ import {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message === "getBytesTransferred") {
-        sendResponse(IBytesRepository.instance.getBytesTransferred());
+        sendResponse(BytesRepository.getBytesTransferred());
     }
 
     const { tabId } = message;
