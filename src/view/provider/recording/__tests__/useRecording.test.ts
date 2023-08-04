@@ -2,7 +2,7 @@ import { act, renderHook } from "@testing-library/react";
 import { RecordingRepository } from "../../../../data/recording/RecordingRepository";
 import {
     mockChrome,
-    mockTabId,
+    mockTabId
 } from "../../../../utils/test-objects/mockChrome";
 import { mockProviderWrapper } from "../../../../utils/test-objects/mockProviderWrapper";
 import { useRecording } from "../useRecording";

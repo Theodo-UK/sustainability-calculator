@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
 import {
     CalculationData,
-    ICalculationsRepository,
+    ICalculationsRepository
 } from "../../../../data/calculations/ICalculationsRepository";
 import { useHistory } from "../useHistory";
 
@@ -13,8 +13,7 @@ describe("useHistory", () => {
         mockCalculationRepository.storeCalculation(
             new CalculationData(
                 12345,
-                12345,
-                12345,
+                new Map([]),
                 new Map([]),
                 12345,
                 12345,
@@ -24,8 +23,7 @@ describe("useHistory", () => {
         mockCalculationRepository.storeCalculation(
             new CalculationData(
                 54321,
-                54321,
-                54321,
+                new Map([]),
                 new Map([]),
                 54321,
                 54321,
@@ -40,8 +38,7 @@ describe("useHistory", () => {
         expect(result.current.calculationHistory).toStrictEqual([
             new CalculationData(
                 54321,
-                54321,
-                54321,
+                new Map([]),
                 new Map([]),
                 54321,
                 54321,
@@ -49,8 +46,7 @@ describe("useHistory", () => {
             ),
             new CalculationData(
                 12345,
-                12345,
-                12345,
+                new Map([]),
                 new Map([]),
                 12345,
                 12345,

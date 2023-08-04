@@ -1,14 +1,19 @@
 import React from "react";
 import { FaClipboard } from "react-icons/fa";
 import {
+    calculateDeviceEmissionsGramsPerSecond,
+    calculateEmissionsHelper,
+    calculateLocationEmissionsGramsPerKwh
+} from "../../../utils/helpers/calculateEmissions";
+import {
     formatBytes,
     formatEmissions,
-    msToDateTimeStrings,
+    msToDateTimeStrings
 } from "../../../utils/helpers/formatNumbersToString";
 import { secondsToTimeString } from "../../../utils/helpers/stringHelpers";
 import {
     HistoryContext,
-    HistoryContextType,
+    HistoryContextType
 } from "../../provider/history/HistoryProvider";
 import { useNullSafeContext } from "../../provider/useNullSafeContext";
 import { Button } from "../atomic/Button";
@@ -59,12 +64,26 @@ export const CalculationHistory = () => {
                                     {`Bytes: ${formatBytes(calculation.bytes)}`}
                                     <br />
                                     {`Emissions: ${formatEmissions(
-                                        calculation.emissions
+                                        calculateEmissionsHelper(
+                                            calculation.bytes,
+                                            calculation.selectedCountries,
+                                            calculation.selectedDevices,
+                                            calculation.endUnixTimeMs,
+                                            calculation.startUnixTimeMs
+                                        )
                                     )} g of CO2`}
                                     <br />
-                                    {`Specific Emissions: ${formatEmissions(
-                                        calculation.specificEmissions
-                                    )} g of CO2`}
+                                    {`Location Emissions: ${formatEmissions(
+                                        calculateLocationEmissionsGramsPerKwh(
+                                            calculation.selectedCountries
+                                        )
+                                    )} g per kWh`}
+                                    <br />
+                                    {`Device Emissions: ${formatEmissions(
+                                        calculateDeviceEmissionsGramsPerSecond(
+                                            calculation.selectedDevices
+                                        ) * 1000
+                                    )} mg per second`}
                                     <br />
                                     {`Flow Time: ${secondsToTimeString(
                                         (calculation.endUnixTimeMs -
