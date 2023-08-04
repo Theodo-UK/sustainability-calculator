@@ -14,7 +14,7 @@ export const SelectedCountries = ({
     removeSelectedCountry,
     setCountryPercentage,
 }: SelectedCountriesType) => {
-    const [worldPercentage, setWorldPercentage] = React.useState(1);
+    const [worldPercentage, setWorldPercentage] = React.useState(100);
     const [isPercentageError, setIsPercentageError] = React.useState(false);
 
     useEffect(() => {
