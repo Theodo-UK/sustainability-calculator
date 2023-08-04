@@ -6,17 +6,13 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node_version: [18]
 
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v3
-        with:
-          node_version: ${{ matrix.node_version }}
+        with: node-version: 18
 
       - name: run CI
         run: |
