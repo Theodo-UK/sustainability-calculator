@@ -44,7 +44,7 @@ export const SelectedDevices = () => {
                                         )
                                     }
                                 />
-                                <a>% in {device}</a>
+                                <a>% on {device}</a>
                             </div>
                             <button
                                 className="country-tile-button "
