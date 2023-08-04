@@ -16,7 +16,7 @@ export class SelectedCountriesRepository
         Map<CountryName, number>
     > {
         const data = await this.remoteDataSource.get<string>(
-            StorageKeys.selectedCountriesAndPercentages,
+            StorageKeys.selectedCountries,
             maptoJSON(new Map<CountryName, number>([]))
         );
         const map = JSONtoMap(data);
@@ -34,7 +34,7 @@ export class SelectedCountriesRepository
         }
 
         await this.remoteDataSource.set(
-            StorageKeys.selectedCountriesAndPercentages,
+            StorageKeys.selectedCountries,
             maptoJSON(newMap)
         );
     }
@@ -47,7 +47,7 @@ export class SelectedCountriesRepository
         }
 
         await this.remoteDataSource.set(
-            StorageKeys.selectedCountriesAndPercentages,
+            StorageKeys.selectedCountries,
             maptoJSON(newMap)
         );
     }
@@ -67,7 +67,7 @@ export class SelectedCountriesRepository
         }
 
         await this.remoteDataSource.set(
-            StorageKeys.selectedCountriesAndPercentages,
+            StorageKeys.selectedCountries,
             maptoJSON(newMap)
         );
     }

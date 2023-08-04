@@ -4,6 +4,6 @@ export const StorageKeys = {
     currentPage: "currentPage",
     ongoingCalculation: "ongoingCalculation",
     ongoingCalculationStartUnixTimeMs: "ongoingCalculationStartUnixTimeMs",
-    selectedCountriesAndPercentages: "selectedCountriesAndPercentages",
+    selectedCountries: "selectedCountries",
     selectedDevices: "selectedDevices",
 };
