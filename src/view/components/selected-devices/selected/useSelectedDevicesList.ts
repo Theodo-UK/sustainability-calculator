@@ -5,7 +5,7 @@ import {
 } from "../../../provider/selected-devices/SelectedDevicesProvider";
 import { useNullSafeContext } from "../../../provider/useNullSafeContext";
 
-export const useSelectedDevices = () => {
+export const useSelectedDevicesList = () => {
     const { selectedDevices, removeSelectedDevice, setDevicePercentage } =
         useNullSafeContext<SelectedDevicesContextType>(SelectedDevicesContext);
     const [averagePercentage, setAveragePercentage] = useState(100);

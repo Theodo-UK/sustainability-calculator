@@ -1,16 +1,16 @@
 import React from "react";
 import { PERCENTAGE_ERROR_MESSAGE } from "../../../../utils/constants";
 import { TileTooltip } from "../../atomic/TileTooltip";
-import { useSelectedDevices } from "./useSelectedDevices";
+import { useSelectedDevicesList } from "./useSelectedDevicesList";
 
-export const SelectedDevices = () => {
+export const SelectedDevicesList = () => {
     const {
         isPercentageError,
         averagePercentage,
         selectedDevices,
         removeSelectedDevice,
         setDevicePercentage,
-    } = useSelectedDevices();
+    } = useSelectedDevicesList();
     return (
         <div className="w-full relative">
             <div className="relative flex items-center text-sm w-full gap-1 p-2 my-2 bg-rose-quartz bg-opacity-20 rounded-lg">
