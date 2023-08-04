@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export const mockTabId = 123;
 export const mockChrome = {
     tabs: {

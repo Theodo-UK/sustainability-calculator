@@ -1,3 +1,4 @@
+/* global jest */
 jest.mock("./src/data/recording/RecordingRepository", () => ({
     RecordingRepository: {
         isOngoingCalculation: jest.fn(),
