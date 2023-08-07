@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import {
     SelectedDevicesContext,
-    SelectedDevicesContextType
+    SelectedDevicesContextType,
 } from "../../../provider/selected-devices/SelectedDevicesProvider";
 import { useNullSafeContext } from "../../../provider/useNullSafeContext";
 

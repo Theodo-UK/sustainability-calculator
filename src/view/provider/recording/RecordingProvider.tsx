@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { UserType } from "../../data/calculations/CalculationData";
+import { UserType } from "../../../data/calculations/UserType";
 import { useRecording } from "./useRecording";
 interface Props {
     children: React.ReactNode;

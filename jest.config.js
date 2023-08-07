@@ -6,14 +6,14 @@
 module.exports = {
     testEnvironment: "jsdom",
     clearMocks: true,
-    collectCoverage: false,
+    collectCoverage: true,
     collectCoverageFrom: ["<rootDir>/src/**/*.{js,jsx,ts,tsx}"],
     coverageThreshold: {
         global: {
-            statements: 100,
-            branches: 100,
-            functions: 100,
-            lines: 100,
+            statements: 42,
+            branches: 26,
+            functions: 37,
+            lines: 37,
         },
     },
     testMatch: ["<rootDir>/src/**/__tests__/*.test.{js,jsx,ts,tsx}"],

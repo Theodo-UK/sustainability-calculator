@@ -9,10 +9,12 @@
     "lint:fix": "eslint . --fix",
     "start": "webpack-dev-server",
     "build": "webpack --config webpack.prod.js",
-    "test": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config --config jest.config.js --verbose --watch"
+    "test": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config --config jest.config.js --ci",
+    "test-watch": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config --config jest.config.js --verbose --watch"
   },
   "engines": {
-    "npm": ">=9.6.7"
+    "npm": ">=9.6.7",
+    "node": "18.x"
   },
   "keywords": [],
   "author": "",

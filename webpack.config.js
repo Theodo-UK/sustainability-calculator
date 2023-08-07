@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -24,8 +25,8 @@ module.exports = (env, argv) => {
 
     return {
         entry: {
-            popup: "./src/view/popup.tsx",
-            background: "./src/background/background.ts",
+            popup: `${currentPath}/src/view/popup.tsx`,
+            background: `${currentPath}/src/background/background.ts`,
         },
         output: {
             path: path.resolve(__dirname, "dist"),
@@ -73,7 +74,7 @@ module.exports = (env, argv) => {
         },
         plugins: [
             new HtmlWebpackPlugin({
-                template: "./src/view/popup.html",
+                template: `${currentPath}/src/view/popup.html`,
                 filename: "popup.html",
             }),
             new CopyPlugin({

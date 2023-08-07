@@ -7,6 +7,7 @@ import {
 import { mockProviderWrapper } from "../../../../utils/test-objects/mockProviderWrapper";
 import { useRecording } from "../useRecording";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (global as any).chrome = mockChrome;
 
 describe("useRecording", () => {
