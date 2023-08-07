@@ -1,10 +1,13 @@
-name: CI
+name: Test
 
-on: [push]
+on: 
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  build:
-    name: Build
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -14,15 +17,23 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Lint
+        run: |
+          npm install
+          npm run lint
 
-      - name: install
-        run: npm install
+  test:
+    name: Test
+    runs-on: ubuntu-latest
 
-      - name: run lint
-        run: npm run lint
-
-      - name: build
-        run: npm run build
-
-      - name: run test
-        run: npm run test
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Test
+        run: |
+          npm install
+          npm run test
