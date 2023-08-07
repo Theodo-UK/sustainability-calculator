@@ -2,20 +2,13 @@ import { JSONtoMap, maptoJSON } from "../../utils/helpers/jsonHelpers";
 import { CountryName } from "../constants/CountryEmissions";
 import { IStorageRepository } from "../storage/IStorageRepository";
 import { StorageKeys } from "../storage/StorageKeys";
-import {
-    ISelectedCountriesRepository,
-    isSelectedCountriesMap,
-} from "./ISelectedCountriesRepository";
+import { isSelectedCountriesMap } from "./CountryNames";
 
-export class SelectedCountriesRepository
-    implements ISelectedCountriesRepository
-{
-    remoteDataSource: IStorageRepository = IStorageRepository.instance;
-
-    async getSelectedCountriesAndPercentages(): Promise<
+export const SelectedCountriesRepository = {
+    getSelectedCountriesAndPercentages: async function (): Promise<
         Map<CountryName, number>
     > {
-        const data = await this.remoteDataSource.get<string>(
+        const data = await IStorageRepository.instance.get<string>(
             StorageKeys.selectedCountries,
             maptoJSON(new Map<CountryName, number>([]))
         );
@@ -24,35 +17,39 @@ export class SelectedCountriesRepository
             throw Error(`data ${data} is not a valid map`);
         }
         return map;
-    }
+    },
 
-    async addSelectedCountry(countryName: CountryName): Promise<void> {
+    addSelectedCountry: async function (
+        countryName: CountryName
+    ): Promise<void> {
         const newMap = await this.getSelectedCountriesAndPercentages();
 
         if (!newMap.has(countryName)) {
             newMap.set(countryName, 0);
         }
 
-        await this.remoteDataSource.set(
+        await IStorageRepository.instance.set(
             StorageKeys.selectedCountries,
             maptoJSON(newMap)
         );
-    }
+    },
 
-    async removeSelectedCountry(countryName: CountryName): Promise<void> {
+    removeSelectedCountry: async function (
+        countryName: CountryName
+    ): Promise<void> {
         const newMap = await this.getSelectedCountriesAndPercentages();
 
         if (newMap.has(countryName)) {
             newMap.delete(countryName);
         }
 
-        await this.remoteDataSource.set(
+        await IStorageRepository.instance.set(
             StorageKeys.selectedCountries,
             maptoJSON(newMap)
         );
-    }
+    },
 
-    async setSelectedCountryPercentage(
+    setSelectedCountryPercentage: async function (
         countryName: CountryName,
         percentage: number
     ): Promise<void> {
@@ -66,9 +63,9 @@ export class SelectedCountriesRepository
             );
         }
 
-        await this.remoteDataSource.set(
+        await IStorageRepository.instance.set(
             StorageKeys.selectedCountries,
             maptoJSON(newMap)
         );
-    }
-}
+    },
+};

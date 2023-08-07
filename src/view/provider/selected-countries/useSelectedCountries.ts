@@ -1,27 +1,25 @@
 import { useState } from "react";
 import { CountryName } from "../../../data/constants/CountryEmissions";
-import { ISelectedCountriesRepository } from "../../../data/selected-countries/ISelectedCountriesRepository";
+import { SelectedCountriesRepository } from "../../../data/selected-countries/SelectedCountriesRepository";
 import { useMountEffect } from "../../../utils/hooks/useOnceAfterFirstMount";
 import { percentageAboveHundredString } from "../../../utils/messages/errorMessages";
 import { SelectedCountriesContextType } from "./SelectedCountriesProvider";
 
 export const useSelectedCountries = (): SelectedCountriesContextType => {
-    const selectedCountriesRepository: ISelectedCountriesRepository =
-        ISelectedCountriesRepository.instance;
     const [selectedCountries, setSelectedCountries] = useState<
         Map<CountryName, number>
     >(new Map<CountryName, number>());
     const addSelectedCountry = async (country: CountryName) => {
-        await selectedCountriesRepository.addSelectedCountry(country);
+        await SelectedCountriesRepository.addSelectedCountry(country);
         const newSelectedCountries =
-            await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+            await SelectedCountriesRepository.getSelectedCountriesAndPercentages();
         setSelectedCountries(newSelectedCountries);
     };
 
     const removeSelectedCountry = async (country: CountryName) => {
-        await selectedCountriesRepository.removeSelectedCountry(country);
+        await SelectedCountriesRepository.removeSelectedCountry(country);
         const newSelectedCountries =
-            await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+            await SelectedCountriesRepository.getSelectedCountriesAndPercentages();
         setSelectedCountries(newSelectedCountries);
     };
 
@@ -29,12 +27,12 @@ export const useSelectedCountries = (): SelectedCountriesContextType => {
         country: CountryName,
         percentage: number
     ) => {
-        await selectedCountriesRepository.setSelectedCountryPercentage(
+        await SelectedCountriesRepository.setSelectedCountryPercentage(
             country,
             percentage
         );
         const newSelectedCountries =
-            await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+            await SelectedCountriesRepository.getSelectedCountriesAndPercentages();
         setSelectedCountries(newSelectedCountries);
     };
     const validatePercentages = () => {
@@ -53,7 +51,7 @@ export const useSelectedCountries = (): SelectedCountriesContextType => {
     useMountEffect(() => {
         const getSelectedCountriesAndSetState = async () => {
             const _selectedCountries =
-                await selectedCountriesRepository.getSelectedCountriesAndPercentages();
+                await SelectedCountriesRepository.getSelectedCountriesAndPercentages();
             setSelectedCountries(_selectedCountries);
         };
         getSelectedCountriesAndSetState();
