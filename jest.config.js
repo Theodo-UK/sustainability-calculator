@@ -4,27 +4,27 @@
  */
 
 module.exports = {
-  testEnvironment: "jsdom",
-  clearMocks: true,
-  collectCoverage: true,
-  collectCoverageFrom: ["<rootDir>/src/**/*.{js,jsx,ts,tsx}"],
-  coverageThreshold: {
-    global: {
-      statements: 42,
-      branches: 26,
-      functions: 37,
-      lines: 37,
+    testEnvironment: "jsdom",
+    clearMocks: true,
+    collectCoverage: true,
+    collectCoverageFrom: ["<rootDir>/src/**/*.{js,jsx,ts,tsx}"],
+    coverageThreshold: {
+        global: {
+            statements: 42,
+            branches: 26,
+            functions: 37,
+            lines: 37,
+        },
     },
-  },
-  testMatch: ["<rootDir>/src/**/__tests__/*.test.{js,jsx,ts,tsx}"],
-  moduleDirectories: ["src", "node_modules"],
-  moduleFileExtensions: ["ts", "tsx", "js"],
-  setupFilesAfterEnv: ["./jest.setup.js"],
-  coverageDirectory: "coverage",
-  preset: "ts-jest",
-  transform: {
-    "^.+\\.(ts|tsx)?$": "ts-jest",
-    "^.+\\.(js|jsx)$": "babel-jest",
-    "^.+\\.svg$": "jest-transformer-svg",
-  },
+    testMatch: ["<rootDir>/src/**/__tests__/*.test.{js,jsx,ts,tsx}"],
+    moduleDirectories: ["src", "node_modules"],
+    moduleFileExtensions: ["ts", "tsx", "js"],
+    setupFilesAfterEnv: ["./jest.setup.js"],
+    coverageDirectory: "coverage",
+    preset: "ts-jest",
+    transform: {
+        "^.+\\.(ts|tsx)?$": "ts-jest",
+        "^.+\\.(js|jsx)$": "babel-jest",
+        "^.+\\.svg$": "jest-transformer-svg",
+    },
 };
