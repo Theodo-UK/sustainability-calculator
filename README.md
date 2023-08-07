@@ -9,10 +9,11 @@
 7. Select the `dist` folder
 
 ## Architecture
-![image](https://github.com/Theodo-UK/sustainability-calculator/assets/57725347/08e13bb7-7a71-48d5-81df-e64b3a07a2e6)
+![archi](https://github.com/Theodo-UK/sustainability-calculator/assets/57725347/388ddfab-c458-4063-8373-d02cf86dfa71)
 
 The codebase is structured into 3 layers:
 - View Layer, e.g. `Foo.tsx`
+
 - View Model Layer, e.g. `useFoo.ts`
 - Data Layer, e.g. `FooRepository.ts`
   - Accesses data from external data sources, e.g. chrome.local.storage
