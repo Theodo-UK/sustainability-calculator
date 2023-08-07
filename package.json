@@ -9,7 +9,7 @@
     "lint:fix": "eslint . --fix",
     "start": "webpack-dev-server",
     "build": "webpack --config webpack.prod.js",
-    "test": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config --config jest.config.js --verbose",
+    "test": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config --config jest.config.js --ci",
     "test-watch": "DOTENV_CONFIG_PATH=.env.test jest --setupFiles=dotenv/config --config jest.config.js --verbose --watch"
   },
   "engines": {
