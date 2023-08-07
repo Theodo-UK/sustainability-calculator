@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { IPageRepository, PageType } from "../../../data/page/IPageRepository";
+import { PageRepository } from "../../../data/page/PageRepository";
+import { PageType } from "../../../data/page/PageType";
 import { useMountEffect } from "../../../utils/hooks/useOnceAfterFirstMount";
 import { ErrorPage } from "../../pages/ErrorPage";
 import { RecordingPage } from "../../pages/RecordingPage";
@@ -9,15 +10,14 @@ import { RouterContextType } from "./RouterProvider";
 
 export const useRouter = (): RouterContextType => {
     const [page, setPage] = useState<PageType>("landing");
-    const pageRepository = IPageRepository.instance;
 
     const goToPage = (page: PageType) => {
         setPage(page);
-        pageRepository.setCurrentPage(page);
+        PageRepository.setCurrentPage(page);
     };
 
     useMountEffect(() => {
-        pageRepository.getCurrentPage().then((page) => {
+        PageRepository.getCurrentPage().then((page) => {
             setPage(page);
         });
     });
