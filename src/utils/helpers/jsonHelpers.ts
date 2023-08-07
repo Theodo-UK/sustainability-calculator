@@ -1,4 +1,4 @@
-import { CalculationData } from "../../data/calculations/ICalculationsRepository";
+import { CalculationData } from "../../data/calculations/CalculationData";
 
 export const maptoJSON = <K, V>(map: Map<K, V>): string => {
     try {

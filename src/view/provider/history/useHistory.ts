@@ -1,21 +1,16 @@
 import { useState } from "react";
-import {
-    CalculationData,
-    ICalculationsRepository,
-} from "../../../data/calculations/ICalculationsRepository";
+import { CalculationData } from "../../../data/calculations/CalculationData";
+import { CalculationsRepository } from "../../../data/calculations/CalculationsRepository";
 import { HistoryContextType } from "./HistoryProvider";
 
 export const useHistory = (): HistoryContextType => {
-    const calculationsRepository: ICalculationsRepository =
-        ICalculationsRepository.instance;
-
     const [calculationHistory, setCalculationHistory] = useState<
         CalculationData[] | null
     >(null);
 
     const refreshCalculationHistory = async () => {
         const calculationsData =
-            await calculationsRepository.getAllCalculations();
+            await CalculationsRepository.getAllCalculations();
         setCalculationHistory(calculationsData);
     };
 

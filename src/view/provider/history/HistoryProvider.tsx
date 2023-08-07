@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
+import { CalculationData } from "../../data/calculations/CalculationData";
 import { useHistory } from "./useHistory";
 interface Props {
     children: React.ReactNode;

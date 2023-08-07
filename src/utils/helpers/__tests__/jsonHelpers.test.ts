@@ -1,9 +1,9 @@
-import { CalculationData } from "../../../data/calculations/ICalculationsRepository";
+import { CalculationData } from "../../../data/calculations/CalculationData";
 import {
     calculationDataArrayToJSON,
     JSONtoCalculationDataArray,
     JSONtoMap,
-    maptoJSON
+    maptoJSON,
 } from "../jsonHelpers";
 
 describe("jsonHelpers", () => {

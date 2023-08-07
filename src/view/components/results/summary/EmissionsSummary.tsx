@@ -2,16 +2,16 @@ import React from "react";
 import {
     calculateDeviceEmissionsGramsPerSecond,
     calculateEmissionsHelper,
-    calculateLocationEmissionsGramsPerKwh
+    calculateLocationEmissionsGramsPerKwh,
 } from "../../../../utils/helpers/calculateEmissions";
 import {
     formatBytes,
-    formatEmissions
+    formatEmissions,
 } from "../../../../utils/helpers/formatNumbersToString";
 import { secondsToTimeString } from "../../../../utils/helpers/stringHelpers";
 import {
     HistoryContext,
-    HistoryContextType
+    HistoryContextType,
 } from "../../../provider/history/HistoryProvider";
 import { useNullSafeContext } from "../../../provider/useNullSafeContext";
 
