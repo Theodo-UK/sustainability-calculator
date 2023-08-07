@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import {
-    CalculationData,
-    ICalculationsRepository,
-    UserType
-} from "../../../data/calculations/ICalculationsRepository";
 
+import { CalculationData } from "../../../data/calculations/CalculationData";
+import { CalculationsRepository } from "../../../data/calculations/CalculationsRepository";
+import { UserType } from "../../../data/calculations/UserType";
 import { RecordingRepository } from "../../../data/recording/RecordingRepository";
 import {
     calculateDeviceEmissionsGramsPerSecond,
@@ -12,26 +10,26 @@ import {
     calculateEnergyConsumptionkWh,
     calculateHardwareEmissions,
     calculateLocationEmissionsGramsPerKwh,
-    calculateSoftwareEmissions
+    calculateSoftwareEmissions,
 } from "../../../utils/helpers/calculateEmissions";
 import { useMountEffect } from "../../../utils/hooks/useOnceAfterFirstMount";
 import {
     SelectedCountriesContext,
-    SelectedCountriesContextType
+    SelectedCountriesContextType,
 } from "../selected-countries/SelectedCountriesProvider";
 import {
     SelectedDevicesContext,
-    SelectedDevicesContextType
+    SelectedDevicesContextType,
 } from "../selected-devices/SelectedDevicesProvider";
 import { useNullSafeContext } from "../useNullSafeContext";
+import { RecordingContextType } from "./RecordingProvider";
 import {
     backgroundStopRecordingBytes,
     getBytesFromBackground,
     getBytesFromStorage,
     refreshActiveTab,
-    startRecordingBytesTransferred
+    startRecordingBytesTransferred,
 } from "./helpers";
-import { RecordingContextType } from "./RecordingProvider";
 
 export const useRecording = (): RecordingContextType => {
     const { selectedCountries, validatePercentages } =
@@ -42,9 +40,6 @@ export const useRecording = (): RecordingContextType => {
     const { selectedDevices } = useNullSafeContext<SelectedDevicesContextType>(
         SelectedDevicesContext
     );
-
-    const calculationsRepository: ICalculationsRepository =
-        ICalculationsRepository.instance;
 
     const [bytesTransferred, setBytesTransferred] = useState(0);
     const [error, setError] = useState<string>();
@@ -113,7 +108,7 @@ export const useRecording = (): RecordingContextType => {
                 await RecordingRepository.getStartUnixTime();
             const endUnixTimeMs = Date.now();
 
-            await calculationsRepository.storeCalculation(
+            await CalculationsRepository.storeCalculation(
                 new CalculationData(
                     bytesTransferred,
                     selectedCountries,

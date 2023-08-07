@@ -1,28 +1,26 @@
 import { useState } from "react";
 
 import { DeviceName } from "../../../data/constants/DeviceEmissions";
-import { ISelectedDevicesRepository } from "../../../data/selected-devices/ISelectedDevicesRepository";
+import { SelectedDevicesRepository } from "../../../data/selected-devices/SelectedDevicesRepository";
 import { useMountEffect } from "../../../utils/hooks/useOnceAfterFirstMount";
 import { percentageAboveHundredString } from "../../../utils/messages/errorMessages";
 import { SelectedDevicesContextType } from "./SelectedDevicesProvider";
 
 export const useSelectedDevices = (): SelectedDevicesContextType => {
-    const selectedDevicesRepository: ISelectedDevicesRepository =
-        ISelectedDevicesRepository.instance;
     const [selectedDevices, setSelectedDevices] = useState<
         Map<DeviceName, number>
     >(new Map<DeviceName, number>());
     const addSelectedDevice = async (device: DeviceName) => {
-        await selectedDevicesRepository.addSelectedDevice(device);
+        await SelectedDevicesRepository.addSelectedDevice(device);
         const newSelectedDevices =
-            await selectedDevicesRepository.getSelectedDevices();
+            await SelectedDevicesRepository.getSelectedDevices();
         setSelectedDevices(newSelectedDevices);
     };
 
     const removeSelectedDevice = async (device: DeviceName) => {
-        await selectedDevicesRepository.removeSelectedDevice(device);
+        await SelectedDevicesRepository.removeSelectedDevice(device);
         const newSelectedDevices =
-            await selectedDevicesRepository.getSelectedDevices();
+            await SelectedDevicesRepository.getSelectedDevices();
         setSelectedDevices(newSelectedDevices);
     };
 
@@ -30,12 +28,12 @@ export const useSelectedDevices = (): SelectedDevicesContextType => {
         device: DeviceName,
         percentage: number
     ) => {
-        await selectedDevicesRepository.setSelectedDevicePercentage(
+        await SelectedDevicesRepository.setSelectedDevicePercentage(
             device,
             percentage
         );
         const newSelectedDevices =
-            await selectedDevicesRepository.getSelectedDevices();
+            await SelectedDevicesRepository.getSelectedDevices();
         setSelectedDevices(newSelectedDevices);
     };
     const validatePercentages = () => {
@@ -54,7 +52,7 @@ export const useSelectedDevices = (): SelectedDevicesContextType => {
     useMountEffect(() => {
         const getSelectedDevicesAndSetState = async () => {
             const selectedDevices =
-                await selectedDevicesRepository.getSelectedDevices();
+                await SelectedDevicesRepository.getSelectedDevices();
             setSelectedDevices(selectedDevices);
         };
         getSelectedDevicesAndSetState();

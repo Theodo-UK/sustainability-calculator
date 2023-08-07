@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { PageType } from "../../../data/page/IPageRepository";
+import { PageType } from "../../../data/page/PageType";
 import { useRouter } from "./useRouter";
 interface Props {
     children: React.ReactNode;

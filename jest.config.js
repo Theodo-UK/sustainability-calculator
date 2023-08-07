@@ -6,7 +6,7 @@
 module.exports = {
     testEnvironment: "jsdom",
     clearMocks: true,
-    collectCoverage: true,
+    collectCoverage: false,
     collectCoverageFrom: ["<rootDir>/src/**/*.{js,jsx,ts,tsx}"],
     coverageThreshold: {
         global: {

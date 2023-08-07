@@ -1,20 +1,17 @@
 import { IStorageRepository } from "../storage/IStorageRepository";
 import { StorageKeys } from "../storage/StorageKeys";
-import { IPageRepository, PageType, parsePage } from "./IPageRepository";
+import { PageType, parsePage } from "./PageType";
 
-export class PageRepository implements IPageRepository {
-    remoteDataSource: IStorageRepository = IStorageRepository.instance;
-
-    async getCurrentPage(): Promise<PageType> {
-        const data = await this.remoteDataSource.get<string>(
+export const PageRepository = {
+    getCurrentPage: async (): Promise<PageType> => {
+        const data = await IStorageRepository.instance.get<string>(
             StorageKeys.currentPage,
             "landing"
         );
 
         return parsePage(data);
-    }
-
-    async setCurrentPage(page: PageType): Promise<void> {
-        await this.remoteDataSource.set(StorageKeys.currentPage, page);
-    }
-}
+    },
+    setCurrentPage: async (page: PageType): Promise<void> => {
+        await IStorageRepository.instance.set(StorageKeys.currentPage, page);
+    },
+};

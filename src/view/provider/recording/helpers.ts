@@ -1,4 +1,4 @@
-import { ICalculationsRepository } from "../../../data/calculations/ICalculationsRepository";
+import { CalculationsRepository } from "../../../data/calculations/CalculationsRepository";
 
 export const refreshActiveTab = async (bypassCache: boolean): Promise<void> => {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
@@ -36,8 +36,7 @@ export const getBytesFromBackground = async (): Promise<number> => {
 };
 
 export const getBytesFromStorage = async (): Promise<number> => {
-    const calculationData =
-        await ICalculationsRepository.instance.getLastCalculation();
+    const calculationData = await CalculationsRepository.getLastCalculation();
     if (!(calculationData === null)) {
         return calculationData.bytes;
     }
